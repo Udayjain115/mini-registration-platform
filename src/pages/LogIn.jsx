@@ -1,6 +1,14 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
-const LogIn = () => {
+const LogIn = ({ isLoggedIn, setIsLoggedIn }) => {
+  const navigate = useNavigate();
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setIsLoggedIn(true);
+    navigate('/');
+  };
   return (
     <div>
       <form>
@@ -20,6 +28,11 @@ const LogIn = () => {
             name="password"
           />
         </div>
+        <button
+          onClick={handleSubmit}
+          type="submit">
+          Log In
+        </button>
       </form>
     </div>
   );
