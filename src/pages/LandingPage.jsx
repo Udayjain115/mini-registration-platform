@@ -10,6 +10,9 @@ const LandingPage = ({ events }) => {
   return (
     <div>
       <button onClick={handleLogIn}>{isLoggedIn ? 'Logout' : 'Login'}</button>
+      {isLoggedIn ? null : (
+        <p>You are not logged in. Click to register for the event</p>
+      )}
       {events.map((event) => (
         <Event
           eventName={event}
