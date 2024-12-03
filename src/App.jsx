@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import LandingPage from './pages/landingpage';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import LogIn from './pages/LogIn';
 import SignUp from './pages/SignUp';
 import Admin from './pages/admin';

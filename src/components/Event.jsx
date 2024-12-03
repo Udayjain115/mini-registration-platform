@@ -1,22 +1,30 @@
 import React from 'react';
+
 import { useState } from 'react';
-const event = ({ eventName, isLoggedIn }) => {
+
+const Event = ({ eventName, isLoggedIn }) => {
   const [isJoined, setIsJoined] = useState(false);
+
   const handleButtonClick = () => {
     setIsJoined(true);
   };
+
   if (!isLoggedIn) {
-    return <div>{eventName}</div>;
+    return <div className="alert alert-info event-name">{eventName}</div>;
   } else {
     return (
-      <div>
-        {eventName}{' '}
-        <button onClick={handleButtonClick}>
-          {isJoined ? 'Joined!' : 'Join'}
-        </button>
+      <div className="event-box">
+        <div className="event-content alert-info alert">
+          <p className="event-name">{eventName}</p>
+          <button
+            className="join-button"
+            onClick={handleButtonClick}>
+            {isJoined ? 'Joined!' : 'Join'}
+          </button>
+        </div>
       </div>
     );
   }
 };
 
-export default event;
+export default Event;
