@@ -1,9 +1,18 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import App from './App.jsx';
-const events = ['Event 1', 'Event 2', 'Event 3', 'Event 4', 'Event 5'];
+import './index.css';
+const events = [
+  { name: 'Event 1', id: 1 },
+  { name: 'Event 2', id: 2 },
+];
+
+const users = [];
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <App events={events} />
+    <App
+      events={events}
+      users={users}
+    />
   </StrictMode>
 );
