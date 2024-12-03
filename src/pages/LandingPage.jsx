@@ -1,7 +1,7 @@
 import React from 'react';
 import { useState } from 'react';
-
-const LandingPage = () => {
+import Event from '../components/event';
+const LandingPage = ({ events }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const handleLogIn = () => {
@@ -10,12 +10,12 @@ const LandingPage = () => {
   return (
     <div>
       <button onClick={handleLogIn}>{isLoggedIn ? 'Logout' : 'Login'}</button>
-
-      {isLoggedIn ? (
-        <p>Placeholder</p>
-      ) : (
-        <p>You are not logged in, Click log in to register for event</p>
-      )}
+      {events.map((event) => (
+        <Event
+          eventName={event}
+          isLoggedIn={isLoggedIn}
+        />
+      ))}
     </div>
   );
 };
