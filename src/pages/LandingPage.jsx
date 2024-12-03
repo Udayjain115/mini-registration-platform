@@ -1,11 +1,17 @@
 import React from 'react';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Event from '../components/event';
 const LandingPage = ({ events }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const navigate = useNavigate();
 
   const handleLogIn = () => {
-    setIsLoggedIn(!isLoggedIn);
+    if (!isLoggedIn) {
+      navigate('/login');
+    } else {
+      setIsLoggedIn(false);
+    }
   };
   return (
     <div>

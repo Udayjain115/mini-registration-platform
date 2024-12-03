@@ -1,15 +1,23 @@
 import { useState } from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import LandingPage from './pages/landingpage';
+import LogIn from './pages/LogIn';
 
-function App() {
-  const [count, setCount] = useState(0);
-  const events = ['Event 1', 'Event 2', 'Event 3', 'Event 4', 'Event 5'];
-
+const App = ({ events }) => {
   return (
-    <>
-      <LandingPage events={events} />
-    </>
+    <Router>
+      <Routes>
+        <Route
+          path="/login"
+          element={<LogIn />}
+        />
+        <Route
+          path="/"
+          element={<LandingPage events={events} />}
+        />
+      </Routes>
+    </Router>
   );
-}
+};
 
 export default App;
