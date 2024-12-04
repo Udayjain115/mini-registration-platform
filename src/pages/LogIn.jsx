@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Form from '../components/Form';
 
 const LogIn = ({ isLoggedIn, setIsLoggedIn }) => {
   const navigate = useNavigate();
@@ -17,41 +18,32 @@ const LogIn = ({ isLoggedIn, setIsLoggedIn }) => {
     }
   };
 
-  const handleEmailChange = (e) => {
-    setEmail(e.target.value);
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    console.log(name, value);
+
+    if (name === 'email') setEmail(value);
+    if (name === 'password') setPassword(value);
   };
-  const handlePasswordChange = (e) => {
-    setPassword(e.target.value);
-  };
+
+  const fields = [
+    { label: 'Email', type: 'email', name: 'email', value: email },
+    { label: 'Password', type: 'password', name: 'password', value: password },
+  ];
+
+  const buttons = [
+    { text: 'Log In', handle: handleSubmit },
+    { text: 'Create an Account', handle: () => navigate('/signup') },
+  ];
+
   return (
-    <div>
-      <form>
-        <div>
-          {email}
-          {password}
-          <label htmlFor="email">Email</label>
-          <input
-            onChange={handleEmailChange}
-            type="email"
-            id="email"
-            name="email"
-          />
-        </div>
-        <div>
-          <label htmlFor="password">Password</label>
-          <input
-            onChange={handlePasswordChange}
-            type="password"
-            id="password"
-            name="password"
-          />
-        </div>
-        <button
-          onClick={handleSubmit}
-          type="submit">
-          Log In
-        </button>
-      </form>
+    <div className="login-container">
+      <Form
+        handleSubmit={handleSubmit}
+        handleChange={handleChange}
+        fields={fields}
+        buttons={buttons}
+      />
     </div>
   );
 };
