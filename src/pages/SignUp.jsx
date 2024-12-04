@@ -2,21 +2,35 @@ import React from 'react';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Form from '../components/Form';
+import Notification from '../components/Notification';
 const SignUp = ({ users, setUsers }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [firstName, setFirstName] = useState('');
+  const [allowAccountCreation, setAllowAccountCreation] = useState(true);
+  const [message, setMessage] = useState('');
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
     const user = users.find((user) => user.email === email);
+    console.log(user);
+
+    if (!email || !password || !firstName) {
+      setMessage('Please fill in all fields');
+      setAllowAccountCreation(false);
+      return;
+    }
     if (user) {
-      alert('User already exists');
+      console.log(user);
+      setAllowAccountCreation(false);
+      setMessage('User already exists');
       return;
     } else {
-      setUsers([users.concat({ email, password, firstName })]);
+      setAllowAccountCreation(true);
+      setMessage('');
+      setUsers(users.concat({ email, password, firstName }));
     }
     console.log(users);
 
@@ -47,14 +61,17 @@ const SignUp = ({ users, setUsers }) => {
   };
 
   return (
-    <div className="signup-container">
-      <Form
-        handleSubmit={handleSubmit}
-        handleChange={handleChange}
-        fields={fields}
-        buttons={buttons}
-      />
-    </div>
+    <>
+      {!allowAccountCreation && <Notification message={message} />}
+      <div className="signup-container">
+        <Form
+          handleSubmit={handleSubmit}
+          handleChange={handleChange}
+          fields={fields}
+          buttons={buttons}
+        />
+      </div>
+    </>
   );
 };
 

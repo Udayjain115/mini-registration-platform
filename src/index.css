@@ -25,6 +25,27 @@ input {
 .login-button:hover {
   background-color: #0056b3;
 }
+.update {
+  margin-bottom: 10px;
+}
+.admin-text {
+  margin-left: 20px;
+}
+.admin-title {
+  margin-bottom: 10px;
+}
+.edit-button {
+  display: flex;
+  background-color: #007bff;
+  padding: 10px 20px;
+  color: white;
+  border: none;
+  border-radius: 10px;
+}
+
+.edit-button:hover {
+  background-color: #0056b3;
+}
 
 .info {
   width: 100%;
@@ -69,6 +90,24 @@ input {
   width: 60%;
   align-self: flex-start;
 }
+
+.user-container {
+  margin-top: 50px;
+  padding: 20px;
+  background-color: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 10px;
+  width: 30%;
+  align-self: flex-right;
+}
+.landing-page-logged-in {
+  justify-content: space-between;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  padding: 20px;
+}
 .join-button {
   padding: 10px 20px;
   background-color: #17a2b8;
@@ -84,23 +123,30 @@ input {
 
 .signup-container {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   height: 100vh;
-  padding-bottom: 200px;
+  position: relative;
 }
 
 .signup-form {
   display: flex;
   flex-direction: column;
-  gap: 10px; /* Space between form elements */
+  gap: 10px;
   padding: 20px;
   border: 1px solid #ccc;
   border-radius: 5px;
   background-color: #fff;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
-
+.notification {
+  position: absolute;
+  top: 22%;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+}
 .signup-form div {
   display: flex;
   flex-direction: column;

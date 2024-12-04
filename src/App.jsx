@@ -21,7 +21,9 @@ const App = () => {
   ]);
   const [users, setUsers] = useState([
     { name: 'Admin', email: 'Admin', password: 'Admin' },
+    { name: 'User1', email: 'User1', password: 'User1' },
   ]);
+  const [currentUser, setCurrentUser] = useState(null);
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   return (
@@ -43,6 +45,7 @@ const App = () => {
               isLoggedIn={isLoggedIn}
               setIsLoggedIn={setIsLoggedIn}
               users={users}
+              setCurrentUser={setCurrentUser}
             />
           }
         />
@@ -64,6 +67,10 @@ const App = () => {
               events={events}
               isLoggedIn={isLoggedIn}
               setIsLoggedIn={setIsLoggedIn}
+              currentUser={currentUser}
+              users={users}
+              setUsers={setUsers}
+              setCurrentUser={setCurrentUser}
             />
           }
         />

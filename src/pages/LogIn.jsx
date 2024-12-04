@@ -1,21 +1,32 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Form from '../components/Form';
+import Notification from '../components/Notification';
 
-const LogIn = ({ isLoggedIn, setIsLoggedIn }) => {
+const LogIn = ({ isLoggedIn, setIsLoggedIn, users, setCurrentUser }) => {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [message, setMessage] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
     setIsLoggedIn(true);
-
     if (email === 'admin' && password === 'admin') {
       navigate('/admin');
-    } else {
-      navigate('/');
     }
+
+    const user = users.find(
+      (user) => user.email === email && user.password === password
+    );
+    if (!user) {
+      setMessage('Invalid email or password');
+      return;
+    }
+    setCurrentUser(user);
+    setIsLoggedIn(true);
+
+    navigate('/');
   };
 
   const handleChange = (e) => {
@@ -37,14 +48,17 @@ const LogIn = ({ isLoggedIn, setIsLoggedIn }) => {
   ];
 
   return (
-    <div className="login-container">
-      <Form
-        handleSubmit={handleSubmit}
-        handleChange={handleChange}
-        fields={fields}
-        buttons={buttons}
-      />
-    </div>
+    <>
+      {message && <Notification message={message} />}
+      <div className="login-container">
+        <Form
+          handleSubmit={handleSubmit}
+          handleChange={handleChange}
+          fields={fields}
+          buttons={buttons}
+        />
+      </div>
+    </>
   );
 };
 
