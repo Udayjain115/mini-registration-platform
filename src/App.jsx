@@ -11,8 +11,8 @@ const App = () => {
     { name: 'Event 1', date: '2022-12-12', description: 'Description1', id: 1 },
   ]);
   const [users, setUsers] = useState([
-    { name: 'admin', email: 'admin', password: 'Admin' },
-    { name: 'User1', email: 'User1', password: 'User1' },
+    { name: 'admin', email: 'admin', password: 'Admin', eventsJoined: [] },
+    { name: 'User1', email: 'User1', password: 'User1', eventsJoined: [] },
   ]);
   const [currentUser, setCurrentUser] = useState(null);
 
@@ -49,6 +49,7 @@ const App = () => {
               setIsLoggedIn={setIsLoggedIn}
               users={users}
               setEvents={setEvents}
+              currentUser={currentUser}
             />
           }
         />

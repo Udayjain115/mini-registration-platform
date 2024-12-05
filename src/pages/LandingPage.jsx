@@ -12,7 +12,7 @@ const LandingPage = ({
   users,
   setUsers,
 }) => {
-  console.log(users);
+  console.log(isLoggedIn);
 
   const navigate = useNavigate();
   const [isEdit, setIsEdit] = useState(false);
@@ -70,6 +70,9 @@ const LandingPage = ({
           }`}>
           {events.map((event) => (
             <Event
+              currentUser={currentUser}
+              users={users}
+              setUsers={setUsers}
               key={event.id}
               event={event}
               isLoggedIn={isLoggedIn}
@@ -78,6 +81,7 @@ const LandingPage = ({
         </div>
         {isLoggedIn ? (
           <div className="user-container">
+            {console.log(currentUser)}
             <p>{`Name : ${currentUser.name}`}</p>
             <p>{`Email : ${currentUser.email}`}</p>
             {isEdit ? (

@@ -64,7 +64,10 @@ input {
   text-align: center;
 }
 .event-block {
+  display: flex;
+  flex-direction: row;
   width: 100%;
+  margin-bottom: 20px;
 }
 .events-container {
   margin-top: 20px;
@@ -73,6 +76,7 @@ input {
   background-color: #f8f9fa;
   border: 1px solid #dee2e6;
   border-radius: 10px;
+
   align-self: center;
 }
 
@@ -89,6 +93,7 @@ input {
   width: 100%;
 }
 .events-container-logged-in {
+  margin-left: 0;
   margin-top: 50px;
   padding: 20px;
   background-color: #f8f9fa;
@@ -184,8 +189,48 @@ input {
 
 .admin-page {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   align-items: flex-start;
   width: 100%;
   padding: 20px;
+}
+.event-creator {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 20px;
+  background-color: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 300px;
+  margin-left: 100px;
+}
+
+.event-creator div {
+  display: flex;
+  flex-direction: column;
+}
+
+.event-creator label {
+  margin-bottom: 5px;
+}
+
+.event-creator input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.event-creator button {
+  padding: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.event-creator button:hover {
+  background-color: #0056b3;
 }

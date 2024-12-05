@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Form from '../components/Form';
 import Notification from '../components/Notification';
@@ -9,10 +10,18 @@ const LogIn = ({ isLoggedIn, setIsLoggedIn, users, setCurrentUser }) => {
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
 
+  useEffect(() => {
+    console.log(isLoggedIn);
+
+    if (isLoggedIn) {
+      navigate('/');
+    }
+  }, []);
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    setIsLoggedIn(true);
     if (email === 'admin' && password === 'admin') {
+      setCurrentUser(users.find((user) => user.email === 'admin'));
       navigate('/admin');
     }
 
@@ -21,9 +30,11 @@ const LogIn = ({ isLoggedIn, setIsLoggedIn, users, setCurrentUser }) => {
     );
     if (!user) {
       setMessage('Invalid email or password');
+      setIsLoggedIn(false);
       return;
     }
-    setCurrentUser(user);
+    const userCopy = { ...user };
+    setCurrentUser(userCopy);
     setIsLoggedIn(true);
 
     navigate('/');
