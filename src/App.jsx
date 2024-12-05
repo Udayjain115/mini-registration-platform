@@ -1,22 +1,29 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import LandingPage from './pages/landingpage';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import LogIn from './pages/LogIn';
 import SignUp from './pages/SignUp';
 import Admin from './pages/admin';
+import eventService from './services/eventService';
+import userService from './services/userService';
 
 const App = () => {
-  const [events, setEvents] = useState([
-    { name: 'Event 1', date: '2022-12-12', description: 'Description1', id: 1 },
-  ]);
-  const [users, setUsers] = useState([
-    { name: 'admin', email: 'admin', password: 'Admin', eventsJoined: [] },
-    { name: 'User1', email: 'User1', password: 'User1', eventsJoined: [] },
-  ]);
+  const [events, setEvents] = useState([]);
+  const [users, setUsers] = useState([]);
   const [currentUser, setCurrentUser] = useState(null);
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    eventService.getAll().then((initialEvents) => {
+      setEvents(initialEvents);
+    });
+
+    userService.getAll().then((initialUsers) => {
+      setUsers(initialUsers);
+    });
+  }, []);
   return (
     <Router>
       <Routes>
@@ -36,6 +43,7 @@ const App = () => {
               isLoggedIn={isLoggedIn}
               setIsLoggedIn={setIsLoggedIn}
               users={users}
+              setUsers={setUsers}
               setCurrentUser={setCurrentUser}
             />
           }

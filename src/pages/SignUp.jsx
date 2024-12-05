@@ -1,8 +1,9 @@
 import React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Form from '../components/Form';
 import Notification from '../components/Notification';
+import userService from '../services/userService';
 const SignUp = ({ users, setUsers }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -11,8 +12,16 @@ const SignUp = ({ users, setUsers }) => {
   const [message, setMessage] = useState('');
   const navigate = useNavigate();
 
+  useEffect(() => {
+    userService.getAll().then((initialUsers) => {
+      setUsers(initialUsers);
+    });
+  }, []);
+
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    console.log(users);
 
     const user = users.find((user) => user.email === email);
     console.log(user);
@@ -30,7 +39,14 @@ const SignUp = ({ users, setUsers }) => {
     } else {
       setAllowAccountCreation(true);
       setMessage('');
-      setUsers(users.concat({ email, password, firstName }));
+      const newUser = {
+        name: firstName,
+        email: email,
+        password: password,
+      };
+      userService.create(newUser);
+      setUsers(userService.getAll());
+      console.log(userService.getAll().toString());
     }
     console.log(users);
 
