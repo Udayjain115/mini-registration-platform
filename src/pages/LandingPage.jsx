@@ -71,7 +71,7 @@ const LandingPage = ({
           {events.map((event) => (
             <Event
               key={event.id}
-              eventName={event.name}
+              event={event}
               isLoggedIn={isLoggedIn}
             />
           ))}
