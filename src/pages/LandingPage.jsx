@@ -1,7 +1,8 @@
 import React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Event from '../components/event';
+import userService from '../services/userService';
 
 const LandingPage = ({
   events,
@@ -22,6 +23,12 @@ const LandingPage = ({
     setEditName(value);
   };
 
+  useEffect(() => {
+    userService.getAll().then((initialUsers) => {
+      setUsers(initialUsers);
+    });
+  }, []);
+
   const handleEdit = (e) => {
     e.preventDefault();
     setIsEdit(true);
@@ -29,12 +36,9 @@ const LandingPage = ({
 
   const handleUpdate = (e) => {
     e.preventDefault();
-    const user = users.find((user) => user.email === currentUser.email);
-    const updatedUser = { ...user, name: editName };
-    const updatedUsers = users
-      .filter((user) => user.email !== currentUser.email)
-      .concat(updatedUser);
-    setUsers(updatedUsers);
+    const updatedUser = { ...currentUser, name: editName };
+    userService.update(currentUser.email, updatedUser);
+
     setCurrentUser(updatedUser);
     setIsEdit(false);
   };
