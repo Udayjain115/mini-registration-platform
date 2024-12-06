@@ -13,9 +13,6 @@ const LandingPage = ({
   users,
   setUsers,
 }) => {
-  console.log(isLoggedIn);
-  console.log('Current User', currentUser);
-
   const navigate = useNavigate();
   const [isEdit, setIsEdit] = useState(false);
   const [editName, setEditName] = useState('');
@@ -23,6 +20,12 @@ const LandingPage = ({
     const { value } = e.target;
     setEditName(value);
   };
+
+  useEffect(() => {
+    if (currentUser && currentUser.email === 'admin') {
+      navigate('/admin');
+    }
+  }, [currentUser]);
 
   useEffect(() => {
     userService.getAll().then((initialUsers) => {
@@ -49,6 +52,8 @@ const LandingPage = ({
       navigate('/login');
     } else {
       setIsLoggedIn(false);
+      console.log('logging out');
+
       setCurrentUser(null);
     }
   };

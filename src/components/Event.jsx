@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import { useState } from 'react';
+import userService from '../services/userService';
 
 const Event = ({ event, isLoggedIn, users, setUsers, currentUser }) => {
   const [isJoined, setIsJoined] = useState(false);
@@ -15,14 +16,23 @@ const Event = ({ event, isLoggedIn, users, setUsers, currentUser }) => {
       ...user,
       eventsJoined: [...user.eventsJoined, eventName],
     };
-    const updatedUsers = users
-      .filter((user) => user.email !== currentUser.email)
-      .concat(updatedUser);
-    setUsers(updatedUsers);
-    console.log(updatedUsers);
+    userService.update(currentUser.email, updatedUser).then((updatedUser) => {
+      setUsers(
+        users.map((user) =>
+          user.email === currentUser.email ? updatedUser : user
+        )
+      );
+    });
 
     setIsJoined(true);
   };
+
+  useEffect(() => {
+    const user = users.find((user) => user.email === currentUser.email);
+    if (user && user.eventsJoined.includes(eventName)) {
+      setIsJoined(true);
+    }
+  }, []);
 
   if (!isLoggedIn) {
     return (

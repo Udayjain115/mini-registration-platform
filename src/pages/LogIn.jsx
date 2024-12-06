@@ -9,6 +9,7 @@ const LogIn = ({
   setIsLoggedIn,
   users,
   setCurrentUser,
+  currentUser,
   setUsers,
 }) => {
   const navigate = useNavigate();
@@ -17,24 +18,13 @@ const LogIn = ({
   const [message, setMessage] = useState('');
 
   useEffect(() => {
-    console.log(isLoggedIn);
     userService.getAll().then((initialUsers) => {
       setUsers(initialUsers);
     });
-
-    if (isLoggedIn) {
-      navigate('/');
-    }
   }, []);
 
   const handleSubmit = (e) => {
-    console.log(users);
-
     e.preventDefault();
-    if (email === 'admin' && password === 'admin') {
-      setCurrentUser(users.find((user) => user.email === 'admin'));
-      navigate('/admin');
-    }
 
     const user = users.find(
       (user) => user.email === email && user.password === password
@@ -47,13 +37,23 @@ const LogIn = ({
     const userCopy = { ...user };
     setCurrentUser(userCopy);
     setIsLoggedIn(true);
-
-    navigate('/');
   };
+
+  useEffect(() => {
+    if (
+      currentUser &&
+      currentUser.email === 'admin' &&
+      currentUser.password === 'admin'
+    ) {
+      navigate('/admin');
+      console.log('going to admin');
+    } else if (currentUser) {
+      navigate('/');
+    }
+  }, [currentUser, navigate]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    console.log(name, value);
 
     if (name === 'email') setEmail(value);
     if (name === 'password') setPassword(value);

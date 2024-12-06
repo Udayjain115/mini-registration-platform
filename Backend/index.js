@@ -9,7 +9,7 @@ let events = [
 ];
 
 let users = [
-  { name: 'admin', email: 'admin', password: 'Admin', eventsJoined: [] },
+  { name: 'admin', email: 'admin', password: 'admin', eventsJoined: [] },
   { name: 'User1', email: 'User1', password: 'User1', eventsJoined: [] },
 ];
 

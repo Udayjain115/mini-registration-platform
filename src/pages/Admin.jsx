@@ -3,39 +3,57 @@ import Event from '../components/event';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { useEffect } from 'react';
-const admin = ({ events, users, setEvents, isLoggedIn, currentUser }) => {
+import eventService from '../services/eventService';
+const admin = ({
+  events,
+  users,
+  setEvents,
+  isLoggedIn,
+  currentUser,
+  setCurrentUser,
+}) => {
   const [event, setEvent] = useState('');
   const [description, setDescription] = useState('');
   const [date, setDate] = useState('');
   const navigate = useNavigate();
   const [notAllowed, setNotAllowed] = useState(true);
 
-  console.log(currentUser);
+  useEffect(() => {
+    eventService.getAll().then((initialEvents) => {
+      setEvents(initialEvents);
+    });
+  }, []);
 
   useEffect(() => {
     if (currentUser === null || currentUser.email !== 'admin') {
+      console.log(currentUser);
+
       setNotAllowed(true);
-      console.log('not admin');
-      console.log('Current User Admin Side', currentUser);
 
       navigate('/');
     } else {
       setNotAllowed(false);
     }
   }, [currentUser, navigate]);
+
+  const handleLogout = () => {
+    setCurrentUser(null);
+    navigate('/');
+  };
+
   const handleSubmit = (e) => {
+    e.preventDefault();
+
     const newEvent = {
       name: event,
       description: description,
       date: date,
-      id: events.length + 1,
     };
 
-    setEvents(events.concat(newEvent));
+    eventService.create(newEvent).then((createdEvent) => {
+      setEvents(eventService.getAll());
+    });
 
-    console.log(events);
-
-    e.preventDefault();
     setEvent('');
     setDescription('');
     setDate('');
@@ -53,6 +71,11 @@ const admin = ({ events, users, setEvents, isLoggedIn, currentUser }) => {
   return (
     <>
       <h1 className="admin-text admin-title">Admin Page</h1>
+      <button
+        className="login-button"
+        onClick={handleLogout}>
+        Logout
+      </button>
       <div className="admin-page">
         <h3 className="admin-text">Events:</h3>
         <div className="event-block">

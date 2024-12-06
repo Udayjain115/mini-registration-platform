@@ -6,39 +6,25 @@ import LogIn from './pages/LogIn';
 import SignUp from './pages/SignUp';
 import Admin from './pages/admin';
 import eventService from './services/eventService';
+import useCurrentUser from './hooks/useCurrentUser';
 import userService from './services/userService';
 
 const App = () => {
   const [events, setEvents] = useState([]);
   const [users, setUsers] = useState([]);
-  const [currentUser, setCurrentUser] = useState(null);
+  const [currentUser, setCurrentUser] = useCurrentUser();
 
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(!!currentUser);
 
   useEffect(() => {
-    eventService.getAll().then((initialEvents) => {
-      setEvents(initialEvents);
-    });
+    eventService.getAll().then((initialEvents) => setEvents(initialEvents));
 
-    userService.getAll().then((initialUsers) => {
-      setUsers(initialUsers);
-    });
-
-    const storedUser = localStorage.getItem('currentUser');
-    if (storedUser) {
-      setCurrentUser(JSON.parse(storedUser));
-      setIsLoggedIn(true);
-    }
+    userService.getAll().then((initialUsers) => setUsers(initialUsers));
   }, []);
 
   useEffect(() => {
-    if (currentUser) {
-      localStorage.setItem('currentUser', JSON.stringify(currentUser));
-    } else {
-      localStorage.removeItem('currentUser');
-    }
+    setIsLoggedIn(!!currentUser);
   }, [currentUser]);
-
   return (
     <Router>
       <Routes>
@@ -60,6 +46,7 @@ const App = () => {
               users={users}
               setUsers={setUsers}
               setCurrentUser={setCurrentUser}
+              currentUser={currentUser}
             />
           }
         />
@@ -73,6 +60,7 @@ const App = () => {
               users={users}
               setEvents={setEvents}
               currentUser={currentUser}
+              setCurrentUser={setCurrentUser}
             />
           }
         />
