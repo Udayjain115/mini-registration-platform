@@ -16,6 +16,8 @@ const admin = ({ events, users, setEvents, isLoggedIn, currentUser }) => {
     if (currentUser === null || currentUser.email !== 'admin') {
       setNotAllowed(true);
       console.log('not admin');
+      console.log('Current User Admin Side', currentUser);
+
       navigate('/');
     } else {
       setNotAllowed(false);

@@ -14,6 +14,7 @@ const LandingPage = ({
   setUsers,
 }) => {
   console.log(isLoggedIn);
+  console.log('Current User', currentUser);
 
   const navigate = useNavigate();
   const [isEdit, setIsEdit] = useState(false);
