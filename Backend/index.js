@@ -1,4 +1,5 @@
 const express = require('express');
+const Event = require('./models/eventDetails');
 const cors = require('cors');
 const app = express();
 app.use(cors());
@@ -51,12 +52,16 @@ app.post('/api/events', (request, response) => {
       error: 'content is missing',
     });
   } else {
-    const event = {
+    const event = new Event({
       name: body.name,
       date: body.date,
       description: body.description,
       id: generateId('event'),
-    };
+    });
+
+    event.save().then((events) => {
+      response.json(events);
+    });
     events = events.concat(event);
     response.json(events);
   }
