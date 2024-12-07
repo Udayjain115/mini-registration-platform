@@ -1,6 +1,6 @@
 import React from 'react';
-
-const Form = ({ handleSubmit, handleChange, fields, buttons }) => {
+import Notification from './Notification';
+const Form = ({ handleSubmit, handleChange, fields, buttons, message }) => {
   return (
     <div className="signup-container">
       <form
@@ -26,6 +26,10 @@ const Form = ({ handleSubmit, handleChange, fields, buttons }) => {
             {button.text}
           </button>
         ))}
+        <Notification
+          message={message}
+          className="alert alert-danger notification"
+        />
       </form>
     </div>
   );

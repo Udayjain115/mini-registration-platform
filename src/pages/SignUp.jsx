@@ -67,7 +67,10 @@ const SignUp = ({ users, setUsers }) => {
     { label: 'Name', type: 'text', name: 'Name', value: firstName },
   ];
 
-  const buttons = [{ text: 'Create an Account', handle: handleSubmit }];
+  const buttons = [
+    { text: 'Create an Account', handle: handleSubmit },
+    { text: 'Log In', handle: () => navigate('/login') },
+  ];
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -77,22 +80,23 @@ const SignUp = ({ users, setUsers }) => {
   };
 
   return (
-    <>
-      {!allowAccountCreation && (
+    <div className="form-block">
+      {/* {!allowAccountCreation && (
         <Notification
-          className="alert alert-danger notification"
+          className="alert alert-danger notification "
           message={message}
         />
-      )}
+      )} */}
       <div className="signup-container">
         <Form
+          message={message}
           handleSubmit={handleSubmit}
           handleChange={handleChange}
           fields={fields}
           buttons={buttons}
         />
       </div>
-    </>
+    </div>
   );
 };
 
