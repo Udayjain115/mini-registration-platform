@@ -28,9 +28,11 @@ const Event = ({ event, isLoggedIn, users, setUsers, currentUser }) => {
   };
 
   useEffect(() => {
-    const user = users.find((user) => user.email === currentUser.email);
-    if (user && user.eventsJoined.includes(eventName)) {
-      setIsJoined(true);
+    if (currentUser) {
+      const user = users.find((user) => user.email === currentUser.email);
+      if (user && user.eventsJoined.includes(eventName)) {
+        setIsJoined(true);
+      }
     }
   }, [users, currentUser, eventName]);
 
