@@ -1,5 +1,6 @@
 const express = require('express');
 const Event = require('./models/eventDetails');
+const User = require('./models/userDetails');
 const cors = require('cors');
 const errorHandler = require('./middleware/errorHandler');
 const app = express();
@@ -77,23 +78,24 @@ app.post('/api/events', (request, response, next) => {
   }
 });
 
-app.get('/api/users', (request, response) => {
-  response.json(users);
+app.get('/api/users', (request, response, next) => {
+  User.find({}).then((users) => {
+    response.json(users);
+  });
 });
 
 app.get('/api/users/:email', (request, response) => {
-  const email = request.params.email;
-  const user = users.find((user) => user.email === email);
-  if (user) {
-    response.json(user);
-  } else {
-    response.status(404).send();
-  }
+  User.findOne({ email: request.params.email })
+    .then((user) => {
+      response.json(user);
+    })
+    .catch((error) => {
+      console.error(error.message);
+      response.status(400).send({ error: 'malformatted id' });
+    });
 });
 
-app.post('/api/users', (request, response) => {
-  console.log('POST REQUEST');
-
+app.post('/api/users', (request, response, next) => {
   const body = request.body;
   console.log(body);
 
@@ -106,31 +108,50 @@ app.post('/api/users', (request, response) => {
       error: 'email already exists',
     });
   } else {
-    const user = {
+    const user = new User({
       name: body.name,
       email: body.email,
       password: body.password,
       eventsJoined: body.eventsJoined || [],
-    };
-    users = users.concat(user);
-    response.json(users);
+    });
+    user
+      .save()
+      .then((user) => {
+        response.json(user);
+      })
+      .catch((error) => {
+        next(error);
+      });
   }
 });
 app.put('/api/users/:email', (request, response) => {
   const email = request.params.email;
   const body = request.body;
   const user = users.find((user) => user.email === email);
-  if (user) {
-    const updatedUser = {
-      ...user,
-      name: body.name,
-      eventsJoined: body.eventsJoined,
-    };
-    users = users.map((user) => (user.email === email ? updatedUser : user));
-    response.json(updatedUser);
-  } else {
-    response.status(404).json({ error: 'user not found' });
-  }
+  User.findOneAndUpdate({ email: email }, { $set: body }, { new: true })
+    .then((updatedUser) => {
+      if (updatedUser) {
+        response.json(updatedUser);
+      } else {
+        response.status(404).json({ error: 'user not found' });
+      }
+    })
+    .catch((error) => {
+      console.error(error.message);
+      response.status(500).send({ error: 'Internal Server Error' });
+    });
+
+  // if (user) {
+  //   const updatedUser = {
+  //     ...user,
+  //     name: body.name,
+  //     eventsJoined: body.eventsJoined,
+  //   };
+  //   users = users.map((user) => (user.email === email ? updatedUser : user));
+  //   response.json(updatedUser);
+  // } else {
+  //   response.status(404).json({ error: 'user not found' });
+  // }
   app.use(errorHandler);
 });
 app.listen(port, () => {

@@ -44,17 +44,26 @@ const SignUp = ({ users, setUsers }) => {
         email: email,
         password: password,
       };
-      userService.create(newUser);
-      setUsers(userService.getAll());
-      console.log(userService.getAll().toString());
+      userService
+        .create(newUser)
+        .then(() => {
+          userService.getAll().then((updatedUsers) => {
+            setUsers(updatedUsers);
+            navigate('/login');
+          });
+        })
+        .catch((error) => {
+          console.error(error);
+          setMessage('Enter A Valid Email');
+        });
+      setTimeout(() => {
+        setMessage('');
+      }, 3000);
     }
-    console.log(users);
 
     setEmail('');
     setPassword('');
     setFirstName('');
-
-    navigate('/login');
   };
   const fields = [
     { label: 'Email', type: 'email', name: 'email', value: email },
@@ -81,12 +90,6 @@ const SignUp = ({ users, setUsers }) => {
 
   return (
     <div className="form-block">
-      {/* {!allowAccountCreation && (
-        <Notification
-          className="alert alert-danger notification "
-          message={message}
-        />
-      )} */}
       <div className="signup-container">
         <Form
           message={message}
