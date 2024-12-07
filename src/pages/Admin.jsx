@@ -155,7 +155,7 @@ const admin = ({
         <div className="user-container">
           {users.map((user) => (
             <div
-              className="alert alert-info"
+              className="alert alert-info hidden"
               key={user.email}>
               <p>Name: {user.name}</p>
               <p>Email: {user.email}</p>

@@ -158,6 +158,13 @@ input {
 .admin-notification {
   margin-top: 10px;
   text-align: center;
+  text-overflow: ellipsis;
+}
+
+.hidden {
+  width: 100%;
+  overflow: hidden;
+  word-wrap: break-word;
 }
 .notification {
   margin-top: 10px;
