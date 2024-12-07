@@ -24,7 +24,7 @@ const userSchema = new mongoose.Schema({
     match: [/.+@.+\..+/, 'Please enter a valid email'],
   },
   password: { type: String, required: true },
-  eventsJoined: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Event' }],
+  eventsJoined: [{ type: String, ref: 'Event' }],
 });
 
 userSchema.set('toJSON', {
