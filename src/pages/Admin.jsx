@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import eventService from '../services/eventService';
+import Notification from '../components/Notification';
 const admin = ({
   events,
   users,
@@ -17,6 +18,7 @@ const admin = ({
   const [date, setDate] = useState('');
   const navigate = useNavigate();
   const [notAllowed, setNotAllowed] = useState(true);
+  const [notification, setNotification] = useState('');
 
   useEffect(() => {
     eventService.getAll().then((initialEvents) => {
@@ -50,9 +52,21 @@ const admin = ({
       date: date,
     };
 
-    eventService.create(newEvent).then((createdEvent) => {
-      setEvents(eventService.getAll());
-    });
+    eventService
+      .create(newEvent)
+      .then((createdEvent) => {
+        eventService.getAll().then((fetchedEvents) => {
+          setEvents(fetchedEvents);
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+
+        setNotification('Event Name already Exists');
+      });
+    setTimeout(() => {
+      setNotification('');
+    }, 5000);
 
     setEvent('');
     setDescription('');
@@ -80,16 +94,21 @@ const admin = ({
         <h3 className="admin-text">Events:</h3>
         <div className="event-block">
           <div className="events-container-logged-in margin-bottom-20">
+            {console.log(events)}
             {events.map((event) => (
               <Event
+                users={users}
                 key={event.id}
                 event={event}
                 isLoggedIn={false}
+                currentUser={currentUser}
               />
             ))}
           </div>
+
           <span className="event-creator">
             <h3>Create Event</h3>
+
             <form onSubmit={handleSubmit}>
               <div>
                 <label htmlFor="event">Event Name:</label>
@@ -125,6 +144,10 @@ const admin = ({
                 />
               </div>
               <button type="submit">Create Event</button>
+
+              <div className="admin-notification">
+                {notification && <Notification message={notification} />}
+              </div>
             </form>
           </span>
         </div>

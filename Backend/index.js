@@ -1,6 +1,7 @@
 const express = require('express');
 const Event = require('./models/eventDetails');
 const cors = require('cors');
+const errorHandler = require('./middleware/errorHandler');
 const app = express();
 app.use(cors());
 const port = 3000;
@@ -31,20 +32,27 @@ const generateId = (idFor) => {
 app.use(express.json());
 
 app.get('/api/events', (request, response) => {
-  response.json(events);
+  Event.find({}).then((events) => {
+    response.json(events);
+  });
 });
 
 app.get('/api/events/:id', (request, response) => {
-  const id = request.params.id;
-  const event = events.find((event) => event.id === id);
-  if (event) {
-    response.json(event);
-  } else {
-    response.status(404).send();
-  }
+  Event.findById(request.params.id)
+    .then((event) => {
+      if (event) {
+        response.json(event);
+      } else {
+        response.status(404).end();
+      }
+    })
+    .catch((error) => {
+      console.error(error.message);
+      response.status(400).send({ error: 'malformatted id' });
+    });
 });
 
-app.post('/api/events', (request, response) => {
+app.post('/api/events', (request, response, next) => {
   // TO DO: Depending on what Hajin says, dont allow for two events with the same name
   const body = request.body;
   if (!body.name || !body.date || !body.description) {
@@ -56,14 +64,16 @@ app.post('/api/events', (request, response) => {
       name: body.name,
       date: body.date,
       description: body.description,
-      id: generateId('event'),
     });
 
-    event.save().then((events) => {
-      response.json(events);
-    });
-    events = events.concat(event);
-    response.json(events);
+    event
+      .save()
+      .then((events) => {
+        response.json(events);
+      })
+      .catch((error) => {
+        next(error);
+      });
   }
 });
 
@@ -121,6 +131,7 @@ app.put('/api/users/:email', (request, response) => {
   } else {
     response.status(404).json({ error: 'user not found' });
   }
+  app.use(errorHandler);
 });
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);

@@ -24,6 +24,7 @@ const eventSchema = new mongoose.Schema({
 eventSchema.set('toJSON', {
   transform: (document, returnedObject) => {
     returnedObject.id = returnedObject._id.toString();
+    returnedObject.date = returnedObject.date.toISOString().split('T')[0];
     delete returnedObject._id;
     delete returnedObject.__v;
   },

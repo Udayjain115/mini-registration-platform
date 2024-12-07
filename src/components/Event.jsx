@@ -32,7 +32,7 @@ const Event = ({ event, isLoggedIn, users, setUsers, currentUser }) => {
     if (user && user.eventsJoined.includes(eventName)) {
       setIsJoined(true);
     }
-  }, []);
+  }, [users, currentUser, eventName]);
 
   if (!isLoggedIn) {
     return (
