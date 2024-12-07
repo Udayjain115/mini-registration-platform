@@ -71,7 +71,12 @@ const LogIn = ({
 
   return (
     <>
-      {message && <Notification message={message} />}
+      {message && (
+        <Notification
+          className="notification alert alert-danger"
+          message={message}
+        />
+      )}
       <div className="login-container">
         <Form
           handleSubmit={handleSubmit}

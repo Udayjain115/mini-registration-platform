@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Event from '../components/event';
 import userService from '../services/userService';
+import Notification from '../components/Notification';
 
 const LandingPage = ({
   events,
@@ -69,9 +70,10 @@ const LandingPage = ({
         </button>
       </div>
       {isLoggedIn ? null : (
-        <p className="alert alert-primary info">
-          You are not logged in. Click Login to register for the event
-        </p>
+        <Notification
+          className="alert alert-primary info"
+          message="You are not logged in. Click Login to register for the event"
+        />
       )}
       <div className="landing-page-logged-in">
         <div

@@ -78,7 +78,12 @@ const SignUp = ({ users, setUsers }) => {
 
   return (
     <>
-      {!allowAccountCreation && <Notification message={message} />}
+      {!allowAccountCreation && (
+        <Notification
+          className="alert alert-danger notification"
+          message={message}
+        />
+      )}
       <div className="signup-container">
         <Form
           handleSubmit={handleSubmit}
