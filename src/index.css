@@ -29,7 +29,10 @@ input {
   margin-bottom: 20px;
 }
 .update {
+  margin-left: 48px;
+  display: flex;
   margin-bottom: 10px;
+  align-self: center;
 }
 .admin-text {
   margin-left: 20px;
