@@ -92,6 +92,7 @@ const SignUp = ({ users, setUsers }) => {
     <div className="form-block">
       <div className="signup-container">
         <Form
+          className={'signup-form'}
           message={message}
           handleSubmit={handleSubmit}
           handleChange={handleChange}

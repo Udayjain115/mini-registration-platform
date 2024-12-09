@@ -71,14 +71,9 @@ const LogIn = ({
 
   return (
     <>
-      {/* {message && (
-        <Notification
-          className="notification alert alert-danger"
-          message={message}
-        />
-      )} */}
-      <div className="login-container">
+      <div className="signup-container">
         <Form
+          className={'signup-form'}
           message={message}
           handleSubmit={handleSubmit}
           handleChange={handleChange}

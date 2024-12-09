@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { useEffect } from 'react';
 import eventService from '../services/eventService';
 import Notification from '../components/Notification';
+import Form from '../components/Form';
 const admin = ({
   events,
   users,
@@ -73,6 +74,16 @@ const admin = ({
     setDate('');
   };
   const buttons = [{ text: 'Create Event', handle: handleSubmit }];
+  const fields = [
+    { label: 'Event Name', type: 'text', name: 'event', value: event },
+    {
+      label: 'Event Description',
+      type: 'text',
+      name: 'description',
+      value: description,
+    },
+    { label: 'Event Date', type: 'date', name: 'date', value: date },
+  ];
   const handleEventChange = (e) => {
     const { name, value } = e.target;
     if (name === 'event') setEvent(value);
@@ -90,23 +101,36 @@ const admin = ({
         onClick={handleLogout}>
         Logout
       </button>
-      <div className="admin-page">
-        <h3 className="admin-text">Events:</h3>
-        <div className="event-block">
-          <div className="events-container-logged-in margin-bottom-20">
-            {console.log(events)}
-            {events.map((event) => (
-              <Event
-                users={users}
-                key={event.id}
-                event={event}
-                isLoggedIn={false}
-                currentUser={currentUser}
-              />
-            ))}
+      <div className="container-fluid">
+        <div className="row no-gutters">
+          <div className="col-md-8">
+            <h3 className="admin-text">Events:</h3>
+            <div className="">
+              <div className="events-container-logged-in margin-bottom-20">
+                {console.log(events)}
+                {events.map((event) => (
+                  <Event
+                    users={users}
+                    key={event.id}
+                    event={event}
+                    isLoggedIn={false}
+                    currentUser={currentUser}
+                  />
+                ))}
+              </div>
+            </div>
           </div>
-
-          <span className="event-creator">
+          <div className="col-md-4 signup-container-admin">
+            <Form
+              className="signup-form"
+              message={notification}
+              handleSubmit={handleSubmit}
+              handleChange={handleEventChange}
+              fields={fields}
+              buttons={buttons}
+            />
+          </div>
+          {/* <span className="event-creator">
             <h3>Create Event</h3>
 
             <form onSubmit={handleSubmit}>
@@ -149,7 +173,7 @@ const admin = ({
                 {notification && <Notification message={notification} />}
               </div>
             </form>
-          </span>
+          </span> */}
         </div>
         <h3 className="admin-text">Users:</h3>
         <div className="user-container">

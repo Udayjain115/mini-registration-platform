@@ -1,10 +1,17 @@
 import React from 'react';
 import Notification from './Notification';
-const Form = ({ handleSubmit, handleChange, fields, buttons, message }) => {
+const Form = ({
+  handleSubmit,
+  handleChange,
+  fields,
+  buttons,
+  message,
+  className,
+}) => {
   return (
-    <div className="signup-container">
+    <div>
       <form
-        className="signup-form"
+        className={className}
         onSubmit={handleSubmit}>
         {fields.map((field) => (
           <div key={field.name}>
@@ -15,6 +22,7 @@ const Form = ({ handleSubmit, handleChange, fields, buttons, message }) => {
               name={field.name}
               value={field.value}
               onChange={handleChange}
+              required
             />
           </div>
         ))}

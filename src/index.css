@@ -144,6 +144,12 @@ input {
   height: 100vh;
   position: relative;
 }
+.signup-container-admin {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  height: 100vh;
+}
 
 .signup-form {
   display: flex;
