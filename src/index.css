@@ -95,6 +95,7 @@ input {
 .events-container-logged-in {
   margin-left: 0;
   margin-top: 50px;
+  min-width: 150px;
   padding: 20px;
   background-color: #f8f9fa;
   border: 1px solid #dee2e6;
@@ -104,13 +105,18 @@ input {
 }
 
 .user-container {
+  display: flex;
+  flex-direction: column;
+  min-width: 200px;
+  align-items: center;
+  text-align: center;
   margin-top: 50px;
   padding: 20px;
+
   background-color: #f8f9fa;
   border: 1px solid #dee2e6;
   border-radius: 10px;
   width: 30%;
-  align-self: flex-right;
 }
 .landing-page-logged-in {
   justify-content: space-between;
@@ -151,7 +157,17 @@ input {
   height: 100vh;
 }
 
+.col-4 {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: flex-start;
+  padding-top: 50px;
+}
+
 .signup-form {
+  min-width: 110px;
+  max-width: 250px;
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -239,6 +255,10 @@ input {
   border-radius: 5px;
 }
 
+.alert.alert-info.event-name {
+  min-width: 110px;
+}
+
 .event-creator button {
   padding: 10px;
   background-color: #007bff;
@@ -250,4 +270,14 @@ input {
 
 .event-creator button:hover {
   background-color: #0056b3;
+}
+
+@media (max-width: 768px) {
+  .col-md-4,
+  .col-md-8,
+  .col-sm-6,
+  .col-12 {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
 }

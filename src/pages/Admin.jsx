@@ -6,6 +6,7 @@ import { useEffect } from 'react';
 import eventService from '../services/eventService';
 import Notification from '../components/Notification';
 import Form from '../components/Form';
+import User from '../components/User';
 const admin = ({
   events,
   users,
@@ -103,9 +104,9 @@ const admin = ({
       </button>
       <div className="container-fluid">
         <div className="row no-gutters">
-          <div className="col-md-8">
+          <div className="col-8">
             <h3 className="admin-text">Events:</h3>
-            <div className="">
+            <div className="event-block">
               <div className="events-container-logged-in margin-bottom-20">
                 {console.log(events)}
                 {events.map((event) => (
@@ -120,7 +121,7 @@ const admin = ({
               </div>
             </div>
           </div>
-          <div className="col-md-4 signup-container-admin">
+          <div className="col-4">
             <Form
               className="signup-form"
               message={notification}
@@ -130,61 +131,14 @@ const admin = ({
               buttons={buttons}
             />
           </div>
-          {/* <span className="event-creator">
-            <h3>Create Event</h3>
-
-            <form onSubmit={handleSubmit}>
-              <div>
-                <label htmlFor="event">Event Name:</label>
-                <input
-                  type="text"
-                  id="event"
-                  name="event"
-                  value={event}
-                  onChange={handleEventChange}
-                  required
-                />
-              </div>
-              <div>
-                <label htmlFor="description">Event Description:</label>
-                <input
-                  type="text"
-                  id="description"
-                  name="description"
-                  value={description}
-                  onChange={handleEventChange}
-                  required
-                />
-              </div>
-              <div>
-                <label htmlFor="date">Event Date:</label>
-                <input
-                  type="date"
-                  id="date"
-                  name="date"
-                  value={date}
-                  onChange={handleEventChange}
-                  required
-                />
-              </div>
-              <button type="submit">Create Event</button>
-
-              <div className="admin-notification">
-                {notification && <Notification message={notification} />}
-              </div>
-            </form>
-          </span> */}
         </div>
         <h3 className="admin-text">Users:</h3>
         <div className="user-container">
           {users.map((user) => (
-            <div
-              className="alert alert-info hidden"
-              key={user.email}>
-              <p>Name: {user.name}</p>
-              <p>Email: {user.email}</p>
-              <p>Events Joined: {user.eventsJoined.join(', ')}</p>
-            </div>
+            <User
+              key={user.id}
+              users={user}
+            />
           ))}
         </div>
       </div>

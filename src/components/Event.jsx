@@ -52,12 +52,12 @@ const Event = ({ event, isLoggedIn, users, setUsers, currentUser }) => {
             <p>Event: {eventName}</p>
             <p>Date: {eventDate}</p>
             <p>Description: {eventDescription}</p>{' '}
+            <button
+              className="join-button"
+              onClick={handleButtonClick}>
+              {isJoined ? 'Joined!' : 'Join'}
+            </button>
           </div>
-          <button
-            className="join-button"
-            onClick={handleButtonClick}>
-            {isJoined ? 'Joined!' : 'Join'}
-          </button>
         </div>
       </div>
     );

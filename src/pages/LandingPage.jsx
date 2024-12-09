@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import Event from '../components/event';
 import userService from '../services/userService';
 import Notification from '../components/Notification';
-
+import User from '../components/User';
 const LandingPage = ({
   events,
   isLoggedIn,
@@ -93,9 +93,7 @@ const LandingPage = ({
         </div>
         {isLoggedIn ? (
           <div className="user-container">
-            {console.log(currentUser)}
-            <p>{`Name : ${currentUser.name}`}</p>
-            <p>{`Email : ${currentUser.email}`}</p>
+            <User users={currentUser} />
             {isEdit ? (
               <form>
                 <input
