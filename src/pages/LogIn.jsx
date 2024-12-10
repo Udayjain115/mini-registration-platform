@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import Form from '../components/Form';
 import Notification from '../components/Notification';
 import userService from '../services/userService';
+import admin from './admin';
 const LogIn = ({
   isLoggedIn,
   setIsLoggedIn,
@@ -16,6 +17,8 @@ const LogIn = ({
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
+  const adminUserName = import.meta.env.VITE_ADMIN_USERNAME;
+  const adminPassword = import.meta.env.VITE_ADMIN_PASSWORD;
 
   useEffect(() => {
     userService.getAll().then((initialUsers) => {
@@ -26,24 +29,34 @@ const LogIn = ({
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const user = users.find(
-      (user) => user.email === email && user.password === password
-    );
-    if (!user) {
-      setMessage('Invalid email or password');
-      setIsLoggedIn(false);
-      return;
+    if (email === adminUserName && password === adminPassword) {
+      setCurrentUser({
+        email: adminUserName,
+        password: adminPassword,
+        name: 'admin',
+        eventsJoined: [],
+      });
+      setIsLoggedIn(true);
+    } else {
+      const user = users.find(
+        (user) => user.email === email && user.password === password
+      );
+      if (!user) {
+        setMessage('Invalid email or password');
+        setIsLoggedIn(false);
+        return;
+      }
+      const userCopy = { ...user };
+      setCurrentUser(userCopy);
+      setIsLoggedIn(true);
     }
-    const userCopy = { ...user };
-    setCurrentUser(userCopy);
-    setIsLoggedIn(true);
   };
 
   useEffect(() => {
     if (
       currentUser &&
-      currentUser.email === 'admin' &&
-      currentUser.password === 'admin'
+      currentUser.email === adminUserName &&
+      currentUser.password === adminPassword
     ) {
       navigate('/admin');
       console.log('going to admin');

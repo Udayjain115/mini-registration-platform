@@ -41,6 +41,9 @@ const LandingPage = ({
 
   const handleUpdate = (e) => {
     e.preventDefault();
+    if (!editName) {
+      return;
+    }
     const updatedUser = { ...currentUser, name: editName };
     userService.update(currentUser.email, updatedUser);
 
@@ -70,10 +73,18 @@ const LandingPage = ({
         </button>
       </div>
       {isLoggedIn ? null : (
-        <Notification
-          className="alert alert-primary info"
-          message="You are not logged in. Click Login to register for the event"
-        />
+        <>
+          <button
+            type="button"
+            className="signup-button"
+            onClick={() => navigate('/signup')}>
+            {isLoggedIn ? 'Logout' : 'Sign up'}
+          </button>
+          <Notification
+            className="alert alert-primary info"
+            message="You are not logged in. Click Login to register for the event"
+          />
+        </>
       )}
       <div className="landing-page-logged-in">
         <div
@@ -86,6 +97,7 @@ const LandingPage = ({
               users={users}
               setUsers={setUsers}
               key={event.id}
+              setCurrentUser={setCurrentUser}
               event={event}
               isLoggedIn={isLoggedIn}
             />

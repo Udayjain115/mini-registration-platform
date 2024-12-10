@@ -3,7 +3,14 @@ import React, { useEffect } from 'react';
 import { useState } from 'react';
 import userService from '../services/userService';
 
-const Event = ({ event, isLoggedIn, users, setUsers, currentUser }) => {
+const Event = ({
+  event,
+  isLoggedIn,
+  users,
+  setUsers,
+  currentUser,
+  setCurrentUser,
+}) => {
   const [isJoined, setIsJoined] = useState(false);
   const eventName = event.name;
   const eventDate = event.date;
@@ -16,6 +23,9 @@ const Event = ({ event, isLoggedIn, users, setUsers, currentUser }) => {
       ...user,
       eventsJoined: [...user.eventsJoined, eventName],
     };
+
+    console.log(updatedUser);
+
     userService.update(currentUser.email, updatedUser).then((updatedUser) => {
       setUsers(
         users.map((user) =>
@@ -23,12 +33,15 @@ const Event = ({ event, isLoggedIn, users, setUsers, currentUser }) => {
         )
       );
     });
+    setCurrentUser(updatedUser);
 
     setIsJoined(true);
   };
 
   useEffect(() => {
     if (currentUser) {
+      console.log(currentUser);
+
       const user = users.find((user) => user.email === currentUser.email);
       if (user && user.eventsJoined.includes(eventName)) {
         setIsJoined(true);
