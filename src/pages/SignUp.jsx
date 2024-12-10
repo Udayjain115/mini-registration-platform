@@ -4,13 +4,15 @@ import { useNavigate } from 'react-router-dom';
 import Form from '../components/Form';
 import Notification from '../components/Notification';
 import userService from '../services/userService';
-const SignUp = ({ users, setUsers }) => {
+const SignUp = ({ users, setUsers, currentUser }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [firstName, setFirstName] = useState('');
   const [allowAccountCreation, setAllowAccountCreation] = useState(true);
   const [message, setMessage] = useState('');
   const navigate = useNavigate();
+  const adminUserName = import.meta.env.VITE_ADMIN_USERNAME;
+  const adminPassword = import.meta.env.VITE_ADMIN_PASSWORD;
 
   useEffect(() => {
     userService.getAll().then((initialUsers) => {
@@ -65,6 +67,19 @@ const SignUp = ({ users, setUsers }) => {
     setPassword('');
     setFirstName('');
   };
+
+  useEffect(() => {
+    if (
+      currentUser &&
+      currentUser.email === adminUserName &&
+      currentUser.password === adminPassword
+    ) {
+      navigate('/admin');
+      console.log('going to admin');
+    } else if (currentUser) {
+      navigate('/');
+    }
+  }, [currentUser, navigate]);
   const fields = [
     { label: 'Email', type: 'email', name: 'email', value: email },
     {

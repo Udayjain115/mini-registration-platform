@@ -98,7 +98,7 @@ const admin = ({
     <>
       <h1 className="admin-text admin-title">Admin Page</h1>
       <button
-        className="login-button"
+        className="signup-button"
         onClick={handleLogout}>
         Logout
       </button>

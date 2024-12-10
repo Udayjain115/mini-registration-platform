@@ -34,6 +34,7 @@ const App = () => {
             <SignUp
               users={users}
               setUsers={setUsers}
+              currentUser={currentUser}
             />
           }
         />
