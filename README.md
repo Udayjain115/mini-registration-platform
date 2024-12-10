@@ -18,4 +18,4 @@ The design is also responsive, utilising flexbox and bootstrap so that the site 
 Error handling is done through the backend, and appropiate error notifications pop up on the frontend whenever any error occurs, especially when from the users input, such as an invalid email address, invalid login details, duplicate event and duplicate user
 
 Deployed Site:
-https://mini-registration-platform.onrender.com/signup
+https://mini-registration-platform.onrender.com
