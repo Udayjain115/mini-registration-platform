@@ -1,12 +1,11 @@
 package spring.backend.models;
 
-import java.util.Date;
 import org.springframework.data.annotation.Id;
 
 public class Event {
   @Id private String name;
   private String description;
-  private Date date;
+  private String date;
 
   public String getName() {
     return name;
@@ -24,11 +23,11 @@ public class Event {
     this.description = description;
   }
 
-  public Date getDate() {
+  public String getDate() {
     return date;
   }
 
-  public void setDate(Date date) {
+  public void setDate(String date) {
     this.date = date;
   }
 }
