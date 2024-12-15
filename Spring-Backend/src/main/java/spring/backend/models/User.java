@@ -7,7 +7,7 @@ public class User {
   @Id private String email;
   private String password;
   private String name;
-  private List<Event> eventsJoined;
+  private List<String> eventsJoined;
 
   public String getEmail() {
     return email;
@@ -33,11 +33,11 @@ public class User {
     this.name = name;
   }
 
-  public List<Event> getEventsJoined() {
+  public List<String> getEventsJoined() {
     return eventsJoined;
   }
 
-  public void setEventsJoined(List<Event> eventsJoined) {
+  public void setEventsJoined(List<String> eventsJoined) {
     this.eventsJoined = eventsJoined;
   }
 }
