@@ -60,19 +60,19 @@ const admin = ({
         eventService.getAll().then((fetchedEvents) => {
           setEvents(fetchedEvents);
         });
+        setEvent('');
+        setDescription('');
+        setDate('');
       })
       .catch((error) => {
         console.log(error.response.data);
-
-        setNotification('Event Name already Exists');
+        if (error.response && error.response.status === 400) {
+          setNotification('Please fill in all fields');
+        }
       });
     setTimeout(() => {
       setNotification('');
     }, 5000);
-
-    setEvent('');
-    setDescription('');
-    setDate('');
   };
   const buttons = [{ text: 'Create Event', handle: handleSubmit }];
   const fields = [
