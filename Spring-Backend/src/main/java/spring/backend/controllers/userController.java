@@ -1,5 +1,6 @@
 package spring.backend.controllers;
 
+import jakarta.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +30,8 @@ public class userController {
   }
 
   @PostMapping
-  public ResponseEntity<User> createUser(@RequestBody User user) {
+  public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
+    user.setEventsJoined(List.of());
     User createdUser = userRepository.save(user);
     return ResponseEntity.ok(createdUser);
   }

@@ -62,7 +62,7 @@ const admin = ({
         });
       })
       .catch((error) => {
-        console.log(error);
+        console.log(error.response.data);
 
         setNotification('Event Name already Exists');
       });

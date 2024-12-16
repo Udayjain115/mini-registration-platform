@@ -1,5 +1,6 @@
 package spring.backend.controllers;
 
+import jakarta.validation.Valid;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +26,7 @@ public class eventController {
   }
 
   @PostMapping
-  public ResponseEntity<Event> createEvent(@RequestBody Event event) {
+  public ResponseEntity<Event> createEvent(@Valid @RequestBody Event event) {
     Event createdEvent = eventRepository.save(event);
     return ResponseEntity.ok(createdEvent);
   }

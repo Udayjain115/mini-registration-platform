@@ -1,11 +1,16 @@
 package spring.backend.models;
 
+import jakarta.validation.constraints.Pattern;
 import java.util.List;
 import org.springframework.data.annotation.Id;
 
 public class User {
-  @Id private String email;
+  @Pattern(regexp = ".+@.+\\..+", message = "Please provide a valid email address")
+  @Id
+  private String email;
+
   private String password;
+
   private String name;
   private List<String> eventsJoined;
 

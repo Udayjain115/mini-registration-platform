@@ -1,9 +1,13 @@
 package spring.backend.models;
 
+import jakarta.validation.constraints.NotEmpty;
 import org.springframework.data.annotation.Id;
 
 public class Event {
-  @Id private String name;
+  @NotEmpty(message = "Event name is required")
+  @Id
+  private String name;
+
   private String description;
   private String date;
 
