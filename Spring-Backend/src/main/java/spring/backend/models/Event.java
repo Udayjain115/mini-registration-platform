@@ -8,7 +8,10 @@ public class Event {
   @Id
   private String name;
 
+  @NotEmpty(message = "Description is required")
   private String description;
+
+  @NotEmpty(message = "Date is required")
   private String date;
 
   public String getName() {
