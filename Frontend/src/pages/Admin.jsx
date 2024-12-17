@@ -66,8 +66,11 @@ const admin = ({
       })
       .catch((error) => {
         console.log(error.response.data);
+        console.log(error.response.status);
         if (error.response && error.response.status === 400) {
           setNotification('Please fill in all fields');
+        } else if (error.response && error.response.status === 500) {
+          setNotification('Event Already Exists');
         }
       });
     setTimeout(() => {

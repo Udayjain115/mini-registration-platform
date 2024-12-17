@@ -45,4 +45,21 @@ public class User {
   public void setEventsJoined(List<String> eventsJoined) {
     this.eventsJoined = eventsJoined;
   }
+
+  @Override
+  public String toString() {
+    return "User{"
+        + "email='"
+        + email
+        + '\''
+        + ", password='"
+        + password
+        + '\''
+        + ", name='"
+        + name
+        + '\''
+        + ", eventsJoined="
+        + eventsJoined
+        + '}';
+  }
 }

@@ -14,40 +14,35 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import spring.backend.models.User;
-import spring.backend.repositories.UserRepository;
+import spring.backend.services.UserService;
 
 @CrossOrigin
 @RestController
 @RequestMapping("/api/users")
-public class userController {
-  @Autowired UserRepository userRepository;
+public class UserController {
+  @Autowired UserService userService;
 
   @GetMapping
   public ResponseEntity<List<User>> getUsers() {
-    List<User> users = userRepository.findAll();
-    System.out.println(users.toString());
+    List<User> users = userService.getAllUsers();
     return ResponseEntity.ok(users);
   }
 
   @PostMapping
   public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
     user.setEventsJoined(List.of());
-    User createdUser = userRepository.save(user);
+    User createdUser = userService.createUser(user);
     return ResponseEntity.ok(createdUser);
   }
 
   @PutMapping("/{id}")
   public ResponseEntity<User> updateUser(@PathVariable String id, @RequestBody User userDetails) {
-    System.out.println("User details: " + userDetails);
-    Optional<User> userOptional = userRepository.findById(id);
+    System.out.println("Updating user with ID = " + id + "..." + userDetails.toString());
+    Optional<User> userOptional = userService.updateUser(id, userDetails);
     if (userOptional.isPresent()) {
-      User user = userOptional.get();
-      user.setName(userDetails.getName());
-      user.setEmail(userDetails.getEmail());
-      user.setPassword(userDetails.getPassword());
-      user.setEventsJoined(userDetails.getEventsJoined());
-      User updatedUser = userRepository.save(user);
-      return ResponseEntity.ok(updatedUser);
+      System.out.println(userOptional.get().toString());
+
+      return ResponseEntity.ok(userOptional.get());
     } else {
 
       return ResponseEntity.notFound().build();

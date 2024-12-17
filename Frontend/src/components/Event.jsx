@@ -20,8 +20,8 @@ const Event = ({
     if (isJoined) return;
     const user = users.find((user) => user.email === currentUser.email);
     const updatedUser = {
-      ...user,
-      eventsJoined: [...user.eventsJoined, eventName],
+      ...currentUser,
+      eventsJoined: [...currentUser.eventsJoined, eventName],
     };
 
     console.log(updatedUser);

@@ -11,23 +11,23 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import spring.backend.models.Event;
-import spring.backend.repositories.EventRepository;
+import spring.backend.services.EventService;
 
 @CrossOrigin
 @RestController
 @RequestMapping("/api/events")
-public class eventController {
-  @Autowired EventRepository eventRepository;
+public class EventController {
+  @Autowired EventService eventService;
 
   @GetMapping
   public ResponseEntity<List<Event>> getEvents() {
-    List<Event> events = eventRepository.findAll();
+    List<Event> events = eventService.getAllEvents();
     return ResponseEntity.ok(events);
   }
 
   @PostMapping
   public ResponseEntity<Event> createEvent(@Valid @RequestBody Event event) {
-    Event createdEvent = eventRepository.save(event);
+    Event createdEvent = eventService.createEvent(event);
     return ResponseEntity.ok(createdEvent);
   }
 }
