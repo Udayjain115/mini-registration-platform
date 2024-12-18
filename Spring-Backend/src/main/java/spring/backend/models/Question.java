@@ -1,6 +1,10 @@
 package spring.backend.models;
 
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import java.util.List;
 import org.springframework.data.annotation.Id;
 
@@ -10,10 +14,13 @@ public class Question {
   private String title;
 
   @NotEmpty(message = "Question options are required")
+  @Size(min = 4, max = 4, message = "Question must have 4 options")
   private List<String> options;
 
-  @NotEmpty(message = "Question correct option is required")
-  private int correctOptionIndex;
+  @NotNull(message = "Question correct option is required")
+  @Min(value = 0L, message = "Correct option index must be positive")
+  @Max(value = 3L, message = "Correct option index must be less than 4")
+  private int correctChoiceIndex;
 
   public String getTitle() {
     return title;
@@ -31,12 +38,12 @@ public class Question {
     this.options = options;
   }
 
-  public int getCorrectOptionIndex() {
-    return correctOptionIndex;
+  public int getCorrectChoiceIndex() {
+    return correctChoiceIndex;
   }
 
-  public void setCorrectOptionIndex(int correctOptionIndex) {
-    this.correctOptionIndex = correctOptionIndex;
+  public void setCorrectChoiceIndex(int correctChoiceIndex) {
+    this.correctChoiceIndex = correctChoiceIndex;
   }
 
   @Override
@@ -46,7 +53,7 @@ public class Question {
         + ", options="
         + options.toString()
         + ", correctOptionIndex="
-        + correctOptionIndex
+        + correctChoiceIndex
         + "]");
   }
 }
