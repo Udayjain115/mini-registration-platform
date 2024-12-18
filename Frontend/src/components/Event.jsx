@@ -52,9 +52,9 @@ const Event = ({
   if (!isLoggedIn) {
     return (
       <div className="alert alert-info event-name">
-        <p>Event: {eventName}</p>
-        <p>Date: {eventDate}</p>
-        <p>Description: {eventDescription}</p>{' '}
+        <p className="text-break">Event: {eventName}</p>
+        <p className="text-break">Date: {eventDate}</p>
+        <p className="text-break">Description: {eventDescription}</p>{' '}
       </div>
     );
   } else {
@@ -62,9 +62,9 @@ const Event = ({
       <div className="event-box">
         <div className="event-content alert-info alert">
           <div className="event-name">
-            <p>Event: {eventName}</p>
-            <p>Date: {eventDate}</p>
-            <p>Description: {eventDescription}</p>{' '}
+            <p className="text-break">Event: {eventName}</p>
+            <p className="text-break">Date: {eventDate}</p>
+            <p className="text-break">Description: {eventDescription}</p>{' '}
             <button
               className="join-button"
               onClick={handleButtonClick}>

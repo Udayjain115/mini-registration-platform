@@ -51,6 +51,10 @@ input {
   margin-left: 20px;
   margin-bottom: -30px;
 }
+
+.align-right {
+  align-self: flex-end;
+}
 .admin-title {
   margin-top: 10px;
   margin-bottom: 40px;
