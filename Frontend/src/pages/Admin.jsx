@@ -1,6 +1,7 @@
 import React from 'react';
 import Event from '../components/event';
 import { useNavigate } from 'react-router-dom';
+import { Container, Row, Col } from 'react-bootstrap';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import eventService from '../services/eventService';
@@ -16,6 +17,7 @@ const admin = ({
   setCurrentUser,
 }) => {
   const [event, setEvent] = useState('');
+  const [competition, setCompetition] = useState('');
   const [description, setDescription] = useState('');
   const [date, setDate] = useState('');
   const navigate = useNavigate();
@@ -43,6 +45,15 @@ const admin = ({
   const handleLogout = () => {
     setCurrentUser(null);
     navigate('/');
+  };
+
+  const onCompetitionSubmit = (e) => {
+    e.preventDefault();
+
+    const newCompetition = {
+      name: competition,
+      questionIDs: [],
+    };
   };
 
   const handleSubmit = (e) => {
@@ -88,6 +99,14 @@ const admin = ({
     },
     { label: 'Event Date', type: 'date', name: 'date', value: date },
   ];
+
+  const competitionFields = [
+    { label: 'Competition Name', type: 'text', name: 'competition' },
+  ];
+
+  const competitionButtons = [
+    { text: 'Create Competition', handle: onCompetitionSubmit },
+  ];
   const handleEventChange = (e) => {
     const { name, value } = e.target;
     if (name === 'event') setEvent(value);
@@ -99,53 +118,103 @@ const admin = ({
   }
   return (
     <>
-      <h1 className="admin-text admin-title">Admin Page</h1>
-      <button
-        className="signup-button"
-        onClick={handleLogout}>
-        Logout
-      </button>
-      <div className="container-fluid">
-        <div className="row no-gutters">
-          <div className="col-8">
-            <h3 className="admin-text">Events:</h3>
-            <div className="event-block">
-              <div className="events-container-logged-in margin-bottom-20">
-                {console.log(events)}
-                {events.map((event) => (
-                  <Event
-                    users={users}
-                    key={event.id}
-                    event={event}
-                    isLoggedIn={false}
-                    currentUser={currentUser}
-                  />
-                ))}
-              </div>
-            </div>
-          </div>
-          <div className="col-4">
+      <Container fluid>
+        <Row>
+          <Col lg={12}>
+            <button
+              className="btn btn-primary btn-lg ms-auto mt-2 mb-2 d-block"
+              onClick={handleLogout}>
+              Logout
+            </button>
+          </Col>
+        </Row>
+        <Row>
+          <Col lg={2}>
             <Form
-              className="signup-form"
+              className="signup-form ms-5"
               message={notification}
               handleSubmit={handleSubmit}
               handleChange={handleEventChange}
               fields={fields}
               buttons={buttons}
             />
-          </div>
-        </div>
-        <h3 className="admin-text">Users:</h3>
-        <div className="user-container">
-          {users.map((user) => (
-            <User
-              key={user.id}
-              users={user}
+          </Col>
+          <Col lg={4}>
+            <Form
+              className="signup-form ms-5"
+              message={notification}
+              fields={competitionFields}
+              buttons={competitionButtons}
             />
-          ))}
-        </div>
-      </div>
+          </Col>
+        </Row>
+        <Row>
+          <Col lg={6}>
+            {' '}
+            <div className="events-container ">
+              {console.log(events)}{' '}
+              {events.map((event) => (
+                <Event
+                  users={users}
+                  key={event.id}
+                  event={event}
+                  isLoggedIn={false}
+                  currentUser={currentUser}
+                />
+              ))}
+            </div>
+          </Col>
+        </Row>
+      </Container>
     </>
+    // <>
+    //   <h1 className="admin-text admin-title">Admin Page</h1>
+    //   <button
+    //     className="signup-button"
+    //     onClick={handleLogout}>
+    //     Logout
+    //   </button>
+    //   <div className="container-fluid">
+    //     <div className="row no-gutters">
+    //       <div className="col-8">
+    //         <h3 className="admin-text">Events:</h3>
+    //         <div className="event-block">
+    //           <div className="events-container-logged-in margin-bottom-20">
+    //             {console.log(events)}
+    //             {events.map((event) => (
+    //               <Event
+    //                 users={users}
+    //                 key={event.id}
+    //                 event={event}
+    //                 isLoggedIn={false}
+    //                 currentUser={currentUser}
+    //               />
+    //             ))}
+    //           </div>
+    //         </div>
+    //       </div>
+    //       <div className="col-4">
+    //         <Form
+    //           className="signup-form"
+    //           message={notification}
+    //           handleSubmit={handleSubmit}
+    //           handleChange={handleEventChange}
+    //           fields={fields}
+    //           buttons={buttons}
+    //         />
+    //       </div>
+    //     </div>
+    //     <h3 className="admin-text">Users:</h3>
+    //     <div className="user-container">
+    //       {users.map((user) => (
+    //         <User
+    //           key={user.id}
+    //           users={user}
+    //         />
+    //       ))}
+    //     </div>
+    //   </div>
+    // </>
   );
 };
 
