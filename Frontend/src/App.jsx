@@ -8,10 +8,12 @@ import Admin from './pages/admin';
 import eventService from './services/eventService';
 import useCurrentUser from './hooks/useCurrentUser';
 import userService from './services/userService';
+import competitionService from './services/competitionService';
 
 const App = () => {
   const [events, setEvents] = useState([]);
   const [users, setUsers] = useState([]);
+  const [competitions, setCompetitions] = useState([]);
   const [currentUser, setCurrentUser] = useCurrentUser();
 
   const [isLoggedIn, setIsLoggedIn] = useState(!!currentUser);
@@ -20,6 +22,9 @@ const App = () => {
     eventService.getAll().then((initialEvents) => setEvents(initialEvents));
 
     userService.getAll().then((initialUsers) => setUsers(initialUsers));
+    competitionService
+      .getAll()
+      .then((initialCompetitions) => setCompetitions(initialCompetitions));
   }, []);
 
   useEffect(() => {
@@ -55,6 +60,8 @@ const App = () => {
           path="/admin"
           element={
             <Admin
+              competitions={competitions}
+              setCompetitions={setCompetitions}
               events={events}
               isLoggedIn={isLoggedIn}
               setIsLoggedIn={setIsLoggedIn}

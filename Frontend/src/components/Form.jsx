@@ -1,5 +1,6 @@
 import React from 'react';
 import Notification from './Notification';
+import DropDown from './DropDown';
 const Form = ({
   handleSubmit,
   handleChange,
@@ -7,12 +8,28 @@ const Form = ({
   buttons,
   message,
   className,
+  dropdown,
+  competitions,
+  selectedCompetition,
+  setSelectedCompetition,
 }) => {
   return (
     <div>
       <form
         className={className}
         onSubmit={handleSubmit}>
+        {dropdown ? (
+          <>
+            <label>Select A Competition</label>
+            <DropDown
+              competitions={competitions}
+              selectedCompetition={selectedCompetition}
+              setSelectedCompetition={setSelectedCompetition}
+            />
+          </>
+        ) : (
+          ''
+        )}
         {fields.map((field) => (
           <div key={field.name}>
             <label htmlFor={field.name}>{field.label}</label>

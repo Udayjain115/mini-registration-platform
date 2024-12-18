@@ -7,7 +7,9 @@ import { useEffect } from 'react';
 import eventService from '../services/eventService';
 import Notification from '../components/Notification';
 import Form from '../components/Form';
+import competitionService from '../services/competitionService';
 import User from '../components/User';
+import Competition from '../components/Competition';
 const admin = ({
   events,
   users,
@@ -15,6 +17,8 @@ const admin = ({
   isLoggedIn,
   currentUser,
   setCurrentUser,
+  competitions,
+  setCompetitions,
 }) => {
   const [event, setEvent] = useState('');
   const [competition, setCompetition] = useState('');
@@ -23,6 +27,8 @@ const admin = ({
   const navigate = useNavigate();
   const [notAllowed, setNotAllowed] = useState(true);
   const [notification, setNotification] = useState('');
+  const [competitionNotification, setCompetitionNotification] = useState('');
+  const [selectedCompetition, setSelectedCompetition] = useState('');
 
   useEffect(() => {
     eventService.getAll().then((initialEvents) => {
@@ -47,13 +53,42 @@ const admin = ({
     navigate('/');
   };
 
+  const handleCompeititionChange = (e) => {
+    setCompetition(e.target.value);
+    console.log(e.target.value);
+  };
+
   const onCompetitionSubmit = (e) => {
     e.preventDefault();
 
     const newCompetition = {
-      name: competition,
-      questionIDs: [],
+      title: competition,
     };
+
+    competitionService
+      .create(newCompetition)
+      .then((createdCompetition) => {
+        competitionService.getAll().then((fetchedCompetitions) => {
+          setCompetitions(fetchedCompetitions);
+        });
+        setCompetition('');
+      })
+      .catch((error) => {
+        console.log(error.response.data);
+        console.log(error.response.status);
+        if (error.response && error.response.status === 400) {
+          setCompetitionNotification('Please fill in all fields');
+        } else if (error.response && error.response.status === 500) {
+          setCompetitionNotification('Competition Already Exists');
+        }
+      });
+    setTimeout(() => {
+      setCompetitionNotification('');
+    }, 5000);
+  };
+  const onQuestionSubmit = (e) => {
+    e.preventDefault();
+    console.log(selectedCompetition);
   };
 
   const handleSubmit = (e) => {
@@ -107,6 +142,10 @@ const admin = ({
   const competitionButtons = [
     { text: 'Create Competition', handle: onCompetitionSubmit },
   ];
+
+  const questionButtons = [
+    { text: 'Create Question', handle: onQuestionSubmit },
+  ];
   const handleEventChange = (e) => {
     const { name, value } = e.target;
     if (name === 'event') setEvent(value);
@@ -139,12 +178,25 @@ const admin = ({
               buttons={buttons}
             />
           </Col>
-          <Col lg={4}>
+          <Col lg={2}>
             <Form
               className="signup-form ms-5"
-              message={notification}
+              message={competitionNotification}
               fields={competitionFields}
               buttons={competitionButtons}
+              handleChange={handleCompeititionChange}
+            />
+          </Col>
+          <Col lg={8}>
+            <Form
+              className="signup-form ms-5"
+              message=""
+              fields={[]}
+              buttons={questionButtons}
+              dropdown={true}
+              competitions={competitions}
+              selectedCompetition={selectedCompetition}
+              setSelectedCompetition={setSelectedCompetition}
             />
           </Col>
         </Row>
@@ -160,6 +212,16 @@ const admin = ({
                   event={event}
                   isLoggedIn={false}
                   currentUser={currentUser}
+                />
+              ))}
+            </div>
+          </Col>
+          <Col lg={6}>
+            <div className="events-container">
+              {competitions.map((competition) => (
+                <Competition
+                  key={competition.id}
+                  competition={competition}
                 />
               ))}
             </div>
