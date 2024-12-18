@@ -1,7 +1,7 @@
 package spring.backend.models;
 
 import jakarta.validation.constraints.NotEmpty;
-import java.util.Arrays;
+import java.util.List;
 import org.springframework.data.annotation.Id;
 
 public class Competition {
@@ -9,7 +9,7 @@ public class Competition {
   @Id
   private String title;
 
-  private String[] questionIds;
+  private List<String> questionIds;
 
   public String getTitle() {
     return title;
@@ -19,16 +19,16 @@ public class Competition {
     this.title = title;
   }
 
-  public String[] getQuestionIds() {
+  public List<String> getQuestionIds() {
     return questionIds;
   }
 
-  public void setQuestionIds(String[] questionIds) {
+  public void setQuestionIds(List<String> questionIds) {
     this.questionIds = questionIds;
   }
 
   @Override
   public String toString() {
-    return "Competition [title=" + title + ", questionIds=" + Arrays.toString(questionIds) + "]";
+    return ("Competition [title=" + title + ", questionIds=" + questionIds.toString() + "]");
   }
 }
