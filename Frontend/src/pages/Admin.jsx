@@ -10,6 +10,7 @@ import Form from '../components/Form';
 import competitionService from '../services/competitionService';
 import User from '../components/User';
 import Competition from '../components/Competition';
+import questionService from '../services/questionService';
 const admin = ({
   events,
   users,
@@ -19,6 +20,8 @@ const admin = ({
   setCurrentUser,
   competitions,
   setCompetitions,
+  questions,
+  setQuestions,
 }) => {
   const [event, setEvent] = useState('');
   const [competition, setCompetition] = useState('');
@@ -29,6 +32,12 @@ const admin = ({
   const [notification, setNotification] = useState('');
   const [competitionNotification, setCompetitionNotification] = useState('');
   const [selectedCompetition, setSelectedCompetition] = useState('');
+  const [question, setQuestion] = useState('');
+  const [answer, setAnswer] = useState('');
+  const [option1, setOption1] = useState('');
+  const [option2, setOption2] = useState('');
+  const [option3, setOption3] = useState('');
+  const [option4, setOption4] = useState('');
 
   useEffect(() => {
     eventService.getAll().then((initialEvents) => {
@@ -53,6 +62,27 @@ const admin = ({
     navigate('/');
   };
 
+  const handleQuestionChange = (e) => {
+    const { name, value } = e.target;
+    if (name === 'question') {
+      setQuestion(value);
+    }
+    if (name === 'answer') {
+      setAnswer(value);
+    }
+    if (name === 'option1') {
+      setOption1(value);
+    }
+    if (name === 'option2') {
+      setOption2(value);
+    }
+    if (name === 'option3') {
+      setOption3(value);
+    }
+    if (name === 'option4') {
+      setOption4(value);
+    }
+  };
   const handleCompeititionChange = (e) => {
     setCompetition(e.target.value);
     console.log(e.target.value);
@@ -88,7 +118,20 @@ const admin = ({
   };
   const onQuestionSubmit = (e) => {
     e.preventDefault();
-    console.log(selectedCompetition);
+
+    console.log('Title: ', question);
+
+    const newQuestion = {
+      title: question,
+      correctChoiceIndex: answer,
+      options: [option1, option2, option3, option4],
+    };
+
+    questionService.create(newQuestion).then((createdQuestion) => {
+      questionService.getAll().then((fetchedQuestions) => {
+        setQuestions(fetchedQuestions);
+      });
+    });
   };
 
   const handleSubmit = (e) => {
@@ -146,9 +189,20 @@ const admin = ({
   const questionButtons = [
     { text: 'Create Question', handle: onQuestionSubmit },
   ];
+
+  const questionFields = [
+    { label: 'Question', type: 'text', name: 'question' },
+    { label: 'Answer Index ( 1 - 4 )', type: 'number', name: 'answer' },
+    { label: 'Option A', type: 'text', name: 'option1' },
+    { label: 'Option B', type: 'text', name: 'option2' },
+    { label: 'Option C', type: 'text', name: 'option3' },
+    { label: 'Option D', type: 'text', name: 'option4' },
+  ];
   const handleEventChange = (e) => {
     const { name, value } = e.target;
-    if (name === 'event') setEvent(value);
+    if (name === 'event') {
+      setEvent(value);
+    }
     if (name === 'description') setDescription(value);
     if (name === 'date') setDate(value);
   };
@@ -191,12 +245,13 @@ const admin = ({
             <Form
               className="signup-form ms-5"
               message=""
-              fields={[]}
+              fields={questionFields}
               buttons={questionButtons}
               dropdown={true}
               competitions={competitions}
               selectedCompetition={selectedCompetition}
               setSelectedCompetition={setSelectedCompetition}
+              handleChange={handleQuestionChange}
             />
           </Col>
         </Row>

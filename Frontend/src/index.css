@@ -187,7 +187,7 @@ input {
 
 .signup-form {
   min-width: 110px;
-  max-width: 250px;
+  max-width: 500px;
   display: flex;
   flex-direction: column;
   gap: 10px;

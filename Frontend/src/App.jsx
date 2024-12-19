@@ -14,6 +14,7 @@ const App = () => {
   const [events, setEvents] = useState([]);
   const [users, setUsers] = useState([]);
   const [competitions, setCompetitions] = useState([]);
+  const [questions, setQuestions] = useState([]);
   const [currentUser, setCurrentUser] = useCurrentUser();
 
   const [isLoggedIn, setIsLoggedIn] = useState(!!currentUser);
@@ -69,6 +70,8 @@ const App = () => {
               setEvents={setEvents}
               currentUser={currentUser}
               setCurrentUser={setCurrentUser}
+              questions={questions}
+              setQuestions={setQuestions}
             />
           }
         />
