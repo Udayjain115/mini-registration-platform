@@ -24,7 +24,7 @@ public class CompetitionService {
     getAllCompetitions().stream()
         .forEach(
             e -> {
-              if (e.getTitle().equals(competition.getTitle())) {
+              if (e.getTitle().toLowerCase().equals(competition.getTitle().toLowerCase())) {
                 throw new IllegalArgumentException("Competition title already exists");
               }
             });
