@@ -2,6 +2,7 @@ package spring.backend.models;
 
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -15,11 +16,11 @@ public class Question {
 
   @NotEmpty(message = "Question options are required")
   @Size(min = 4, max = 4, message = "Question must have 4 options")
-  private List<String> options;
+  private List<@NotBlank(message = "Options Must Not Be Blank") String> options;
 
   @NotNull(message = "Question correct option is required")
-  @Min(value = 0L, message = "Correct option index must be positive")
-  @Max(value = 3L, message = "Correct option index must be less than 4")
+  @Min(value = 1L, message = "Correct option must be between 1 and 4")
+  @Max(value = 4L, message = "Correct option must be between 1 and 4")
   private int correctChoiceIndex;
 
   public String getTitle() {

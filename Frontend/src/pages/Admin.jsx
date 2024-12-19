@@ -38,6 +38,7 @@ const admin = ({
   const [option2, setOption2] = useState('');
   const [option3, setOption3] = useState('');
   const [option4, setOption4] = useState('');
+  const [questionNotification, setQuestionNotification] = useState('');
 
   useEffect(() => {
     eventService.getAll().then((initialEvents) => {
@@ -118,8 +119,13 @@ const admin = ({
   };
   const onQuestionSubmit = (e) => {
     e.preventDefault();
-
-    console.log('Title: ', question);
+    if (selectedCompetition === '') {
+      setQuestionNotification('Please select a competition');
+      setTimeout(() => {
+        setQuestionNotification('');
+      }, 5000);
+      return;
+    }
 
     const newQuestion = {
       title: question,
@@ -127,11 +133,32 @@ const admin = ({
       options: [option1, option2, option3, option4],
     };
 
-    questionService.create(newQuestion).then((createdQuestion) => {
-      questionService.getAll().then((fetchedQuestions) => {
-        setQuestions(fetchedQuestions);
+    questionService
+      .create(newQuestion)
+      .then((createdQuestion) => {
+        questionService.getAll().then((fetchedQuestions) => {
+          setQuestions(fetchedQuestions);
+        });
+      })
+      .catch((error) => {
+        console.log(error.response.data.errors[0].defaultMessage);
+        if (error.response && error.response.status === 400) {
+          setQuestionNotification(error.response.data.errors[0].defaultMessage);
+        } else if (error.response && error.response.status === 500) {
+          setQuestionNotification('Question Already Exists');
+        }
       });
-    });
+
+    setTimeout(() => {
+      setQuestionNotification('');
+    }, 5000);
+
+    setQuestion('');
+    setAnswer('');
+    setOption1('');
+    setOption2('');
+    setOption3('');
+    setOption4('');
   };
 
   const handleSubmit = (e) => {
@@ -244,7 +271,7 @@ const admin = ({
           <Col lg={8}>
             <Form
               className="signup-form ms-5"
-              message=""
+              message={questionNotification}
               fields={questionFields}
               buttons={questionButtons}
               dropdown={true}
