@@ -3,7 +3,7 @@ import { Row, Col } from 'react-bootstrap';
 import { useState } from 'react';
 import eventService from '../services/eventService';
 
-const Competition = ({ competition, events, isAdmin }) => {
+const Competition = ({ competition, events, isAdmin, setEvents }) => {
   const [selectedEvent, setSelectedEvent] = useState('');
 
   const handleLink = (e) => {
@@ -20,7 +20,9 @@ const Competition = ({ competition, events, isAdmin }) => {
       };
 
       eventService.update(selectedEvent, updatedEvent).then((updatedEvent) => {
-        console.log(updatedEvent);
+        eventService.getAll().then((events) => {
+          setEvents(events);
+        });
       });
     });
   };

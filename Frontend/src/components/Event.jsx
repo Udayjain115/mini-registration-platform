@@ -15,6 +15,7 @@ const Event = ({
   const eventName = event.name;
   const eventDate = event.date;
   const eventDescription = event.description;
+  const competitionID = event.competitionId;
 
   const handleButtonClick = () => {
     if (isJoined) return;
@@ -53,6 +54,7 @@ const Event = ({
         <p className="text-break">Event: {eventName}</p>
         <p className="text-break">Date: {eventDate}</p>
         <p className="text-break">Description: {eventDescription}</p>{' '}
+        <p className="text-break">Competition: {competitionID}</p>
       </div>
     );
   } else {
@@ -63,6 +65,7 @@ const Event = ({
             <p className="text-break">Event: {eventName}</p>
             <p className="text-break">Date: {eventDate}</p>
             <p className="text-break">Description: {eventDescription}</p>{' '}
+            <p className="text-break">Competition: {competitionID}</p>
             <button
               className="join-button"
               onClick={handleButtonClick}>
