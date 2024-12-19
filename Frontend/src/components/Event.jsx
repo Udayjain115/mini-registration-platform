@@ -67,10 +67,19 @@ const Event = ({
             <p className="text-break">Description: {eventDescription}</p>{' '}
             <p className="text-break">Competition: {competitionID}</p>
             <button
-              className="join-button"
+              className="join-button mx-2"
               onClick={handleButtonClick}>
               {isJoined ? 'Joined!' : 'Join'}
             </button>
+            {competitionID !== null && (
+              <button
+                className="join-button mx-2"
+                onClick={() => {
+                  console.log('Linking competition to', eventName);
+                }}>
+                Enter Competition
+              </button>
+            )}
           </div>
         </div>
       </div>

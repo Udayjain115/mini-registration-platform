@@ -347,7 +347,6 @@ const admin = ({
                   events={events}
                   key={competition.id}
                   competition={competition}
-                  events={events}
                   setEvents={setEvents}
                 />
               ))}
