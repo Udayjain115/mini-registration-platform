@@ -24,6 +24,9 @@ public class EventService {
   }
 
   public Event updateEvent(Event updatedEvent) {
+    if (getEventById(updatedEvent.getName()) == null) {
+      throw new IllegalArgumentException("Event not found");
+    }
 
     return eventRepository.save(updatedEvent);
   }
