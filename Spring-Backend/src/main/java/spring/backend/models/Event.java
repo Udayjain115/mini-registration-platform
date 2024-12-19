@@ -47,4 +47,17 @@ public class Event {
   public void setCompetitionId(String competitionId) {
     this.competitionId = competitionId;
   }
+
+  @Override
+  public String toString() {
+    return ("Event [name="
+        + name
+        + ", description="
+        + description
+        + ", date="
+        + date
+        + ", competitionId="
+        + competitionId
+        + "]");
+  }
 }

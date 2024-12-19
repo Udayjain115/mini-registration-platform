@@ -1,9 +1,28 @@
 import React from 'react';
 import { Row, Col } from 'react-bootstrap';
+import { useState } from 'react';
+import eventService from '../services/eventService';
 
 const Competition = ({ competition, events, isAdmin }) => {
+  const [selectedEvent, setSelectedEvent] = useState('');
+
   const handleLink = (e) => {
-    console.log(e.target.value);
+    setSelectedEvent(e.target.value);
+  };
+
+  const handleSubmit = (e) => {
+    console.log('Linking competition to', selectedEvent);
+
+    eventService.findByName(selectedEvent).then((event) => {
+      const updatedEvent = {
+        ...event,
+        competitionId: competition.title,
+      };
+
+      eventService.update(selectedEvent, updatedEvent).then((updatedEvent) => {
+        console.log(updatedEvent);
+      });
+    });
   };
 
   return (
@@ -29,7 +48,7 @@ const Competition = ({ competition, events, isAdmin }) => {
                     value=""
                     disabled
                     selected>
-                    Select competition
+                    Select Event
                   </option>
                   {events.map((event) => (
                     <option
@@ -41,7 +60,11 @@ const Competition = ({ competition, events, isAdmin }) => {
                 </select>
               </Col>
               <Col lg={3}>
-                <button className="btn btn-primary">Link</button>
+                <button
+                  onClick={handleSubmit}
+                  className="btn btn-primary">
+                  Link
+                </button>
               </Col>
             </Row>
           </Col>

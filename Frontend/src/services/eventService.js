@@ -10,6 +10,7 @@ const create = (newObject) => {
 };
 
 const update = (id, newObject) => {
+  console.log('update', newObject);
   return axios
     .put(`${baseUrl}/${id}`, newObject)
     .then((response) => response.data);
@@ -18,4 +19,5 @@ const update = (id, newObject) => {
 const findByName = (name) => {
   return axios.get(`${baseUrl}/${name}`).then((response) => response.data);
 };
+
 export default { getAll, create, update, findByName };

@@ -24,9 +24,8 @@ public class EventService {
   }
 
   public Event updateEvent(Event updatedEvent) {
-    Event eventToUpdate = getEventById(updatedEvent.getName());
 
-    return eventRepository.save(eventToUpdate);
+    return eventRepository.save(updatedEvent);
   }
 
   public Event createEvent(@Valid @RequestBody Event event) {
