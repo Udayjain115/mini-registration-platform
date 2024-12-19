@@ -46,6 +46,16 @@ const admin = ({
   }, []);
 
   useEffect(() => {
+    competitionService.getAll().then((initialCompetitions) => {
+      setCompetitions(initialCompetitions);
+    });
+  }, [questions]);
+
+  useEffect(() => {
+    console.log(competitions);
+  }, [competitions]);
+
+  useEffect(() => {
     if (currentUser === null || currentUser.email !== 'admin') {
       console.log(currentUser);
 
@@ -139,16 +149,20 @@ const admin = ({
           competitionService
             .getOne(selectedCompetition)
             .then((currentCompetition) => {
-              console.log(currentCompetition.questionIds);
               currentCompetition.questionIds.push(question);
-              competitionService.update(
-                selectedCompetition,
-                currentCompetition
-              );
-            })
-            .catch((error) => {
-              console.log(error.response.data);
-              console.log(error.response.status);
+              competitionService
+                .update(selectedCompetition, currentCompetition)
+                .then((updatedCompetition) => {
+                  competitionService.getAll().then((fetchedCompetitions) => {
+                    setCompetitions(fetchedCompetitions);
+
+                    console.log(fetchedCompetitions);
+                  });
+                })
+                .catch((error) => {
+                  console.log(error.response.data);
+                  console.log(error.response.status);
+                });
             });
           setQuestions(fetchedQuestions);
         });
@@ -337,54 +351,6 @@ const admin = ({
         </Row>
       </Container>
     </>
-    // <>
-    //   <h1 className="admin-text admin-title">Admin Page</h1>
-    //   <button
-    //     className="signup-button"
-    //     onClick={handleLogout}>
-    //     Logout
-    //   </button>
-    //   <div className="container-fluid">
-    //     <div className="row no-gutters">
-    //       <div className="col-8">
-    //         <h3 className="admin-text">Events:</h3>
-    //         <div className="event-block">
-    //           <div className="events-container-logged-in margin-bottom-20">
-    //             {console.log(events)}
-    //             {events.map((event) => (
-    //               <Event
-    //                 users={users}
-    //                 key={event.id}
-    //                 event={event}
-    //                 isLoggedIn={false}
-    //                 currentUser={currentUser}
-    //               />
-    //             ))}
-    //           </div>
-    //         </div>
-    //       </div>
-    //       <div className="col-4">
-    //         <Form
-    //           className="signup-form"
-    //           message={notification}
-    //           handleSubmit={handleSubmit}
-    //           handleChange={handleEventChange}
-    //           fields={fields}
-    //           buttons={buttons}
-    //         />
-    //       </div>
-    //     </div>
-    //     <h3 className="admin-text">Users:</h3>
-    //     <div className="user-container">
-    //       {users.map((user) => (
-    //         <User
-    //           key={user.id}
-    //           users={user}
-    //         />
-    //       ))}
-    //     </div>
-    //   </div>
-    // </>
   );
 };
 
