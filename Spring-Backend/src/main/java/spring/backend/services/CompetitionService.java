@@ -13,6 +13,11 @@ public class CompetitionService {
 
   @Autowired CompetitionRepository competitionRepository;
 
+  public Competition getCompetitionById(String id) {
+    System.out.println("--------------------CompetitionService.getCompetitionById");
+    return competitionRepository.findById(id).get();
+  }
+
   public Competition createCompetition(@Valid @RequestBody Competition competition) {
     competition.setQuestionIds(List.of());
 
@@ -27,6 +32,14 @@ public class CompetitionService {
   }
 
   public List<Competition> getAllCompetitions() {
+
     return competitionRepository.findAll();
+  }
+
+  public Competition addQuestionToCompetition(String competitionId, String questionId) {
+    Competition competition = competitionRepository.findById(competitionId).get();
+    List<String> questionIds = competition.getQuestionIds();
+    competition.setQuestionIds(questionIds);
+    return competitionRepository.save(competition);
   }
 }

@@ -13,6 +13,10 @@ public class EventService {
 
   @Autowired EventRepository eventRepository;
 
+  public Event getEventById(String id) {
+    return eventRepository.findById(id).get();
+  }
+
   public Event createEvent(@Valid @RequestBody Event event) {
 
     getAllEvents().stream()

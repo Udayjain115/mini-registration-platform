@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,6 +24,12 @@ public class EventController {
   public ResponseEntity<List<Event>> getEvents() {
     List<Event> events = eventService.getAllEvents();
     return ResponseEntity.ok(events);
+  }
+
+  @GetMapping("/{id}")
+  public ResponseEntity<Event> getEvent(@PathVariable String id) {
+    Event event = eventService.getEventById(id);
+    return ResponseEntity.ok(event);
   }
 
   @PostMapping
