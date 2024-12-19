@@ -14,6 +14,8 @@ public class Event {
   @NotEmpty(message = "Date is required")
   private String date;
 
+  private String competitionId;
+
   public String getName() {
     return name;
   }
@@ -36,5 +38,13 @@ public class Event {
 
   public void setDate(String date) {
     this.date = date;
+  }
+
+  public String getCompetitionId() {
+    return competitionId;
+  }
+
+  public void setCompetitionId(String competitionId) {
+    this.competitionId = competitionId;
   }
 }

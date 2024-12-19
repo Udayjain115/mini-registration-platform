@@ -2,6 +2,7 @@ package spring.backend.services;
 
 import jakarta.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,7 +15,18 @@ public class EventService {
   @Autowired EventRepository eventRepository;
 
   public Event getEventById(String id) {
-    return eventRepository.findById(id).get();
+    Optional<Event> event = eventRepository.findById(id);
+    if (event.isPresent()) {
+      return eventRepository.findById(id).get();
+    } else {
+      throw new IllegalArgumentException("Event not found");
+    }
+  }
+
+  public Event updateEvent(Event updatedEvent) {
+    Event eventToUpdate = getEventById(updatedEvent.getName());
+
+    return eventRepository.save(eventToUpdate);
   }
 
   public Event createEvent(@Valid @RequestBody Event event) {
