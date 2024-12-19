@@ -152,6 +152,13 @@ const admin = ({
             });
           setQuestions(fetchedQuestions);
         });
+        setQuestion('');
+        setAnswer('');
+        setOption1('');
+        setOption2('');
+        setOption3('');
+        setOption4('');
+        setSelectedCompetition('');
       })
       .catch((error) => {
         console.log(error.response.data.errors[0].defaultMessage);
@@ -165,13 +172,6 @@ const admin = ({
     setTimeout(() => {
       setQuestionNotification('');
     }, 5000);
-
-    setQuestion('');
-    setAnswer('');
-    setOption1('');
-    setOption2('');
-    setOption3('');
-    setOption4('');
   };
 
   const handleSubmit = (e) => {
@@ -219,7 +219,12 @@ const admin = ({
   ];
 
   const competitionFields = [
-    { label: 'Competition Name', type: 'text', name: 'competition' },
+    {
+      label: 'Competition Name',
+      type: 'text',
+      name: 'competition',
+      value: competition,
+    },
   ];
 
   const competitionButtons = [
@@ -231,12 +236,17 @@ const admin = ({
   ];
 
   const questionFields = [
-    { label: 'Question', type: 'text', name: 'question' },
-    { label: 'Answer Index ( 1 - 4 )', type: 'number', name: 'answer' },
-    { label: 'Option A', type: 'text', name: 'option1' },
-    { label: 'Option B', type: 'text', name: 'option2' },
-    { label: 'Option C', type: 'text', name: 'option3' },
-    { label: 'Option D', type: 'text', name: 'option4' },
+    { label: 'Question', type: 'text', name: 'question', value: question },
+    {
+      label: 'Answer Index ( 1 - 4 )',
+      type: 'number',
+      name: 'answer',
+      value: answer,
+    },
+    { label: 'Option A', type: 'text', name: 'option1', value: option1 },
+    { label: 'Option B', type: 'text', name: 'option2', value: option2 },
+    { label: 'Option C', type: 'text', name: 'option3', value: option3 },
+    { label: 'Option D', type: 'text', name: 'option4', value: option4 },
   ];
   const handleEventChange = (e) => {
     const { name, value } = e.target;
@@ -279,12 +289,15 @@ const admin = ({
               fields={competitionFields}
               buttons={competitionButtons}
               handleChange={handleCompeititionChange}
+              onSubmit={onCompetitionSubmit}
+              key={competition.title}
             />
           </Col>
           <Col lg={8}>
             <Form
               className="signup-form ms-5"
               message={questionNotification}
+              key={question.title}
               fields={questionFields}
               buttons={questionButtons}
               dropdown={true}
@@ -292,6 +305,7 @@ const admin = ({
               selectedCompetition={selectedCompetition}
               setSelectedCompetition={setSelectedCompetition}
               handleChange={handleQuestionChange}
+              onSubmit
             />
           </Col>
         </Row>

@@ -6,6 +6,9 @@ const Competition = ({ competition }) => {
       <p>
         Title: <b>{competition.title}</b>
       </p>
+      <p>
+        Title: <b>{competition.questionIds.toString()}</b>
+      </p>
     </div>
   );
 };
