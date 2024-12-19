@@ -126,6 +126,7 @@ const admin = ({
       setCompetitionNotification('');
     }, 5000);
   };
+
   const onQuestionSubmit = (e) => {
     e.preventDefault();
     if (selectedCompetition === '') {
@@ -342,6 +343,8 @@ const admin = ({
             <div className="events-container">
               {competitions.map((competition) => (
                 <Competition
+                  isAdmin={true}
+                  events={events}
                   key={competition.id}
                   competition={competition}
                 />
