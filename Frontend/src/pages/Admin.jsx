@@ -39,7 +39,6 @@ const admin = ({
   const [option3, setOption3] = useState('');
   const [option4, setOption4] = useState('');
   const [questionNotification, setQuestionNotification] = useState('');
-
   useEffect(() => {
     eventService.getAll().then((initialEvents) => {
       setEvents(initialEvents);
@@ -137,6 +136,20 @@ const admin = ({
       .create(newQuestion)
       .then((createdQuestion) => {
         questionService.getAll().then((fetchedQuestions) => {
+          competitionService
+            .getOne(selectedCompetition)
+            .then((currentCompetition) => {
+              console.log(currentCompetition.questionIds);
+              currentCompetition.questionIds.push(question);
+              competitionService.update(
+                selectedCompetition,
+                currentCompetition
+              );
+            })
+            .catch((error) => {
+              console.log(error.response.data);
+              console.log(error.response.status);
+            });
           setQuestions(fetchedQuestions);
         });
       })
@@ -286,7 +299,6 @@ const admin = ({
           <Col lg={6}>
             {' '}
             <div className="events-container ">
-              {console.log(events)}{' '}
               {events.map((event) => (
                 <Event
                   users={users}

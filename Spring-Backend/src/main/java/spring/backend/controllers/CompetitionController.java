@@ -43,10 +43,10 @@ public class CompetitionController {
   }
 
   @PutMapping("/{id}")
-  public ResponseEntity<Competition> addQuestionToCompetition(
-      @RequestBody String competitionId, @RequestBody String questionId) {
-    Competition competition =
-        competitionService.addQuestionToCompetition(competitionId, questionId);
+  public ResponseEntity<Competition> updateCompetition(
+      @PathVariable String id, @RequestBody Competition updatedCompetition) {
+    Competition competition = competitionService.updateCompetition(updatedCompetition);
+
     return ResponseEntity.ok(competition);
   }
 }

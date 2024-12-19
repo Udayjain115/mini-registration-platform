@@ -40,8 +40,6 @@ const Event = ({
 
   useEffect(() => {
     if (currentUser) {
-      console.log(currentUser);
-
       const user = users.find((user) => user.email === currentUser.email);
       if (user && user.eventsJoined.includes(eventName)) {
         setIsJoined(true);

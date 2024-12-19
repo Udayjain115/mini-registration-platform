@@ -36,10 +36,8 @@ public class CompetitionService {
     return competitionRepository.findAll();
   }
 
-  public Competition addQuestionToCompetition(String competitionId, String questionId) {
-    Competition competition = competitionRepository.findById(competitionId).get();
-    List<String> questionIds = competition.getQuestionIds();
-    competition.setQuestionIds(questionIds);
-    return competitionRepository.save(competition);
+  public Competition updateCompetition(Competition updatedCompetition) {
+
+    return competitionRepository.save(updatedCompetition);
   }
 }
