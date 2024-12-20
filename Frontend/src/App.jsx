@@ -9,6 +9,7 @@ import eventService from './services/eventService';
 import useCurrentUser from './hooks/useCurrentUser';
 import userService from './services/userService';
 import competitionService from './services/competitionService';
+import QuizPage from './pages/QuizPage';
 
 const App = () => {
   const [events, setEvents] = useState([]);
@@ -88,6 +89,11 @@ const App = () => {
               setCurrentUser={setCurrentUser}
             />
           }
+        />
+
+        <Route
+          path="/competition"
+          element={<QuizPage />}
         />
       </Routes>
     </Router>
