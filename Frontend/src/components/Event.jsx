@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 
 import { useState } from 'react';
 import userService from '../services/userService';
-
+import { useNavigate } from 'react-router-dom';
 const Event = ({
   event,
   isLoggedIn,
@@ -11,6 +11,7 @@ const Event = ({
   currentUser,
   setCurrentUser,
 }) => {
+  const navigate = useNavigate();
   const [isJoined, setIsJoined] = useState(false);
   const eventName = event.name;
   const eventDate = event.date;
@@ -75,7 +76,7 @@ const Event = ({
               <button
                 className="join-button mx-2"
                 onClick={() => {
-                  console.log('Linking competition to', eventName);
+                  navigate('/competition', { state: { competitionID } });
                 }}>
                 Enter Competition
               </button>
