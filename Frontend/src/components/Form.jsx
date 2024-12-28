@@ -31,7 +31,9 @@ const Form = ({
           ''
         )}
         {fields.map((field) => (
-          <div key={field.name}>
+          <div
+            className="w-100"
+            key={field.name}>
             <label htmlFor={field.name}>{field.label}</label>
             <input
               type={field.type}

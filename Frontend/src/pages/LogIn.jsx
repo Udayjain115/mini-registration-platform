@@ -4,8 +4,9 @@ import { useNavigate } from 'react-router-dom';
 import Form from '../components/Form';
 import Notification from '../components/Notification';
 import userService from '../services/userService';
+import { Link } from 'react-router-dom';
 import admin from './admin';
-import { Container, Row } from 'react-bootstrap';
+import { Container, Row, Col } from 'react-bootstrap';
 const LogIn = ({
   isLoggedIn,
   setIsLoggedIn,
@@ -78,26 +79,41 @@ const LogIn = ({
     { label: 'Password', type: 'password', name: 'password', value: password },
   ];
 
-  const buttons = [
-    { text: 'Log In', handle: handleSubmit },
-    { text: 'Create an Account', handle: () => navigate('/signup') },
-  ];
+  const buttons = [{ text: 'Log In', handle: handleSubmit }];
 
   return (
     <>
-      <Container>
+      <Container className="vh-100 d-flex flex-column justify-content-center">
         <Row>
-          <h1 className="text-center">Log In</h1>
+          <h1 className="text-center mb-5">Log In</h1>
         </Row>
         <Row>
-          <Form
-            className={'signup-form'}
-            message={message}
-            handleSubmit={handleSubmit}
-            handleChange={handleChange}
-            fields={fields}
-            buttons={buttons}
-          />
+          <Col
+            lg={6}
+            md={6}
+            sm={6}
+            className="mx-auto">
+            <Form
+              className={'signup-form'}
+              message={message}
+              handleSubmit={handleSubmit}
+              handleChange={handleChange}
+              fields={fields}
+              buttons={buttons}
+            />
+          </Col>
+        </Row>
+        <Row>
+          <div className="d-inline d-flex justify-content-center mt-2">
+            <p fs-5>
+              Not Signed Up?{' '}
+              <Link
+                to="/signup"
+                className="text-decoration-none text-btn">
+                <span className="lead fw-bold ">Register Here</span>
+              </Link>
+            </p>
+          </div>
         </Row>
       </Container>
     </>

@@ -2,6 +2,10 @@ input {
   margin-bottom: 10px; /* Add some space between inputs */
 }
 
+.text-btn {
+  color: #6d5fef;
+}
+
 .landing-page {
   display: flex;
   flex-direction: column;
@@ -185,18 +189,6 @@ input {
   padding-top: 50px;
 }
 
-.signup-form {
-  min-width: 110px;
-  max-width: 500px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  background-color: #fff;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
 .admin-notification {
   margin-top: 10px;
   text-align: center;
@@ -212,27 +204,38 @@ input {
   margin-top: 10px;
   text-align: center;
 }
+
+.signup-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 .signup-form div {
   display: flex;
   flex-direction: column;
 }
 
 .signup-form label {
+  width: 100%;
   margin-bottom: 5px;
 }
 
 .signup-form input {
+  width: 100%;
   padding: 10px;
   border: 1px solid #ccc;
+  margin-bottom: 25px;
   border-radius: 5px;
 }
 
 .signup-form button {
   padding: 10px;
-  background-color: #007bff;
+  background-color: #6f66fd;
+  width: 100%;
+  margin: 5px;
   color: white;
   border: none;
-  border-radius: 5px;
+  border-radius: 20px;
   cursor: pointer;
 }
 
