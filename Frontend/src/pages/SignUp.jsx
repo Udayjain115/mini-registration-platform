@@ -126,7 +126,7 @@ const SignUp = ({ users, setUsers, currentUser }) => {
           <p fs-5>
             Already Signed Up?{' '}
             <Link
-              to="/signup"
+              to="/login"
               className="text-decoration-none text-btn">
               <span className="lead fw-bold ">Login Here</span>
             </Link>
