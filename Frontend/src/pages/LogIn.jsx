@@ -31,7 +31,10 @@ const LogIn = ({
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (email === adminUserName && password === adminPassword) {
+    if (
+      email.toLowerCase() === adminUserName &&
+      password.toLowerCase() === adminPassword
+    ) {
       setCurrentUser({
         email: adminUserName,
         password: adminPassword,
