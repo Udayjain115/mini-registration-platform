@@ -1,9 +1,9 @@
-import React from 'react';
-import { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { Col, Container, Row } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import Form from '../components/Form';
-import Notification from '../components/Notification';
 import userService from '../services/userService';
+import { Link } from 'react-router-dom';
 const SignUp = ({ users, setUsers, currentUser }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -91,10 +91,7 @@ const SignUp = ({ users, setUsers, currentUser }) => {
     { label: 'Name', type: 'text', name: 'Name', value: firstName },
   ];
 
-  const buttons = [
-    { text: 'Create an Account', handle: handleSubmit },
-    { text: 'Log In', handle: () => navigate('/login') },
-  ];
+  const buttons = [{ text: 'Create an Account', handle: handleSubmit }];
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -104,18 +101,39 @@ const SignUp = ({ users, setUsers, currentUser }) => {
   };
 
   return (
-    <div className="form-block">
-      <div className="signup-container">
-        <Form
-          className={'signup-form'}
-          message={message}
-          handleSubmit={handleSubmit}
-          handleChange={handleChange}
-          fields={fields}
-          buttons={buttons}
-        />
-      </div>
-    </div>
+    <Container className="vh-100 d-flex flex-column justify-content-center">
+      <Row>
+        <h1 className="text-center mb-5">Create an Account</h1>
+      </Row>
+      <Row>
+        <Col
+          lg={6}
+          md={6}
+          sm={6}
+          className="mx-auto">
+          <Form
+            className={'signup-form'}
+            message={message}
+            handleSubmit={handleSubmit}
+            handleChange={handleChange}
+            fields={fields}
+            buttons={buttons}
+          />
+        </Col>
+      </Row>
+      <Row>
+        <div className="d-inline d-flex justify-content-center mt-2">
+          <p fs-5>
+            Already Signed Up?{' '}
+            <Link
+              to="/signup"
+              className="text-decoration-none text-btn">
+              <span className="lead fw-bold ">Login Here</span>
+            </Link>
+          </p>
+        </div>
+      </Row>
+    </Container>
   );
 };
 
