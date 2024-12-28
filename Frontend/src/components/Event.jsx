@@ -3,6 +3,8 @@ import React, { useEffect } from 'react';
 import { useState } from 'react';
 import userService from '../services/userService';
 import { useNavigate } from 'react-router-dom';
+import attemptService from '../services/attemptService';
+import questionService from '../services/questionService';
 const Event = ({
   event,
   isLoggedIn,
@@ -17,6 +19,49 @@ const Event = ({
   const eventDate = event.date;
   const eventDescription = event.description;
   const competitionID = event.competitionId;
+
+  const handleResultClick = () => {
+    console.log('Generating results for', eventName);
+    const answers = new Map();
+    attemptService
+      .getAll()
+      .then((attempts) => {
+        const eventAttempts = attempts.filter((attempt) => {
+          return attempt.competitionId === competitionID; // Get all attempts for this competition
+        });
+        console.log('Event Attempts:', eventAttempts[0].attempts); // Log the questions, after this I need to get the answers for the questions
+
+        const questionPromises = Object.keys(eventAttempts[0].attempts).map(
+          (questionId) => {
+            return questionService.getOne(questionId);
+          }
+        );
+
+        Promise.all(questionPromises).then((questions) => {
+          questions.forEach((question) => {
+            answers.set(question.title, question.correctChoiceIndex); // Create a map of questions to answers
+          });
+          console.log('Answers:', answers);
+          console.log('Event Attempts:', eventAttempts);
+          const scoreMap = new Map();
+          eventAttempts.forEach((attempt) => {
+            let score = 0;
+            Object.keys(attempt.attempts).forEach((questionId) => {
+              if (attempt.attempts[questionId] === answers.get(questionId)) {
+                score++;
+              }
+            });
+            scoreMap.set(attempt.studentEmail, score);
+          });
+          console.log(scoreMap);
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+        const scoreMap = new Map();
+        scoreMap.set('Error', 'No attempts found');
+      });
+  };
 
   const handleButtonClick = () => {
     if (isJoined) return;
@@ -56,6 +101,11 @@ const Event = ({
         <p className="text-break">Date: {eventDate}</p>
         <p className="text-break">Description: {eventDescription}</p>{' '}
         <p className="text-break">Competition: {competitionID}</p>
+        <button
+          onClick={handleResultClick}
+          className="btn btn-primary">
+          Generate Results
+        </button>
       </div>
     );
   } else {

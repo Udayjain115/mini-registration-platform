@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import LandingPage from './pages/landingpage';
+import LandingPage from './pages/LandingPage';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import LogIn from './pages/LogIn';
 import SignUp from './pages/SignUp';
@@ -93,7 +93,7 @@ const App = () => {
 
         <Route
           path="/competition"
-          element={<QuizPage />}
+          element={<QuizPage currentUser={currentUser} />}
         />
       </Routes>
     </Router>

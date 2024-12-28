@@ -10,7 +10,21 @@ const getOne = (id) => {
 };
 
 const create = (newObject) => {
-  return axios.post(baseUrl, newObject).then((response) => response.data);
+  return axios
+    .post(baseUrl, newObject)
+    .then((response) => response.data)
+    .catch((error) => {
+      if (error.response) {
+        console.log(error.response.data);
+        console.log(error.response.status);
+        console.log(error.response.headers);
+      } else if (error.request) {
+        console.log(error.request);
+      } else {
+        console.log('Error', error.message);
+      }
+      throw error;
+    });
 };
 
 const update = (id, newObject) => {

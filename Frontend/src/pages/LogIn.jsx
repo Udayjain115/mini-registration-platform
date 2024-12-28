@@ -5,6 +5,7 @@ import Form from '../components/Form';
 import Notification from '../components/Notification';
 import userService from '../services/userService';
 import admin from './admin';
+import { Container, Row } from 'react-bootstrap';
 const LogIn = ({
   isLoggedIn,
   setIsLoggedIn,
@@ -84,16 +85,21 @@ const LogIn = ({
 
   return (
     <>
-      <div className="signup-container">
-        <Form
-          className={'signup-form'}
-          message={message}
-          handleSubmit={handleSubmit}
-          handleChange={handleChange}
-          fields={fields}
-          buttons={buttons}
-        />
-      </div>
+      <Container>
+        <Row>
+          <h1 className="text-center">Log In</h1>
+        </Row>
+        <Row>
+          <Form
+            className={'signup-form'}
+            message={message}
+            handleSubmit={handleSubmit}
+            handleChange={handleChange}
+            fields={fields}
+            buttons={buttons}
+          />
+        </Row>
+      </Container>
     </>
   );
 };

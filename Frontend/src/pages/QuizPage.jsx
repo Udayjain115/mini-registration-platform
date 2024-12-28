@@ -1,13 +1,19 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+
 import { useState, useEffect } from 'react';
 import competitionService from '../services/competitionService';
 import questionService from '../services/questionService';
+import attemptService from '../services/attemptService';
 import { Button } from 'react-bootstrap';
-const QuizPage = () => {
+
+const QuizPage = ({ currentUser }) => {
+  const navigate = useNavigate();
+
   const location = useLocation();
   const [competitionQuestions, setCompetitionQuestions] = useState([]);
-  const [answers, setAnswers] = useState([]);
+  const [answers, setAnswers] = useState({});
   console.log(location.state.competitionID);
 
   const handleOptionChange = (questionId, selectedOption) => {
@@ -16,13 +22,27 @@ const QuizPage = () => {
       selectedOption: selectedOption,
     };
 
-    console.log('Answer:', answer);
-    setAnswers([...answers, answer]);
+    setAnswers((prevAnswers) => ({
+      ...prevAnswers,
+      [questionId]: selectedOption,
+    }));
+    console.log('Answer:', answers);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log('Selected Answers:', answers);
+    const attempt = {
+      studentEmail: currentUser.email,
+      competitionId: location.state.competitionID,
+      attempts: answers,
+    };
+
+    attemptService.create(attempt).then((attempt) => {
+      console.log('Attempt:', attempt);
+    });
+
+    navigate('/');
   };
   useEffect(() => {
     competitionService

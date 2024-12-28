@@ -146,6 +146,7 @@ const admin = ({
     questionService
       .create(newQuestion)
       .then((createdQuestion) => {
+        console.log(createdQuestion);
         questionService.getAll().then((fetchedQuestions) => {
           competitionService
             .getOne(selectedCompetition)
@@ -176,11 +177,15 @@ const admin = ({
         setSelectedCompetition('');
       })
       .catch((error) => {
-        console.log(error.response.data.errors[0].defaultMessage);
+        console.log(error.response);
+        console.log(error.response.status);
+        console.log(error.response.data.message);
+
         if (error.response && error.response.status === 400) {
           setQuestionNotification(error.response.data.errors[0].defaultMessage);
         } else if (error.response && error.response.status === 500) {
-          setQuestionNotification('Question Already Exists');
+          console.log(error.response.data.message, 'error');
+          setQuestionNotification(error.response.data.message);
         }
       });
 
