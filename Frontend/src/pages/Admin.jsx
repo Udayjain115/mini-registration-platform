@@ -268,6 +268,21 @@ const admin = ({
     { label: 'Option C', type: 'text', name: 'option3', value: option3 },
     { label: 'Option D', type: 'text', name: 'option4', value: option4 },
   ];
+
+  const buttonData = [
+    {
+      title: 'Create An Event',
+      description: 'Create an Event for users',
+    },
+    {
+      title: 'Create A Competition',
+      description: 'Create a Competition for an Event',
+    },
+    {
+      title: 'Create A Question',
+      description: 'Create A Question for a Competition',
+    },
+  ];
   const handleEventChange = (e) => {
     const { name, value } = e.target;
     if (name === 'event') {
@@ -281,7 +296,9 @@ const admin = ({
   }
   return (
     <>
-      <Container fluid>
+      <Container
+        className="full-page-bg"
+        fluid>
         <Row>
           <Col lg={12}>
             <button
@@ -291,7 +308,24 @@ const admin = ({
             </button>
           </Col>
         </Row>
-        <Row>
+        <Row className="d-flex justify-content-center">
+          {buttonData.map((button) => (
+            <Col
+              style={{ backgroundColor: 'white' }}
+              key={button.title}
+              className="border border-secondary"
+              lg={3}
+              md={3}
+              sm={3}>
+              <button className="h-100 fw-bold text-start w-100 btn btn-lg">
+                {button.title}
+                <p className="text-muted fs-6">{button.description}</p>
+              </button>
+            </Col>
+          ))}
+        </Row>
+
+        {/* <Row>
           <Col lg={2}>
             <Form
               className="signup-form ms-5"
@@ -328,7 +362,7 @@ const admin = ({
               onSubmit
             />
           </Col>
-        </Row>
+        </Row> */}
         <Row>
           <Col lg={6}>
             {' '}

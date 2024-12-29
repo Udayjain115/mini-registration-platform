@@ -2,6 +2,10 @@ input {
   margin-bottom: 10px; /* Add some space between inputs */
 }
 
+.full-page-bg {
+  background-color: #f6f7fb;
+  height: 100vh;
+}
 .text-btn {
   color: #6d5fef;
 }
