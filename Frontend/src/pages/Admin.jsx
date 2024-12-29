@@ -39,6 +39,8 @@ const admin = ({
   const [option3, setOption3] = useState('');
   const [option4, setOption4] = useState('');
   const [questionNotification, setQuestionNotification] = useState('');
+
+  console.log(currentUser);
   useEffect(() => {
     eventService.getAll().then((initialEvents) => {
       setEvents(initialEvents);
@@ -273,14 +275,23 @@ const admin = ({
     {
       title: 'Create An Event',
       description: 'Create an Event for users',
+      onClick: () => {
+        console.log('Create an Event');
+      },
     },
     {
       title: 'Create A Competition',
       description: 'Create a Competition for an Event',
+      onClick: () => {
+        console.log('Create an Event');
+      },
     },
     {
       title: 'Create A Question',
       description: 'Create A Question for a Competition',
+      onClick: () => {
+        console.log('Create an Event');
+      },
     },
   ];
   const handleEventChange = (e) => {
@@ -317,7 +328,9 @@ const admin = ({
               lg={3}
               md={3}
               sm={3}>
-              <button className="h-100 fw-bold text-start w-100 btn btn-lg">
+              <button
+                onClick={button.onClick}
+                className="h-100 fw-bold text-start w-100 btn btn-lg">
                 {button.title}
                 <p className="text-muted fs-6">{button.description}</p>
               </button>

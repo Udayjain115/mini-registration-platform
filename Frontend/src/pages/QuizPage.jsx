@@ -14,7 +14,7 @@ const QuizPage = ({ currentUser }) => {
   const location = useLocation();
   const [competitionQuestions, setCompetitionQuestions] = useState([]);
   const [answers, setAnswers] = useState({});
-  console.log(location.state.competitionID);
+  const adminUserName = import.meta.env.VITE_ADMIN_USERNAME;
 
   const handleOptionChange = (questionId, selectedOption) => {
     const answer = {
@@ -44,7 +44,24 @@ const QuizPage = ({ currentUser }) => {
 
     navigate('/');
   };
+
   useEffect(() => {
+    if (!currentUser) {
+      console.log('No user');
+      navigate('/');
+      return;
+    }
+
+    if (!location.state || !location.state.competitionID) {
+      console.log('No competition ID');
+
+      if (currentUser.email === adminUserName) {
+        navigate('/admin');
+      } else {
+        navigate('/');
+      }
+      return;
+    }
     competitionService
       .getOne(location.state.competitionID)
       .then((competition) => {
@@ -59,7 +76,7 @@ const QuizPage = ({ currentUser }) => {
       .catch((error) => {
         console.log(error);
       });
-  }, [location.state.competitionID]);
+  }, [location, currentUser, navigate, adminUserName]);
 
   console.log(competitionQuestions);
 
