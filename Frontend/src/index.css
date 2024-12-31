@@ -10,6 +10,11 @@ input {
   color: #6d5fef;
 }
 
+.btn-primary {
+  background-color: #6f66fd;
+  border-radius: 5px;
+  cursor: pointer;
+}
 .landing-page {
   display: flex;
   flex-direction: column;
@@ -22,7 +27,6 @@ input {
   top: 10px;
   right: 20px;
   padding: 10px 20px;
-  background-color: #007bff;
   color: white;
   border: none;
   border-radius: 10px;
@@ -35,7 +39,7 @@ input {
   top: 10px;
   right: 130px;
   padding: 10px 20px;
-  background-color: #007bff;
+  background-color: #6d5fef;
   color: white;
   border: none;
   border-radius: 10px;
@@ -44,7 +48,7 @@ input {
 }
 
 .login-button:hover {
-  background-color: #0056b3;
+  background-color: #5e55e6;
 }
 .margin-bottom-20 {
   margin-bottom: 20px;
@@ -69,15 +73,59 @@ input {
 }
 .edit-button {
   display: flex;
-  background-color: #007bff;
+  background-color: #6f66fd;
   padding: 10px 20px;
   color: white;
   border: none;
   border-radius: 10px;
 }
 
+.results-table th {
+  background-color: #6f66fd; /* Header background color */
+  color: white; /* Header text color */
+}
+
+.results-table tr:nth-child(even) {
+  background-color: #f2f2f2; /* Even row background */
+}
+
+.results-table tr:hover {
+  background-color: #ddd; /* Hover effect for rows */
+}
+
+.event-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap; /* Allows wrapping on smaller screens */
+  gap: 10px; /* Adds space between items */
+  margin-bottom: 15px; /* Adds space below the header */
+}
+
+.dropdown-button-white .dropdown-toggle {
+  background-color: #ffffff;
+  color: #000000;
+  border: 1px solid #ced4da;
+}
+
+.dropdown-button-white .dropdown-toggle:hover,
+.dropdown-button-white .dropdown-toggle:focus {
+  background-color: #f8f9fa;
+  color: #000000;
+}
+
+.dropdown-button-white .dropdown-menu {
+  background-color: #ffffff;
+}
+
+.dropdown-button-white .dropdown-item-text p {
+  color: #000000;
+  margin: 0;
+  padding: 5px 10px;
+}
+
 .edit-button:hover {
-  background-color: #0056b3;
+  background-color: #5e55e6;
 }
 
 .info {
@@ -156,7 +204,7 @@ input {
 }
 .join-button {
   padding: 10px 20px;
-  background-color: #17a2b8;
+  background-color: #6f66fd;
   color: white;
   border: none;
   border-radius: 5px;
@@ -164,7 +212,7 @@ input {
 }
 
 .join-button:hover {
-  background-color: #138496;
+  background-color: #5e55e6;
 }
 
 .signup-container {
@@ -203,6 +251,13 @@ input {
   width: 100%;
   overflow: hidden;
   word-wrap: break-word;
+}
+
+.box-shadow-container {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+  background-color: #ffffff;
+  border-radius: 10px;
 }
 .notification {
   margin-top: 10px;
@@ -244,7 +299,7 @@ input {
 }
 
 .signup-form button:hover {
-  background-color: #0056b3;
+  background-color: #5e55e6;
 }
 
 .admin-page {
@@ -296,7 +351,7 @@ input {
 }
 
 .event-creator button:hover {
-  background-color: #0056b3;
+  background-color: #5e55e6;
 }
 
 @media (max-width: 768px) {

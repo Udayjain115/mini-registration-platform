@@ -19,6 +19,7 @@ const Event = ({
   const eventDate = event.date;
   const eventDescription = event.description;
   const competitionID = event.competitionId;
+  const adminUserName = import.meta.env.VITE_ADMIN_USERNAME;
 
   const handleResultClick = () => {
     console.log('Generating results for', eventName);
@@ -51,9 +52,15 @@ const Event = ({
                 score++;
               }
             });
-            scoreMap.set(attempt.studentEmail, score);
+            scoreMap.set(
+              attempt.studentEmail,
+              `${score} / ${questions.length}`
+            );
           });
-          console.log(scoreMap);
+          console.log(scoreMap, eventName, competitionID);
+          navigate('/results', {
+            state: { scoreMap, eventName, competitionID },
+          });
         });
       })
       .catch((error) => {
@@ -94,48 +101,51 @@ const Event = ({
     }
   }, [users, currentUser, eventName]);
 
-  if (!isLoggedIn) {
-    return (
-      <div className="alert alert-info event-name">
-        <p className="text-break">Event: {eventName}</p>
-        <p className="text-break">Date: {eventDate}</p>
-        <p className="text-break">Description: {eventDescription}</p>{' '}
-        <p className="text-break">Competition: {competitionID}</p>
-        <button
-          onClick={handleResultClick}
-          className="btn btn-primary">
-          Generate Results
-        </button>
-      </div>
-    );
-  } else {
-    return (
-      <div className="event-box">
+  return (
+    <div className={isLoggedIn ? 'event-box' : 'alert alert-info event-name'}>
+      {isLoggedIn ? (
         <div className="event-content alert-info alert">
           <div className="event-name">
             <p className="text-break">Event: {eventName}</p>
             <p className="text-break">Date: {eventDate}</p>
-            <p className="text-break">Description: {eventDescription}</p>{' '}
+            <p className="text-break">Description: {eventDescription}</p>
             <p className="text-break">Competition: {competitionID}</p>
+
             <button
               className="join-button mx-2"
               onClick={handleButtonClick}>
               {isJoined ? 'Joined!' : 'Join'}
             </button>
-            {competitionID !== null && (
+
+            {competitionID && (
               <button
                 className="join-button mx-2"
-                onClick={() => {
-                  navigate('/competition', { state: { competitionID } });
-                }}>
+                onClick={() =>
+                  navigate('/competition', { state: { competitionID } })
+                }>
                 Enter Competition
               </button>
             )}
           </div>
         </div>
-      </div>
-    );
-  }
+      ) : (
+        <>
+          <p className="text-break">Event: {eventName}</p>
+          <p className="text-break">Date: {eventDate}</p>
+          <p className="text-break">Description: {eventDescription}</p>
+          <p className="text-break">Competition: {competitionID}</p>
+
+          {currentUser && adminUserName === currentUser.email && (
+            <button
+              onClick={handleResultClick}
+              className="btn btn-primary">
+              Generate Results
+            </button>
+          )}
+        </>
+      )}
+    </div>
+  );
 };
 
 export default Event;

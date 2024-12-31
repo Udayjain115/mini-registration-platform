@@ -10,6 +10,12 @@ import useCurrentUser from './hooks/useCurrentUser';
 import userService from './services/userService';
 import competitionService from './services/competitionService';
 import QuizPage from './pages/QuizPage';
+import EventCreation from './pages/EventCreation';
+import Competition from './components/Competition';
+import CompetitionCreation from './pages/CompetitionCreation';
+import QuestionCreation from './pages/QuestionCreation';
+import questionService from './services/questionService';
+import Results from './pages/Results';
 
 const App = () => {
   const [events, setEvents] = useState([]);
@@ -27,6 +33,10 @@ const App = () => {
     competitionService
       .getAll()
       .then((initialCompetitions) => setCompetitions(initialCompetitions));
+
+    questionService
+      .getAll()
+      .then((initialQuestions) => setQuestions(initialQuestions));
   }, []);
 
   useEffect(() => {
@@ -42,6 +52,27 @@ const App = () => {
               users={users}
               setUsers={setUsers}
               currentUser={currentUser}
+            />
+          }
+        />
+        <Route
+          path="/results"
+          element={<Results currentUser={currentUser} />}
+        />
+        <Route
+          path="/eventCreation"
+          element={<EventCreation />}
+        />
+        <Route
+          path="/competitionCreation"
+          element={<CompetitionCreation />}
+        />
+        <Route
+          path="/questionCreation"
+          element={
+            <QuestionCreation
+              competitions={competitions}
+              setCompetitions={setCompetitions}
             />
           }
         />
