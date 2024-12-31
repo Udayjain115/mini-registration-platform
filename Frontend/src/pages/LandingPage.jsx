@@ -76,7 +76,7 @@ const LandingPage = ({
         <>
           <button
             type="button"
-            className="signup-button"
+            className="btn btn-primary signup-button"
             onClick={() => navigate('/signup')}>
             {isLoggedIn ? 'Logout' : 'Sign up'}
           </button>
