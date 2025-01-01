@@ -124,7 +124,12 @@ const App = () => {
 
         <Route
           path="/competition"
-          element={<QuizPage currentUser={currentUser} />}
+          element={
+            <QuizPage
+              currentUser={currentUser}
+              setCurrentUser={setCurrentUser}
+            />
+          }
         />
       </Routes>
     </Router>

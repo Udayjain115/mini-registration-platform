@@ -5,6 +5,7 @@ import userService from '../services/userService';
 import { useNavigate } from 'react-router-dom';
 import attemptService from '../services/attemptService';
 import questionService from '../services/questionService';
+
 const Event = ({
   event,
   isLoggedIn,
@@ -20,7 +21,8 @@ const Event = ({
   const eventDescription = event.description;
   const competitionID = event.competitionId;
   const adminUserName = import.meta.env.VITE_ADMIN_USERNAME;
-
+  const isCompetitionFinished = event.isFinished;
+  console.log(currentUser);
   const handleResultClick = () => {
     console.log('Generating results for', eventName);
     const answers = new Map();
@@ -28,9 +30,9 @@ const Event = ({
       .getAll()
       .then((attempts) => {
         const eventAttempts = attempts.filter((attempt) => {
-          return attempt.competitionId === competitionID; // Get all attempts for this competition
+          return attempt.competitionId === competitionID;
         });
-        console.log('Event Attempts:', eventAttempts[0].attempts); // Log the questions, after this I need to get the answers for the questions
+        console.log('Event Attempts:', eventAttempts[0].attempts);
 
         const questionPromises = Object.keys(eventAttempts[0].attempts).map(
           (questionId) => {
@@ -113,6 +115,7 @@ const Event = ({
 
             <button
               className="join-button mx-2"
+              id={`${eventName}-join-button`}
               onClick={handleButtonClick}>
               {isJoined ? 'Joined!' : 'Join'}
             </button>
@@ -120,10 +123,16 @@ const Event = ({
             {competitionID && (
               <button
                 className="join-button mx-2"
+                id={`${eventName}-enter-button`}
                 onClick={() =>
                   navigate('/competition', { state: { competitionID } })
-                }>
-                Enter Competition
+                }
+                disabled={currentUser.competitionsJoined.includes(
+                  competitionID
+                )}>
+                {currentUser.competitionsJoined.includes(competitionID)
+                  ? 'Competition Finished'
+                  : 'Enter Competition'}
               </button>
             )}
           </div>

@@ -35,6 +35,14 @@ public class UserController {
     return ResponseEntity.ok(createdUser);
   }
 
+  @GetMapping("/{id}")
+  public ResponseEntity<User> getUser(@PathVariable String id) {
+
+    User user = userService.getUserById(id);
+
+    return ResponseEntity.ok(user);
+  }
+
   @PutMapping("/{id}")
   public ResponseEntity<User> updateUser(@PathVariable String id, @RequestBody User userDetails) {
     System.out.println("Updating user with ID = " + id + "..." + userDetails.toString());

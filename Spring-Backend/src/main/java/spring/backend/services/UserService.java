@@ -23,6 +23,10 @@ public class UserService {
     return userRepository.findAll();
   }
 
+  public User getUserById(String id) {
+    return userRepository.findById(id).get();
+  }
+
   public Optional<User> updateUser(String id, User userDetails) {
     Optional<User> userOptional = userRepository.findById(id);
     if (userOptional.isPresent()) {
@@ -31,6 +35,7 @@ public class UserService {
       user.setPassword(userDetails.getPassword());
       user.setEmail(userDetails.getEmail());
       user.setEventsJoined(userDetails.getEventsJoined());
+      user.setCompetitionsJoined(userDetails.getCompetitionsJoined());
       userRepository.save(user);
       return Optional.of(user);
     } else {

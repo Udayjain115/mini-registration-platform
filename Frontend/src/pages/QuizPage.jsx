@@ -6,9 +6,10 @@ import { useState, useEffect } from 'react';
 import competitionService from '../services/competitionService';
 import questionService from '../services/questionService';
 import attemptService from '../services/attemptService';
+import userService from '../services/userService';
 import { Button, Card, CardBody, Col, Container, Row } from 'react-bootstrap';
 
-const QuizPage = ({ currentUser }) => {
+const QuizPage = ({ currentUser, setCurrentUser }) => {
   const navigate = useNavigate();
 
   const location = useLocation();
@@ -54,6 +55,26 @@ const QuizPage = ({ currentUser }) => {
 
     attemptService.create(attempt).then((attempt) => {
       console.log('Attempt:', attempt);
+    });
+
+    userService.getOne(currentUser.email).then((user) => {
+      const updatedUser = {
+        ...user,
+        competitionsJoined: [
+          ...(user.competitionsJoined || []),
+          location.state.competitionID,
+        ],
+      };
+
+      userService
+        .update(currentUser.email, updatedUser)
+        .then((updatedUser) => {
+          console.log('Updated User:', updatedUser);
+          setCurrentUser(updatedUser);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     });
 
     navigate('/');
@@ -182,44 +203,6 @@ const QuizPage = ({ currentUser }) => {
       </Container>
     </>
   );
-  //   <div>
-  //     <h1>Quiz Page</h1>
-  //     <h2>Competition Questions</h2>
-  //     {competitionQuestions.map((question) => (
-  //       <div
-  //         className="form-check "
-  //         key={question.title}>
-  //         <p>{question.title}</p>
-  //         {question.options.map((option) => {
-  //           return (
-  //             <div key={`option-${option}-${question.title}`}>
-  //               <input
-  //                 className="form-check-input"
-  //                 type="radio"
-  //                 name={question.title}
-  //                 id={option}
-  //                 value={option}
-  //                 onChange={(e) =>
-  //                   handleOptionChange(question.title, e.target.value)
-  //                 }
-  //               />
-  //               <label
-  //                 className="form-check-label"
-  //                 htmlFor={option}>
-  //                 {option}
-  //               </label>
-  //             </div>
-  //           );
-  //         })}
-  //       </div>
-  //     ))}
-  //     <Button
-  //       onClick={handleSubmit}
-  //       className="btn btn-primary">
-  //       Submit
-  //     </Button>
-  //   </div>
-  // );
 };
 
 export default QuizPage;

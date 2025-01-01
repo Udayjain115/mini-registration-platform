@@ -13,6 +13,7 @@ public class User {
 
   private String name;
   private List<String> eventsJoined;
+  private List<String> competitionsJoined;
 
   public String getEmail() {
     return email;
@@ -46,6 +47,14 @@ public class User {
     this.eventsJoined = eventsJoined;
   }
 
+  public List<String> getCompetitionsJoined() {
+    return competitionsJoined;
+  }
+
+  public void setCompetitionsJoined(List<String> competitionsJoined) {
+    this.competitionsJoined = competitionsJoined;
+  }
+
   @Override
   public String toString() {
     return "User{"
@@ -60,6 +69,8 @@ public class User {
         + '\''
         + ", eventsJoined="
         + eventsJoined
+        + ", competitionsJoined="
+        + competitionsJoined
         + '}';
   }
 }
