@@ -131,7 +131,7 @@ const QuizPage = ({ currentUser, setCurrentUser }) => {
                 <Row className="event-header">
                   <Col>
                     <Button
-                      variant="secondary"
+                      variant="primary"
                       disabled={currentQuestionIndex === 0}
                       onClick={handlePrevios}>
                       Previous
@@ -144,7 +144,7 @@ const QuizPage = ({ currentUser, setCurrentUser }) => {
                   </Col>
                   <Col>
                     <Button
-                      variant="secondary"
+                      variant="primary"
                       className="float-end"
                       disabled={
                         currentQuestionIndex === competitionQuestions.length - 1
@@ -162,7 +162,11 @@ const QuizPage = ({ currentUser, setCurrentUser }) => {
                       {currentQuestion.options.map((option, index) => (
                         <li
                           key={index}
-                          className="list-group-item"
+                          className={`list-group-item ${
+                            answers[currentQuestion.title] === option
+                              ? 'active'
+                              : ''
+                          }`}
                           style={{ cursor: 'pointer' }}
                           onClick={() =>
                             handleOptionChange(currentQuestion.title, option)
