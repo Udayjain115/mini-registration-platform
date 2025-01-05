@@ -2,12 +2,19 @@ import React from 'react';
 import Form from '../components/Form';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Container, Row, Col } from 'react-bootstrap';
+import { Container, Row, Col, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import questionService from '../services/questionService';
+import DropDown from '../components/DropDown';
 import competitionService from '../services/competitionService';
+import Notification from '../components/Notification';
 
-const EventCreation = ({ competitions, setCompetitions }) => {
+const EventCreation = ({
+  competitions,
+  setCompetitions,
+  questions,
+  setQuestions,
+}) => {
   const [question, setQuestion] = useState('');
   const [answer, setAnswer] = useState('');
   const [option1, setOption1] = useState('');
@@ -15,10 +22,59 @@ const EventCreation = ({ competitions, setCompetitions }) => {
   const [option3, setOption3] = useState('');
   const [option4, setOption4] = useState('');
   const [questionNotification, setQuestionNotification] = useState('');
+  const [notification, setNotification] = useState('');
   const [selectedCompetition, setSelectedCompetition] = useState('');
+  const [selectedQuestion, setSelectedQuestion] = useState('');
 
   const navigate = useNavigate();
 
+  const handleSelectedCompetitionChange = (e) => {
+    console.log('change ' + e.target.value);
+    setSelectedCompetition(e.target.value);
+  };
+
+  const handleSelectedQuestionChange = (e) => {
+    console.log('change ' + e.target.value);
+    setSelectedQuestion(e.target.value);
+  };
+
+  const handleLinkQuestion = () => {
+    console.log('selectedCompetition', selectedCompetition);
+    console.log('selectedQuestion', selectedQuestion);
+    if (selectedCompetition === '' || selectedQuestion === '') {
+      setNotification('Please select a competition and a question');
+      setTimeout(() => {
+        setNotification('');
+      }, 5000);
+      return;
+    }
+
+    competitionService.getOne(selectedCompetition).then((competition) => {
+      competition.questionIds.push(selectedQuestion);
+      competitionService
+        .update(selectedCompetition, competition)
+        .then((updatedCompetition) => {
+          competitionService.getAll().then((fetchedCompetitions) => {
+            setCompetitions(fetchedCompetitions);
+            console.log(fetchedCompetitions);
+          });
+        })
+        .catch((error) => {
+          if (error.response && error.response.status === 400) {
+            console.log(error.response.data.errors[0].defaultMessage);
+            setNotification('Question Already Exists In The Competition');
+            setTimeout(() => {
+              setNotification('');
+            }, 5000);
+          }
+          console.log(error.response.data);
+          console.log(error.response.status);
+        });
+
+      setSelectedCompetition('');
+      setSelectedQuestion('');
+    });
+  };
   const handleQuestionChange = (e) => {
     const { name, value } = e.target;
     if (name === 'question') {
@@ -43,13 +99,13 @@ const EventCreation = ({ competitions, setCompetitions }) => {
 
   const onQuestionSubmit = (e) => {
     e.preventDefault();
-    if (selectedCompetition === '') {
-      setQuestionNotification('Please select a competition');
-      setTimeout(() => {
-        setQuestionNotification('');
-      }, 5000);
-      return;
-    }
+    // if (selectedCompetition === '') {
+    //   setQuestionNotification('Please select a competition');
+    //   setTimeout(() => {
+    //     setQuestionNotification('');
+    //   }, 5000);
+    //   return;
+    // }
 
     const newQuestion = {
       title: question,
@@ -61,27 +117,27 @@ const EventCreation = ({ competitions, setCompetitions }) => {
       .create(newQuestion)
       .then((createdQuestion) => {
         console.log(createdQuestion);
-        questionService.getAll().then((fetchedQuestions) => {
-          competitionService
-            .getOne(selectedCompetition)
-            .then((currentCompetition) => {
-              currentCompetition.questionIds.push(question);
-              competitionService
-                .update(selectedCompetition, currentCompetition)
-                .then((updatedCompetition) => {
-                  competitionService.getAll().then((fetchedCompetitions) => {
-                    setCompetitions(fetchedCompetitions);
+        // questionService.getAll().then((fetchedQuestions) => {
+        //   competitionService
+        //     .getOne(selectedCompetition)
+        //     .then((currentCompetition) => {
+        //       currentCompetition.questionIds.push(question);
+        //       competitionService
+        //         .update(selectedCompetition, currentCompetition)
+        //         .then((updatedCompetition) => {
+        //           competitionService.getAll().then((fetchedCompetitions) => {
+        //             setCompetitions(fetchedCompetitions);
 
-                    console.log(fetchedCompetitions);
-                  });
-                })
-                .catch((error) => {
-                  console.log(error.response.data);
-                  console.log(error.response.status);
-                });
-            });
-          setQuestions(fetchedQuestions);
-        });
+        //             console.log(fetchedCompetitions);
+        //           });
+        //         })
+        //         .catch((error) => {
+        //           console.log(error.response.data);
+        //           console.log(error.response.status);
+        //         });
+        //     });
+        //   setQuestions(fetchedQuestions);
+        // });
         setQuestion('');
         setAnswer('');
         setOption1('');
@@ -89,7 +145,6 @@ const EventCreation = ({ competitions, setCompetitions }) => {
         setOption3('');
         setOption4('');
         setSelectedCompetition('');
-        navigate('/admin');
       })
       .catch((error) => {
         console.log(error.response);
@@ -132,9 +187,19 @@ const EventCreation = ({ competitions, setCompetitions }) => {
       className="full-page-bg"
       fluid>
       <Row>
-        <Col>
+        <Col lg={5}>
           <h1 className=" mt-5 px-5 text-start">
             Create Question <br />
+            <span className="fs-5 text-muted ">
+              Add A Question To The Question Bank
+            </span>
+          </h1>
+        </Col>
+        <Col lg={1}></Col>
+
+        <Col lg={5}>
+          <h1 className=" mt-5 text-start">
+            Question Bank <br />
             <span className="fs-5 text-muted ">
               Add A Question To A Competition
             </span>
@@ -149,18 +214,55 @@ const EventCreation = ({ competitions, setCompetitions }) => {
             key={question.title}
             fields={questionFields}
             buttons={questionButtons}
-            dropdown={true}
             competitions={competitions}
             selectedCompetition={selectedCompetition}
             setSelectedCompetition={setSelectedCompetition}
             handleChange={handleQuestionChange}
-            onSubmit
           />
+        </Col>
+        <Col lg={1}></Col>
+        <Col lg={5}>
+          <>
+            <label>Select A Competition</label>
+            <DropDown
+              options={competitions}
+              selectedValue={selectedCompetition}
+              handleChange={(e) => {
+                console.log('change' + selectedCompetition);
+                setSelectedCompetition(e.target.value);
+              }}
+              selectedCompetition={selectedCompetition}
+              setSelectedCompetition={setSelectedCompetition}
+              labelText={'Select A Competition'}
+            />
+
+            <label>Select A Question</label>
+            <DropDown
+              options={questions}
+              selectedValue={selectedQuestion}
+              handleChange={(e) => {
+                console.log('change ' + e.target.value);
+                setSelectedQuestion(e.target.value);
+              }}
+              selectedQuestion={selectedCompetition}
+              setSelectedQuestion={setSelectedCompetition}
+              labelText={'Select A Question'}
+            />
+            <Button
+              onClick={handleLinkQuestion}
+              className="mt-4 btn-qb">
+              Add Question To Competition
+            </Button>
+            <Notification
+              className="alert alert-danger notification w-50 mx-auto"
+              message={notification}
+            />
+          </>
         </Col>
       </Row>
       <Row>
         <div className=" ms-5 py-4">
-          <p fs-5>
+          <p className="fs-5">
             Dont Want To Create A Question?{' '}
             <Link
               to="/admin"

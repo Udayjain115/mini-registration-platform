@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,6 +18,7 @@ import spring.backend.services.CompetitionService;
 
 @CrossOrigin
 @RestController
+@Validated
 @RequestMapping("/api/competitions")
 public class CompetitionController {
   @Autowired CompetitionService competitionService;
@@ -44,7 +46,7 @@ public class CompetitionController {
 
   @PutMapping("/{id}")
   public ResponseEntity<Competition> updateCompetition(
-      @PathVariable String id, @RequestBody Competition updatedCompetition) {
+      @PathVariable String id, @Valid @RequestBody Competition updatedCompetition) {
     Competition competition = competitionService.updateCompetition(updatedCompetition);
 
     return ResponseEntity.ok(competition);

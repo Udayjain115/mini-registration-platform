@@ -28,6 +28,7 @@ const update = (id, newObject) => {
       } else {
         console.log('Error', error.message);
       }
+      throw error;
     });
 };
 

@@ -73,6 +73,8 @@ const App = () => {
             <QuestionCreation
               competitions={competitions}
               setCompetitions={setCompetitions}
+              questions={questions}
+              setQuestions={setQuestions}
             />
           }
         />
@@ -102,8 +104,6 @@ const App = () => {
               setEvents={setEvents}
               currentUser={currentUser}
               setCurrentUser={setCurrentUser}
-              questions={questions}
-              setQuestions={setQuestions}
             />
           }
         />

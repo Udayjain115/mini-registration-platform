@@ -18,18 +18,6 @@ const Form = ({
       <form
         className={className}
         onSubmit={handleSubmit}>
-        {dropdown ? (
-          <>
-            <label>Select A Competition</label>
-            <DropDown
-              competitions={competitions}
-              selectedCompetition={selectedCompetition}
-              setSelectedCompetition={setSelectedCompetition}
-            />
-          </>
-        ) : (
-          ''
-        )}
         {fields.map((field) => (
           <div
             className="w-100"

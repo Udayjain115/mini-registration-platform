@@ -1,28 +1,21 @@
 import React from 'react';
 
-const DropDown = ({
-  competitions,
-  selectedCompetition,
-  setSelectedCompetition,
-}) => {
-  const handleChange = (e) => {
-    console.log(e.target.value);
-    setSelectedCompetition(e.target.value);
-  };
+const DropDown = ({ options, handleChange, selectedValue, labelText }) => {
+  console.log(options);
+
   return (
     <>
       <select
         className="form-select"
         aria-label="Default select example"
-        value={selectedCompetition}
+        value={selectedValue}
         onChange={handleChange}>
         <option
           value=""
-          disabled
-          selected>
-          Select competition
+          disabled>
+          {labelText}
         </option>
-        {competitions.map((competition) => (
+        {options.map((competition) => (
           <option
             key={competition.id}
             value={competition.id}>
