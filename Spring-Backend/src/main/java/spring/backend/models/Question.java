@@ -7,8 +7,11 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.util.List;
+import java.util.Set;
 import org.hibernate.validator.constraints.UniqueElements;
 import org.springframework.data.annotation.Id;
+import spring.backend.enums.Difficulty;
+import spring.backend.enums.Topics;
 
 public class Question {
   @NotEmpty(message = "Question title is required")
@@ -25,9 +28,19 @@ public class Question {
   @Max(value = 4L, message = "Correct option must be between 1 and 4")
   private int correctChoiceIndex;
 
-  private String Difficulty;
+  @NotNull(message = "Question difficulty is required")
+  private Difficulty Difficulty;
 
-  private String Topic;
+  @Size(min = 1, message = "Must have at least one topic")
+  private Set<Topics> Topics;
+
+  public Set<Topics> getTopics() {
+    return Topics;
+  }
+
+  public void setTopics(Set<Topics> topics) {
+    Topics = topics;
+  }
 
   public String getTitle() {
     return title;
@@ -53,20 +66,12 @@ public class Question {
     this.correctChoiceIndex = correctChoiceIndex;
   }
 
-  public String getDifficulty() {
+  public Difficulty getDifficulty() {
     return Difficulty;
   }
 
-  public void setDifficulty(String Difficulty) {
+  public void setDifficulty(Difficulty Difficulty) {
     this.Difficulty = Difficulty;
-  }
-
-  public String getTopic() {
-    return Topic;
-  }
-
-  public void setTopic(String Topic) {
-    this.Topic = Topic;
   }
 
   @Override
