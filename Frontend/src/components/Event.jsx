@@ -120,7 +120,7 @@ const Event = ({
               {isJoined ? 'Joined!' : 'Join'}
             </button>
 
-            {competitionID && (
+            {competitionID && currentUser.competitionsJoined && (
               <button
                 className="join-button mx-2"
                 id={`${eventName}-enter-button`}
