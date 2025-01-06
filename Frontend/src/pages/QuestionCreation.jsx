@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Form from '../components/Form';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -27,6 +27,46 @@ const EventCreation = ({
   const [selectedQuestion, setSelectedQuestion] = useState('');
   const [difficulty, setDifficulty] = useState('');
   const [topics, setTopics] = useState(new Set());
+  const [difficultyFilter, setDifficultyFilter] = useState('');
+  const [topicFilter, setTopicFilter] = useState('');
+  const [filteredQuestions, setFilteredQuestions] = useState([]);
+
+  const handleFilterChange = (e) => {
+    const { id, value } = e.target;
+
+    if (id === 'difficultySelect') {
+      setDifficultyFilter(value);
+    }
+
+    if (id === 'topicsSelect') {
+      setTopicFilter(value);
+    }
+  };
+
+  console.log(topicFilter, difficultyFilter);
+  useEffect(() => {
+    setFilteredQuestions(
+      questions.filter((question) => {
+        if (
+          (difficultyFilter === 'all' || difficultyFilter === '') &&
+          (topicFilter === 'all' || topicFilter === '')
+        ) {
+          return question;
+        } else if (difficultyFilter === 'all' || difficultyFilter === '') {
+          console.log('topic filter', topicFilter);
+
+          return question.topics.includes(topicFilter);
+        } else if (topicFilter === 'all' || topicFilter === '') {
+          console.log('difficulty filter', difficultyFilter);
+          return question.difficulty === difficultyFilter.toUpperCase();
+        } else
+          return (
+            question.difficulty === difficultyFilter.toUpperCase() &&
+            question.topics.includes(topicFilter)
+          );
+      })
+    );
+  }, [topicFilter, difficultyFilter]);
 
   const navigate = useNavigate();
 
@@ -249,6 +289,53 @@ const EventCreation = ({
         <Col lg={1}></Col>
         <Col lg={5}>
           <>
+            <h5>
+              Filter Questions By{' '}
+              <div className="difficulty-filter">
+                <label
+                  htmlFor="difficultySelect"
+                  className="difficulty-label">
+                  Difficulty:
+                </label>
+                <select
+                  id="difficultySelect"
+                  className="w-25 form-select difficulty-select"
+                  value={difficultyFilter}
+                  onChange={handleFilterChange}>
+                  <option
+                    disabled
+                    default
+                    value="">
+                    Select Difficulty
+                  </option>
+                  <option value="easy">Easy</option>
+                  <option value="medium">Medium</option>
+                  <option value="hard">Hard</option>
+                  <option value="all">All</option>
+                </select>
+                <label
+                  htmlFor="topicsSelect"
+                  className="topic-label">
+                  Topics:
+                </label>
+                <select
+                  id="topicsSelect"
+                  className="w-25 form-select difficulty-select"
+                  value={topicFilter}
+                  onChange={handleFilterChange}>
+                  <option
+                    disabled
+                    value="">
+                    Select Topic
+                  </option>
+                  <option value="Mechanics">Mechanics</option>
+                  <option value="Waves">Waves</option>
+                  <option value="Algebra">Algebra</option>
+                  <option value="Geometry">Geometry</option>
+                  <option value="all">All</option>
+                </select>
+              </div>
+            </h5>
             <label>Select A Competition</label>
             <DropDown
               options={competitions}
@@ -264,7 +351,7 @@ const EventCreation = ({
 
             <label>Select A Question</label>
             <DropDown
-              options={questions}
+              options={filteredQuestions}
               selectedValue={selectedQuestion}
               handleChange={(e) => {
                 console.log('change ' + e.target.value);
@@ -284,19 +371,19 @@ const EventCreation = ({
               message={notification}
             />
           </>
+          <Row>
+            <div className=" ms-5 py-4">
+              <p className="fs-5">
+                Dont Want To Create A Question?{' '}
+                <Link
+                  to="/admin"
+                  className="text-decoration-none text-btn">
+                  <span className="lead fw-bold ">Go Back</span>
+                </Link>
+              </p>
+            </div>
+          </Row>
         </Col>
-      </Row>
-      <Row>
-        <div className=" ms-5 py-4">
-          <p className="fs-5">
-            Dont Want To Create A Question?{' '}
-            <Link
-              to="/admin"
-              className="text-decoration-none text-btn">
-              <span className="lead fw-bold ">Go Back</span>
-            </Link>
-          </p>
-        </div>
       </Row>
     </Container>
   );

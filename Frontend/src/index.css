@@ -281,6 +281,25 @@ input {
   margin-top: 10px;
   text-align: center;
 }
+.difficulty-filter {
+  display: flex;
+  align-items: center; /* Vertically centers the items */
+  gap: 0.5rem; /* Adds space between the label and select */
+}
+
+/* Optional: Adjust the font size of h6 to match h5 if needed */
+.difficulty-filter h6 {
+  margin: 0; /* Removes default margin */
+  font-size: 1.25rem; /* Adjust as needed */
+}
+
+.form-select {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 100%;
+}
 
 .signup-form {
   display: flex;
