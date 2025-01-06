@@ -9,13 +9,28 @@ import { Link } from 'react-router-dom';
 const EventCreation = () => {
   const [competition, setCompetition] = useState('');
   const [competitionNotification, setCompetitionNotification] = useState('');
+  const [startTime, setStartTime] = useState('');
+  const [endTime, setEndTime] = useState('');
   const navigate = useNavigate();
 
   const handleCompeititionChange = (e) => {
-    setCompetition(e.target.value);
+    const { name, value } = e.target;
+    if (name === 'competition') {
+      setCompetition(e.target.value);
+    }
+    if (name === 'start_time') {
+      setStartTime(e.target.value);
+    }
+    if (name === 'end_time') {
+      setEndTime(e.target.value);
+    }
   };
 
   const onCompetitionSubmit = (e) => {
+    if (new Date(startTime) >= new Date(endTime)) {
+      setCompetitionNotification('Start time must be before end time.');
+      return;
+    }
     e.preventDefault();
 
     const newCompetition = {
@@ -51,6 +66,19 @@ const EventCreation = () => {
       type: 'text',
       name: 'competition',
       value: competition,
+    },
+    {
+      label: 'Competition Start Time',
+      type: 'datetime-local',
+      name: 'start_time',
+      value: startTime,
+    },
+
+    {
+      label: 'Competition End Time',
+      type: 'datetime-local',
+      name: 'end_time',
+      value: endTime,
     },
   ];
 
