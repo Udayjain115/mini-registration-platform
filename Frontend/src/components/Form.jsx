@@ -68,6 +68,7 @@ const Form = ({
                             type="checkbox"
                             name={field.name}
                             value={option.value}
+                            checked={field.value.has(option.value)}
                             onChange={handleChange}
                             className="w-25"
                           />

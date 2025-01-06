@@ -176,9 +176,8 @@ const EventCreation = ({
   const topicOptions = [
     { value: 'Mechanics', label: 'Mechanics', disabled: false },
     { value: 'Waves', label: 'Waves', disabled: false },
-    { value: 'Algebra', label: 'Algebra', disabled: true }, // Disabled option
+    { value: 'Algebra', label: 'Algebra', disabled: false },
     { value: 'Geometry', label: 'Geometry', disabled: false },
-    // ... other topics
   ];
   const questionFields = [
     { label: 'Question', type: 'text', name: 'question', value: question },
