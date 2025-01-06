@@ -13,6 +13,12 @@ public class Competition {
   @UniqueElements(message = "Question already in competition")
   private List<String> questionIds;
 
+  @NotEmpty(message = "Start date is required")
+  private String startDate;
+
+  @NotEmpty(message = "End date is required")
+  private String endDate;
+
   public String getTitle() {
     return title;
   }
@@ -27,6 +33,22 @@ public class Competition {
 
   public void setQuestionIds(List<String> questionIds) {
     this.questionIds = questionIds;
+  }
+
+  public String getStartDate() {
+    return startDate;
+  }
+
+  public void setStartDate(String startDate) {
+    this.startDate = startDate;
+  }
+
+  public String getEndDate() {
+    return endDate;
+  }
+
+  public void setEndDate(String endDate) {
+    this.endDate = endDate;
   }
 
   @Override
