@@ -33,6 +33,10 @@ input {
   cursor: pointer;
   margin-bottom: 10px;
 }
+
+.checkbox-custom {
+  width: 10px;
+}
 .btn-qb {
   background-color: #6f66fd;
   color: white;
