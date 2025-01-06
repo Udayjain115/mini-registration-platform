@@ -101,6 +101,9 @@ const EventCreation = ({
           competitionService.getAll().then((fetchedCompetitions) => {
             setCompetitions(fetchedCompetitions);
             console.log(fetchedCompetitions);
+
+            setSelectedCompetition('');
+            setSelectedQuestion('');
           });
         })
         .catch((error) => {

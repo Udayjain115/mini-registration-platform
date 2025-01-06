@@ -120,17 +120,16 @@ const Event = ({
               {isJoined ? 'Joined!' : 'Join'}
             </button>
 
-            {competitionID && currentUser.competitionsJoined && (
+            {competitionID && (
               <button
                 className="join-button mx-2"
                 id={`${eventName}-enter-button`}
                 onClick={() =>
                   navigate('/competition', { state: { competitionID } })
                 }
-                disabled={currentUser.competitionsJoined.includes(
-                  competitionID
-                )}>
-                {currentUser.competitionsJoined.includes(competitionID)
+                disabled={false}>
+                {currentUser.competitionsJoined &&
+                currentUser.competitionsJoined.includes(competitionID)
                   ? 'Competition Finished'
                   : 'Enter Competition'}
               </button>
