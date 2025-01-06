@@ -5,9 +5,26 @@ import eventService from '../services/eventService';
 
 const Competition = ({ competition, events, isAdmin, setEvents }) => {
   const [selectedEvent, setSelectedEvent] = useState('');
+  console.log('Competition', competition);
 
   const handleLink = (e) => {
     setSelectedEvent(e.target.value);
+  };
+
+  const formatTime = (time) => {
+    const [hours, minutes] = time.split(':');
+    const date = new Date();
+    date.setHours(hours);
+    date.setMinutes(minutes);
+
+    const options = {
+      hour: 'numeric',
+      minute: 'numeric',
+      hour12: true,
+    };
+
+    console.log;
+    return date.toLocaleTimeString('en-US', options).toString();
   };
 
   const handleSubmit = (e) => {
@@ -37,6 +54,18 @@ const Competition = ({ competition, events, isAdmin, setEvents }) => {
           <p className="text-break">
             Question: <b>{competition.questionIds.toString()}</b>
           </p>
+          <p className="text-break">
+            Start Date:{' '}
+            <b>{`${competition.startDate.split('T')[0]}  ${formatTime(
+              competition.startDate.split('T')[1]
+            )}`}</b>
+          </p>
+          <p className="text-break">
+            End Date:{' '}
+            <b>{`${competition.endDate.split('T')[0]}  ${formatTime(
+              competition.endDate.split('T')[1]
+            )}`}</b>
+          </p>
         </Col>
         {isAdmin && (
           <Col lg={6}>
@@ -61,7 +90,9 @@ const Competition = ({ competition, events, isAdmin, setEvents }) => {
                   ))}
                 </select>
               </Col>
-              <Col lg={3}>
+              <Col
+                lg={3}
+                className="d-flex align-items-center">
                 <button
                   onClick={handleSubmit}
                   className="btn btn-primary">

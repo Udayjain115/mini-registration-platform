@@ -35,6 +35,8 @@ const EventCreation = () => {
 
     const newCompetition = {
       title: competition,
+      startDate: startTime,
+      endDate: endTime,
     };
 
     competitionService
