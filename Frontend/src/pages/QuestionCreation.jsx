@@ -25,6 +25,8 @@ const EventCreation = ({
   const [notification, setNotification] = useState('');
   const [selectedCompetition, setSelectedCompetition] = useState('');
   const [selectedQuestion, setSelectedQuestion] = useState('');
+  const [difficulty, setDifficulty] = useState('');
+  const [topics, setTopics] = useState(new Set());
 
   const navigate = useNavigate();
 
@@ -76,7 +78,7 @@ const EventCreation = ({
     });
   };
   const handleQuestionChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value, type, checked } = e.target;
     if (name === 'question') {
       setQuestion(value);
     }
@@ -95,49 +97,45 @@ const EventCreation = ({
     if (name === 'option4') {
       setOption4(value);
     }
+    if (name === 'difficulty') {
+      setDifficulty(value);
+    }
+    setTopics((prevTopics) => {
+      const updatedTopics = new Set(prevTopics);
+      if (checked) {
+        updatedTopics.add(value);
+      } else {
+        updatedTopics.delete(value);
+      }
+      console.log(updatedTopics);
+      return updatedTopics;
+    });
   };
 
   const onQuestionSubmit = (e) => {
     e.preventDefault();
-    // if (selectedCompetition === '') {
-    //   setQuestionNotification('Please select a competition');
-    //   setTimeout(() => {
-    //     setQuestionNotification('');
-    //   }, 5000);
-    //   return;
-    // }
+
+    if (difficulty === '') {
+      setQuestionNotification('Please Select A Difficulty');
+      setTimeout(() => {
+        setQuestionNotification('');
+      }, 5000);
+      return;
+    }
 
     const newQuestion = {
       title: question,
       correctChoiceIndex: answer,
       options: [option1, option2, option3, option4],
+      difficulty: difficulty,
+      topics: Array.from(topics),
     };
 
     questionService
       .create(newQuestion)
       .then((createdQuestion) => {
         console.log(createdQuestion);
-        // questionService.getAll().then((fetchedQuestions) => {
-        //   competitionService
-        //     .getOne(selectedCompetition)
-        //     .then((currentCompetition) => {
-        //       currentCompetition.questionIds.push(question);
-        //       competitionService
-        //         .update(selectedCompetition, currentCompetition)
-        //         .then((updatedCompetition) => {
-        //           competitionService.getAll().then((fetchedCompetitions) => {
-        //             setCompetitions(fetchedCompetitions);
 
-        //             console.log(fetchedCompetitions);
-        //           });
-        //         })
-        //         .catch((error) => {
-        //           console.log(error.response.data);
-        //           console.log(error.response.status);
-        //         });
-        //     });
-        //   setQuestions(fetchedQuestions);
-        // });
         setQuestion('');
         setAnswer('');
         setOption1('');
@@ -145,6 +143,8 @@ const EventCreation = ({
         setOption3('');
         setOption4('');
         setSelectedCompetition('');
+        setDifficulty('');
+        setTopics(new Set());
       })
       .catch((error) => {
         console.log(error.response);
@@ -163,11 +163,23 @@ const EventCreation = ({
       setQuestionNotification('');
     }, 5000);
   };
-
+  const difficultyOptions = [
+    { value: '', label: 'Select Difficulty', disabled: true }, // Default option
+    { value: 'EASY', label: 'Easy' },
+    { value: 'MEDIUM', label: 'Medium' },
+    { value: 'HARD', label: 'Hard' },
+  ];
   const questionButtons = [
     { text: 'Create Question', handle: onQuestionSubmit },
   ];
 
+  const topicOptions = [
+    { value: 'Mechanics', label: 'Mechanics', disabled: false },
+    { value: 'Waves', label: 'Waves', disabled: false },
+    { value: 'Algebra', label: 'Algebra', disabled: true }, // Disabled option
+    { value: 'Geometry', label: 'Geometry', disabled: false },
+    // ... other topics
+  ];
   const questionFields = [
     { label: 'Question', type: 'text', name: 'question', value: question },
     {
@@ -180,6 +192,21 @@ const EventCreation = ({
     { label: 'Option B', type: 'text', name: 'option2', value: option2 },
     { label: 'Option C', type: 'text', name: 'option3', value: option3 },
     { label: 'Option D', type: 'text', name: 'option4', value: option4 },
+    {
+      label: 'Difficulty',
+      type: 'select',
+      name: 'difficulty',
+      value: difficulty,
+      options: difficultyOptions,
+    },
+    {
+      label: 'Topics',
+      type: 'checkbox',
+      name: 'topics',
+      value: topics,
+      options: topicOptions,
+      required: true,
+    },
   ];
 
   return (
