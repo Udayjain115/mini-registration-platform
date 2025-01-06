@@ -25,9 +25,9 @@ const EventCreation = () => {
     e.preventDefault();
 
     const newEvent = {
-      name: event,
-      description: description,
-      date: date,
+      name: event.trimEnd(),
+      description: description.trimEnd(),
+      date: date.trimEnd(),
     };
 
     eventService
