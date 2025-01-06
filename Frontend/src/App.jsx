@@ -34,9 +34,10 @@ const App = () => {
       .getAll()
       .then((initialCompetitions) => setCompetitions(initialCompetitions));
 
-    questionService
-      .getAll()
-      .then((initialQuestions) => setQuestions(initialQuestions));
+    questionService.getAll().then((initialQuestions) => {
+      setQuestions(initialQuestions);
+      console.log(initialQuestions);
+    });
   }, []);
 
   useEffect(() => {

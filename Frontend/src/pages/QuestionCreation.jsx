@@ -45,6 +45,7 @@ const EventCreation = ({
 
   console.log(topicFilter, difficultyFilter);
   useEffect(() => {
+    console.log('questions', questions);
     setFilteredQuestions(
       questions.filter((question) => {
         if (
@@ -66,6 +67,7 @@ const EventCreation = ({
           );
       })
     );
+    console.log(questions);
   }, [topicFilter, difficultyFilter]);
 
   const navigate = useNavigate();
@@ -175,6 +177,7 @@ const EventCreation = ({
       .create(newQuestion)
       .then((createdQuestion) => {
         console.log(createdQuestion);
+        setQuestions(questions.concat(createdQuestion));
 
         setQuestion('');
         setAnswer('');
