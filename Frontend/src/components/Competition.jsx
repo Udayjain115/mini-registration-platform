@@ -2,6 +2,7 @@ import React from 'react';
 import { Row, Col } from 'react-bootstrap';
 import { useState } from 'react';
 import eventService from '../services/eventService';
+import { formatTime } from '../utils/timeUtils';
 
 const Competition = ({ competition, events, isAdmin, setEvents }) => {
   const [selectedEvent, setSelectedEvent] = useState('');
@@ -9,22 +10,6 @@ const Competition = ({ competition, events, isAdmin, setEvents }) => {
 
   const handleLink = (e) => {
     setSelectedEvent(e.target.value);
-  };
-
-  const formatTime = (time) => {
-    const [hours, minutes] = time.split(':');
-    const date = new Date();
-    date.setHours(hours);
-    date.setMinutes(minutes);
-
-    const options = {
-      hour: 'numeric',
-      minute: 'numeric',
-      hour12: true,
-    };
-
-    console.log;
-    return date.toLocaleTimeString('en-US', options).toString();
   };
 
   const handleSubmit = (e) => {

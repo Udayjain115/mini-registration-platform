@@ -5,6 +5,8 @@ import userService from '../services/userService';
 import { useNavigate } from 'react-router-dom';
 import attemptService from '../services/attemptService';
 import questionService from '../services/questionService';
+import competitionService from '../services/competitionService';
+import { formatTime } from '../utils/timeUtils';
 
 const Event = ({
   event,
@@ -16,13 +18,59 @@ const Event = ({
 }) => {
   const navigate = useNavigate();
   const [isJoined, setIsJoined] = useState(false);
+  const [startTime, setStartTime] = useState(null);
+  const [endTime, setEndTime] = useState(null);
+  const [startIsoTime, setStartIsoTime] = useState(null);
+  const [endIsoTime, setEndIsoTime] = useState(null);
   const eventName = event.name;
   const eventDate = event.date;
   const eventDescription = event.description;
   const competitionID = event.competitionId;
   const adminUserName = import.meta.env.VITE_ADMIN_USERNAME;
   const isCompetitionFinished = event.isFinished;
+
   console.log(currentUser);
+  console.log(event);
+  console.log(startIsoTime, endIsoTime);
+
+  const checkIfOngoing = () => {
+    const currentTime = new Date();
+    console.log('Current Time:', currentTime);
+    const start = new Date(startIsoTime);
+    const end = new Date(endIsoTime);
+
+    console.log('Start Time:', start);
+    console.log('End Time:', end);
+    if (currentTime > start && currentTime < end) {
+      console.log('Competition is ongoing');
+      return true;
+    } else {
+      console.log('Competition is not ongoing');
+      return false;
+    }
+  };
+
+  useEffect(() => {
+    competitionService.getOne(event.competitionId).then((competition) => {
+      console.log('Competition:', competition.startDate, competition.endDate);
+      setStartIsoTime(competition.startDate);
+      setEndIsoTime(competition.endDate);
+      setStartTime(
+        `${competition.startDate.split('T')[0]}  ${formatTime(
+          competition.startDate.split('T')[1]
+        )}`
+      );
+      setEndTime(
+        `${competition.endDate.split('T')[0]}  ${formatTime(
+          competition.endDate.split('T')[1]
+        )}`
+      );
+    });
+  }, [event]);
+
+  console.log('Start Time:', startTime);
+  console.log('End Time:', endTime);
+
   const handleResultClick = () => {
     console.log('Generating results for', eventName);
     const answers = new Map();
@@ -112,6 +160,11 @@ const Event = ({
             <p className="text-break">Date: {eventDate}</p>
             <p className="text-break">Description: {eventDescription}</p>
             <p className="text-break">Competition: {competitionID}</p>
+            <p className="text-break">
+              {`Competition Start Time: ${startTime}`}
+            </p>
+
+            <p className="text-break">{`Competition End Time: ${endTime}`}</p>
 
             <button
               className="join-button mx-2"
@@ -127,7 +180,7 @@ const Event = ({
                 onClick={() =>
                   navigate('/competition', { state: { competitionID } })
                 }
-                disabled={false}>
+                disabled={!checkIfOngoing()}>
                 {currentUser.competitionsJoined &&
                 currentUser.competitionsJoined.includes(competitionID)
                   ? 'Competition Finished'
