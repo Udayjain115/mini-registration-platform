@@ -167,7 +167,7 @@ const Event = ({
             <p className="text-break">{`Competition End Time: ${endTime}`}</p>
 
             <button
-              className="join-button mx-2"
+              className="btn join-button mx-2"
               id={`${eventName}-join-button`}
               onClick={handleButtonClick}>
               {isJoined ? 'Joined!' : 'Join'}
@@ -175,12 +175,15 @@ const Event = ({
 
             {competitionID && (
               <button
-                className="join-button mx-2"
+                className="btn join-button mx-2"
                 id={`${eventName}-enter-button`}
                 onClick={() =>
                   navigate('/competition', { state: { competitionID } })
                 }
-                disabled={!checkIfOngoing()}>
+                disabled={
+                  !checkIfOngoing() ||
+                  !currentUser.eventsJoined.includes(event.name)
+                }>
                 {currentUser.competitionsJoined &&
                 currentUser.competitionsJoined.includes(competitionID)
                   ? 'Competition Finished'

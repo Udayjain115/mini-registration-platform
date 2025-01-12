@@ -9,6 +9,10 @@ input {
 .text-btn {
   color: #6d5fef;
 }
+.btn:hover {
+  background-color: #5e55e6;
+  color: white; /* Ensure text color remains white on hover */
+}
 
 .btn-primary {
   background-color: #6f66fd;
@@ -233,6 +237,13 @@ input {
   background-color: #5e55e6;
 }
 
+.join-button:disabled {
+  background-color: #6d5fef;
+  color: white;
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
 .signup-container {
   position: relative;
   display: flex;
@@ -291,6 +302,13 @@ input {
 .difficulty-filter h6 {
   margin: 0; /* Removes default margin */
   font-size: 1.25rem; /* Adjust as needed */
+}
+
+.btn:disabled {
+  background-color: #6d5fef;
+  color: white;
+  cursor: not-allowed;
+  opacity: 0.65;
 }
 
 .form-select {
