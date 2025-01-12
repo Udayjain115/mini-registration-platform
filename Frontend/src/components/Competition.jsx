@@ -80,7 +80,10 @@ const Competition = ({ competition, events, isAdmin, setEvents }) => {
                 className="d-flex align-items-center">
                 <button
                   onClick={handleSubmit}
-                  className="btn btn-primary">
+                  className="btn btn-primary"
+                  disabled={
+                    !selectedEvent || competition.questionIds.length === 0
+                  }>
                   Link
                 </button>
               </Col>
