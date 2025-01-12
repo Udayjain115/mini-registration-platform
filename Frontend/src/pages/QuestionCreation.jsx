@@ -68,7 +68,7 @@ const EventCreation = ({
       })
     );
     console.log(questions);
-  }, [topicFilter, difficultyFilter]);
+  }, [topicFilter, difficultyFilter, questions]);
 
   const navigate = useNavigate();
 
