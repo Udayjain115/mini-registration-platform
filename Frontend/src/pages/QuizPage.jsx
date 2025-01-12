@@ -14,13 +14,52 @@ const QuizPage = ({ currentUser, setCurrentUser }) => {
 
   const location = useLocation();
   const [competitionQuestions, setCompetitionQuestions] = useState([]);
+  const [currentCompetition, setCurrentCompetition] = useState({});
+  const [timeRemaining, setTimeRemaining] = useState(1000);
+
   const [answers, setAnswers] = useState({});
   console.log(competitionQuestions);
   console.log(location.state);
 
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-
   const adminUserName = import.meta.env.VITE_ADMIN_USERNAME;
+
+  const formatTime = (seconds) => {
+    const days = Math.floor(seconds / 86400);
+    seconds = seconds % 86400;
+    const hours = Math.floor(seconds / 3600);
+    seconds = seconds % 3600;
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${days} Days ${hours < 10 ? '0' : ''} ${hours}:${
+      minutes < 10 ? '0' : ''
+    }${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
+  };
+  console.log(currentCompetition);
+  useEffect(() => {
+    const now = new Date();
+    const endTime = new Date(currentCompetition.endDate);
+    const timeDiff = endTime - now;
+
+    console.log(timeDiff);
+
+    setTimeRemaining(Math.floor(timeDiff / 1000));
+
+    const interval = setInterval(() => {
+      setTimeRemaining((prevTime) => {
+        if (prevTime <= 0) {
+          clearInterval(interval);
+          handleSubmit();
+          return 0;
+        }
+        return prevTime - 1;
+      });
+    }, 1000);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, []);
   const handlePrevios = () => {
     setCurrentQuestionIndex((prevIndex) => Math.max(prevIndex - 1, 0));
   };
@@ -100,6 +139,7 @@ const QuizPage = ({ currentUser, setCurrentUser }) => {
     competitionService
       .getOne(location.state.competitionID)
       .then((competition) => {
+        setCurrentCompetition(competition);
         const questionPromises = competition.questionIds.map((questionId) => {
           return questionService.getOne(questionId);
         });
@@ -124,6 +164,13 @@ const QuizPage = ({ currentUser, setCurrentUser }) => {
   return (
     <>
       <Container fluid>
+        <Row className="justify-content-center">
+          <Col
+            lg={10}
+            className=" timer text-center mt-4">
+            Time Remaining: {formatTime(timeRemaining)}
+          </Col>
+        </Row>
         <Row className="justify-content-center mt-4">
           <Col lg={10}>
             <Card>
