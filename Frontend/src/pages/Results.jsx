@@ -18,6 +18,7 @@ const Results = ({ currentUser }) => {
     return null;
   }
   const scoreArray = Array.from(location.state.scoreMap.entries());
+  console.log(scoreArray);
   useEffect(() => {
     console.log(location.state);
     if (!location.state || !location.state.competitionID) {

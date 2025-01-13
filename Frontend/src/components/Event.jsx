@@ -89,8 +89,9 @@ const Event = ({
         );
 
         Promise.all(questionPromises).then((questions) => {
+          console.log('Questions:', questions);
           questions.forEach((question) => {
-            answers.set(question.title, question.correctChoiceIndex); // Create a map of questions to answers
+            answers.set(question.title, question.correctChoiceIndex);
           });
           console.log('Answers:', answers);
           console.log('Event Attempts:', eventAttempts);
@@ -102,14 +103,17 @@ const Event = ({
                 score++;
               }
             });
-            scoreMap.set(
-              attempt.studentEmail,
-              `${score} / ${questions.length}`
-            );
-          });
-          console.log(scoreMap, eventName, competitionID);
-          navigate('/results', {
-            state: { scoreMap, eventName, competitionID },
+
+            competitionService.getOne(competitionID).then((competition) => {
+              scoreMap.set(
+                attempt.studentEmail,
+                `${score} / ${competition.questionIds.length}`
+              );
+              console.log(scoreMap, eventName, competitionID);
+              navigate('/results', {
+                state: { scoreMap, eventName, competitionID },
+              });
+            });
           });
         });
       })
@@ -182,7 +186,9 @@ const Event = ({
                 }
                 disabled={
                   !checkIfOngoing() ||
-                  !currentUser.eventsJoined.includes(event.name)
+                  !currentUser.eventsJoined.includes(event.name) ||
+                  (currentUser.competitionsJoined &&
+                    currentUser.competitionsJoined.includes(competitionID))
                 }>
                 {currentUser.competitionsJoined &&
                 currentUser.competitionsJoined.includes(competitionID)

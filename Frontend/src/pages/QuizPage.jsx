@@ -15,7 +15,7 @@ const QuizPage = ({ currentUser, setCurrentUser }) => {
   const location = useLocation();
   const [competitionQuestions, setCompetitionQuestions] = useState([]);
   const [currentCompetition, setCurrentCompetition] = useState({});
-  const [timeRemaining, setTimeRemaining] = useState(1000);
+  const [timeRemaining, setTimeRemaining] = useState();
 
   const [answers, setAnswers] = useState({});
   console.log(competitionQuestions);
@@ -31,11 +31,12 @@ const QuizPage = ({ currentUser, setCurrentUser }) => {
     seconds = seconds % 3600;
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = seconds % 60;
-    return `${days} Days ${hours < 10 ? '0' : ''} ${hours}:${
+    return `${days} Days ${hours < 10 ? '0' : ''}${hours}:${
       minutes < 10 ? '0' : ''
     }${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
   };
   console.log(currentCompetition);
+
   useEffect(() => {
     const now = new Date();
     const endTime = new Date(currentCompetition.endDate);
@@ -59,7 +60,7 @@ const QuizPage = ({ currentUser, setCurrentUser }) => {
     return () => {
       clearInterval(interval);
     };
-  }, []);
+  }, [currentCompetition.endDate]);
   const handlePrevios = () => {
     setCurrentQuestionIndex((prevIndex) => Math.max(prevIndex - 1, 0));
   };
