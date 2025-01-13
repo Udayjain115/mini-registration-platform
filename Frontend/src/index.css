@@ -25,6 +25,10 @@ input {
   color: white; /* Ensure text color remains white on hover */
 }
 
+.btn-lg:hover {
+  background-color: inherit; /* Inherit the default background color */
+  color: inherit; /* Inherit the default text color */
+}
 .btn-primary {
   background-color: #6f66fd;
   border-radius: 5px;

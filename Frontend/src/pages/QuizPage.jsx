@@ -2,7 +2,7 @@ import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import competitionService from '../services/competitionService';
 import questionService from '../services/questionService';
 import attemptService from '../services/attemptService';
@@ -18,6 +18,7 @@ const QuizPage = ({ currentUser, setCurrentUser }) => {
   const [timeRemaining, setTimeRemaining] = useState();
 
   const [answers, setAnswers] = useState({});
+  const answersRef = useRef(answers);
   console.log(competitionQuestions);
   console.log(location.state);
 
@@ -61,6 +62,10 @@ const QuizPage = ({ currentUser, setCurrentUser }) => {
       clearInterval(interval);
     };
   }, [currentCompetition.endDate]);
+
+  useEffect(() => {
+    answersRef.current = answers;
+  }, [answers]);
   const handlePrevios = () => {
     setCurrentQuestionIndex((prevIndex) => Math.max(prevIndex - 1, 0));
   };
@@ -82,12 +87,12 @@ const QuizPage = ({ currentUser, setCurrentUser }) => {
   };
 
   const handleSubmit = (e) => {
-    e.preventDefault();
+    if (e) e.preventDefault();
     console.log('Selected Answers:', answers);
     const attempt = {
       studentEmail: currentUser.email,
       competitionId: location.state.competitionID,
-      attempts: answers,
+      attempts: answersRef.current,
     };
 
     attemptService.create(attempt).then((attempt) => {
@@ -113,6 +118,8 @@ const QuizPage = ({ currentUser, setCurrentUser }) => {
           console.log(error);
         });
     });
+
+    console.log('Answers:', answers);
 
     navigate('/');
   };
@@ -208,7 +215,7 @@ const QuizPage = ({ currentUser, setCurrentUser }) => {
                         <li
                           key={index}
                           className={`list-group-item ${
-                            answers[currentQuestion.title] === option
+                            answers[currentQuestion.title] === index + 1
                               ? 'active'
                               : ''
                           }`}
