@@ -72,10 +72,7 @@ const QuizPage = ({ currentUser, setCurrentUser }) => {
   };
 
   const handleOptionChange = (questionId, selectedOption) => {
-    const answer = {
-      questionId: questionId,
-      selectedOption: selectedOption,
-    };
+    console.log('selectedOption:', selectedOption);
 
     setAnswers((prevAnswers) => ({
       ...prevAnswers,
@@ -217,7 +214,7 @@ const QuizPage = ({ currentUser, setCurrentUser }) => {
                           }`}
                           style={{ cursor: 'pointer' }}
                           onClick={() =>
-                            handleOptionChange(currentQuestion.title, option)
+                            handleOptionChange(currentQuestion.title, index + 1)
                           }>
                           {option}
                         </li>
