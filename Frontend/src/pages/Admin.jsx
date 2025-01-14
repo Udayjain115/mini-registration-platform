@@ -1,7 +1,7 @@
 import React from 'react';
 import Event from '../components/event';
 import { useNavigate } from 'react-router-dom';
-import { Container, Row, Col } from 'react-bootstrap';
+import { Container, Row, Col, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import eventService from '../services/eventService';
@@ -123,7 +123,7 @@ const admin = ({
         <Row>
           <Col lg={6}>
             {' '}
-            <div className="events-container ">
+            <div className=" ">
               {events.map((event) => (
                 <Event
                   users={users}
@@ -136,7 +136,7 @@ const admin = ({
             </div>
           </Col>
           <Col lg={6}>
-            <div className="events-container">
+            <div className="">
               {competitions.map((competition) => (
                 <Competition
                   isAdmin={true}

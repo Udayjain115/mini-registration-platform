@@ -173,26 +173,62 @@ const Event = ({
             <p className="mb-1 text-start">Date: {eventDate}</p>
             <p className="mb-2 text-start">Description: {eventDescription}</p>
           </Col>
-          <Col
-            xs={4}
-            className="d-flex flex-column align-items-end justify-content-start align-buttons"
-            style={{ height: '100%' }}>
-            <button
-              className="btn btn-primary mb-2 mt-1"
-              onClick={handleButtonClick}>
-              {isJoined ? 'Joined!' : 'Join'}
-            </button>
-            <button
-              className="btn btn-primary"
-              onClick={() => setShowDetails(!showDetails)}>
-              {showDetails ? 'Show Less ▲' : 'Show More ▼'}
-            </button>
-          </Col>
+          {isLoggedIn && (
+            <Col
+              xs={4}
+              className="d-flex flex-column align-items-end justify-content-start align-buttons"
+              style={{ height: '100%' }}>
+              <button
+                className="btn btn-primary mb-2 mt-1"
+                onClick={handleButtonClick}>
+                {isJoined ? 'Joined!' : 'Join'}
+              </button>
+              <button
+                className="btn btn-primary"
+                onClick={() => setShowDetails(!showDetails)}
+                disabled={!competitionID}>
+                {showDetails ? 'Show Less ▲' : 'Show More ▼'}
+              </button>
+            </Col>
+          )}
         </Row>
-        {showDetails && (
+        {showDetails && competitionID && (
           <>
-            <p className="text-break mt-3">More details go here...</p>
+            <p className="text-break">Competition: {competitionID}</p>
+            <p className="text-break">
+              {`Competition Start Time: ${startTime}`}
+            </p>
+
+            <p className="text-break">{`Competition End Time: ${endTime}`}</p>
+
+            {competitionID && (
+              <button
+                className="btn join-button mx-2"
+                id={`${eventName}-enter-button`}
+                onClick={() =>
+                  navigate('/competition', { state: { competitionID } })
+                }
+                disabled={
+                  !checkIfOngoing() ||
+                  !currentUser.eventsJoined.includes(event.name) ||
+                  (currentUser.competitionsJoined &&
+                    currentUser.competitionsJoined.includes(competitionID))
+                }>
+                {currentUser.competitionsJoined &&
+                currentUser.competitionsJoined.includes(competitionID)
+                  ? 'Competition Finished'
+                  : 'Enter Competition'}
+              </button>
+            )}
           </>
+        )}
+
+        {currentUser && adminUserName === currentUser.email && (
+          <button
+            onClick={handleResultClick}
+            className="btn btn-primary">
+            Generate Results
+          </button>
         )}
       </div>
     </>
@@ -226,39 +262,7 @@ const Event = ({
   //             </Row>
 
   //             <p className="text-break">Date: {eventDate}</p>
-  //             <p className="text-break">Competition: {competitionID}</p>
-  //             <p className="text-break">
-  //               {`Competition Start Time: ${startTime}`}
-  //             </p>
 
-  //             <p className="text-break">{`Competition End Time: ${endTime}`}</p>
-
-  //             <button
-  //               className="btn join-button mx-2"
-  //               id={`${eventName}-join-button`}
-  //               onClick={handleButtonClick}>
-  //               {isJoined ? 'Joined!' : 'Join'}
-  //             </button>
-
-  //             {competitionID && (
-  //               <button
-  //                 className="btn join-button mx-2"
-  //                 id={`${eventName}-enter-button`}
-  //                 onClick={() =>
-  //                   navigate('/competition', { state: { competitionID } })
-  //                 }
-  //                 disabled={
-  //                   !checkIfOngoing() ||
-  //                   !currentUser.eventsJoined.includes(event.name) ||
-  //                   (currentUser.competitionsJoined &&
-  //                     currentUser.competitionsJoined.includes(competitionID))
-  //                 }>
-  //                 {currentUser.competitionsJoined &&
-  //                 currentUser.competitionsJoined.includes(competitionID)
-  //                   ? 'Competition Finished'
-  //                   : 'Enter Competition'}
-  //               </button>
-  //             )}
   //           </div>
   //         </div>
   //       ) : (

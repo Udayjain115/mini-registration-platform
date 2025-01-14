@@ -1,8 +1,11 @@
 import React from 'react';
-import { Row, Col } from 'react-bootstrap';
+import { Row, Col, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { useState } from 'react';
 import eventService from '../services/eventService';
 import { formatTime } from '../utils/timeUtils';
+import Card from 'react-bootstrap/Card';
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
 
 const Competition = ({ competition, events, isAdmin, setEvents }) => {
   const [selectedEvent, setSelectedEvent] = useState('');
@@ -10,6 +13,17 @@ const Competition = ({ competition, events, isAdmin, setEvents }) => {
 
   const handleLink = (e) => {
     setSelectedEvent(e.target.value);
+  };
+
+  const isLinkDisabled = !selectedEvent || competition.questionIds.length === 0;
+
+  const getTooltipMessage = () => {
+    if (!selectedEvent) {
+      return 'Please select an event to link';
+    } else if (competition.questionIds.length === 0) {
+      return 'Cannot link without questions in the competition.';
+    }
+    return '';
   };
 
   const handleSubmit = (e) => {
@@ -30,68 +44,91 @@ const Competition = ({ competition, events, isAdmin, setEvents }) => {
   };
 
   return (
-    <>
-      <Row className="alert-info alert">
-        <Col lg={isAdmin ? 6 : 12}>
-          <p className="text-break">
-            Title: <b>{competition.title}</b>
-          </p>
-          <p className="text-break">
-            Question: <b>{competition.questionIds.toString()}</b>
-          </p>
-          <p className="text-break">
-            Start Date:{' '}
-            <b>{`${competition.startDate.split('T')[0]}  ${formatTime(
-              competition.startDate.split('T')[1]
-            )}`}</b>
-          </p>
-          <p className="text-break">
-            End Date:{' '}
-            <b>{`${competition.endDate.split('T')[0]}  ${formatTime(
-              competition.endDate.split('T')[1]
-            )}`}</b>
-          </p>
-        </Col>
-        {isAdmin && (
-          <Col lg={6}>
-            <p className="text-break">Link Competition To Event </p>
-            <Row>
-              <Col lg={9}>
-                <select
-                  onChange={handleLink}
-                  className="form-select">
-                  <option
-                    value=""
-                    disabled
-                    selected>
-                    Select Event
-                  </option>
-                  {events.map((event) => (
-                    <option
-                      key={event.id}
-                      value={event.id}>
-                      {event.name}
-                    </option>
-                  ))}
-                </select>
-              </Col>
-              <Col
-                lg={3}
-                className="d-flex align-items-center">
-                <button
-                  onClick={handleSubmit}
-                  className="btn btn-primary"
-                  disabled={
-                    !selectedEvent || competition.questionIds.length === 0
-                  }>
-                  Link
-                </button>
-              </Col>
-            </Row>
+    <Card
+      className="my-3 px-4 py-3 shadow-sm"
+      style={{
+        backgroundColor: '#fff',
+        borderRadius: '8px',
+        boxShadow: '0 2px 5px rgba(0, 0, 0, 0.1)',
+        width: '100%',
+      }}>
+      <Card.Body>
+        <Row className="align-items-start">
+          {/* Left Column: Competition Details */}
+          <Col xs={isAdmin ? 6 : 12}>
+            <Card.Title>{competition.title}</Card.Title>
+            <Card.Text>
+              <strong>Questions:</strong> {competition.questionIds.join(', ')}
+            </Card.Text>
+            <Card.Text>
+              <strong>Start Date:</strong>{' '}
+              {`${competition.startDate.split('T')[0]} ${formatTime(
+                competition.startDate.split('T')[1]
+              )}`}
+            </Card.Text>
+            <Card.Text>
+              <strong>End Date:</strong>{' '}
+              {`${competition.endDate.split('T')[0]} ${formatTime(
+                competition.endDate.split('T')[1]
+              )}`}
+            </Card.Text>
           </Col>
-        )}
-      </Row>
-    </>
+
+          {/* Right Column: Link Competition to Event */}
+          {isAdmin && (
+            <Col xs={6}>
+              <Card.Title>Link Competition to Event</Card.Title>
+              <Form onSubmit={(e) => e.preventDefault()}>
+                <Form.Group controlId="selectEvent">
+                  <Form.Control
+                    as="select"
+                    value={selectedEvent}
+                    onChange={handleLink}
+                    className="mb-3">
+                    <option
+                      value=""
+                      disabled>
+                      Select Event
+                    </option>
+                    {events.map((event) => (
+                      <option
+                        key={event.id}
+                        value={event.id}>
+                        {event.name}
+                      </option>
+                    ))}
+                  </Form.Control>
+                </Form.Group>
+
+                <OverlayTrigger
+                  placement="top"
+                  overlay={
+                    isLinkDisabled ? (
+                      <Tooltip id="tooltip-disabled">
+                        {getTooltipMessage()}
+                      </Tooltip>
+                    ) : (
+                      <></>
+                    )
+                  }>
+                  <span className="d-inline-block">
+                    <Button
+                      variant="primary"
+                      onClick={handleSubmit}
+                      disabled={
+                        !selectedEvent || competition.questionIds.length === 0
+                      }
+                      style={isLinkDisabled ? { pointerEvents: 'none' } : {}}>
+                      Link
+                    </Button>
+                  </span>
+                </OverlayTrigger>
+              </Form>
+            </Col>
+          )}
+        </Row>
+      </Card.Body>
+    </Card>
   );
 };
 
