@@ -7,6 +7,7 @@ import attemptService from '../services/attemptService';
 import questionService from '../services/questionService';
 import competitionService from '../services/competitionService';
 import { formatTime } from '../utils/timeUtils';
+import { Container, Row, Col } from 'react-bootstrap';
 
 const Event = ({
   event,
@@ -22,6 +23,7 @@ const Event = ({
   const [endTime, setEndTime] = useState(null);
   const [startIsoTime, setStartIsoTime] = useState(null);
   const [endIsoTime, setEndIsoTime] = useState(null);
+  const [showDetails, setShowDetails] = useState(false);
   const eventName = event.name;
   const eventDate = event.date;
   const eventDescription = event.description;
@@ -156,66 +158,128 @@ const Event = ({
   }, [users, currentUser, eventName]);
 
   return (
-    <div className={isLoggedIn ? 'event-box' : 'alert alert-info event-name'}>
-      {isLoggedIn ? (
-        <div className="event-content alert-info alert">
-          <div className="event-name">
-            <p className="text-break">Event: {eventName}</p>
-            <p className="text-break">Date: {eventDate}</p>
-            <p className="text-break">Description: {eventDescription}</p>
-            <p className="text-break">Competition: {competitionID}</p>
-            <p className="text-break">
-              {`Competition Start Time: ${startTime}`}
-            </p>
-
-            <p className="text-break">{`Competition End Time: ${endTime}`}</p>
-
+    <>
+      <div
+        className="card my-3 px-4 py-3"
+        style={{
+          backgroundColor: '#fff',
+          borderRadius: '8px',
+          boxShadow: '0 2px 5px rgba(0, 0, 0, 0.1)',
+          width: currentUser ? 'auto' : '100%',
+        }}>
+        <Row className="align-items-start g-0">
+          <Col xs={8}>
+            <h2 className="text-start mb-2">{eventName}</h2>
+            <p className="mb-1 text-start">Date: {eventDate}</p>
+            <p className="mb-2 text-start">Description: {eventDescription}</p>
+          </Col>
+          <Col
+            xs={4}
+            className="d-flex flex-column align-items-end justify-content-start align-buttons"
+            style={{ height: '100%' }}>
             <button
-              className="btn join-button mx-2"
-              id={`${eventName}-join-button`}
+              className="btn btn-primary mb-2 mt-1"
               onClick={handleButtonClick}>
               {isJoined ? 'Joined!' : 'Join'}
             </button>
-
-            {competitionID && (
-              <button
-                className="btn join-button mx-2"
-                id={`${eventName}-enter-button`}
-                onClick={() =>
-                  navigate('/competition', { state: { competitionID } })
-                }
-                disabled={
-                  !checkIfOngoing() ||
-                  !currentUser.eventsJoined.includes(event.name) ||
-                  (currentUser.competitionsJoined &&
-                    currentUser.competitionsJoined.includes(competitionID))
-                }>
-                {currentUser.competitionsJoined &&
-                currentUser.competitionsJoined.includes(competitionID)
-                  ? 'Competition Finished'
-                  : 'Enter Competition'}
-              </button>
-            )}
-          </div>
-        </div>
-      ) : (
-        <>
-          <p className="text-break">Event: {eventName}</p>
-          <p className="text-break">Date: {eventDate}</p>
-          <p className="text-break">Description: {eventDescription}</p>
-          <p className="text-break">Competition: {competitionID}</p>
-
-          {currentUser && adminUserName === currentUser.email && (
             <button
-              onClick={handleResultClick}
-              className="btn btn-primary">
-              Generate Results
+              className="btn btn-primary"
+              onClick={() => setShowDetails(!showDetails)}>
+              {showDetails ? 'Show Less ▲' : 'Show More ▼'}
             </button>
-          )}
-        </>
-      )}
-    </div>
+          </Col>
+        </Row>
+        {showDetails && (
+          <>
+            <p className="text-break mt-3">More details go here...</p>
+          </>
+        )}
+      </div>
+    </>
   );
+
+  // return (
+  //   <Container>
+  //     <div className={isLoggedIn ? 'event-box' : 'alert alert-info event-name'}>
+  //       {isLoggedIn ? (
+  //         <div className="event-content alert-info alert">
+  //           <div className="">
+  //             <Row className="align-items-start">
+  //               <Col xs={6}>
+  //                 <p className="text-break text-start fw-bold fs-3">
+  //                   {eventName}
+  //                 </p>
+  //                 <p className="text-break text-start">
+  //                   Description: {eventDescription}
+  //                 </p>
+  //               </Col>
+
+  //               <Col
+  //                 className="d-flex align-items-start justify-content-start"
+  //                 xs={4}>
+  //                 <button
+  //                   className="btn text-btn btn-lg mt-0"
+  //                   onClick={() => setShowDetails(!showDetails)}>
+  //                   {showDetails ? 'Show Less ▲' : 'Show More ▼'}
+  //                 </button>
+  //               </Col>
+  //             </Row>
+
+  //             <p className="text-break">Date: {eventDate}</p>
+  //             <p className="text-break">Competition: {competitionID}</p>
+  //             <p className="text-break">
+  //               {`Competition Start Time: ${startTime}`}
+  //             </p>
+
+  //             <p className="text-break">{`Competition End Time: ${endTime}`}</p>
+
+  //             <button
+  //               className="btn join-button mx-2"
+  //               id={`${eventName}-join-button`}
+  //               onClick={handleButtonClick}>
+  //               {isJoined ? 'Joined!' : 'Join'}
+  //             </button>
+
+  //             {competitionID && (
+  //               <button
+  //                 className="btn join-button mx-2"
+  //                 id={`${eventName}-enter-button`}
+  //                 onClick={() =>
+  //                   navigate('/competition', { state: { competitionID } })
+  //                 }
+  //                 disabled={
+  //                   !checkIfOngoing() ||
+  //                   !currentUser.eventsJoined.includes(event.name) ||
+  //                   (currentUser.competitionsJoined &&
+  //                     currentUser.competitionsJoined.includes(competitionID))
+  //                 }>
+  //                 {currentUser.competitionsJoined &&
+  //                 currentUser.competitionsJoined.includes(competitionID)
+  //                   ? 'Competition Finished'
+  //                   : 'Enter Competition'}
+  //               </button>
+  //             )}
+  //           </div>
+  //         </div>
+  //       ) : (
+  //         <>
+  //           <p className="text-break">Event: {eventName}</p>
+  //           <p className="text-break">Date: {eventDate}</p>
+  //           <p className="text-break">Description: {eventDescription}</p>
+  //           <p className="text-break">Competition: {competitionID}</p>
+
+  //           {currentUser && adminUserName === currentUser.email && (
+  //             <button
+  //               onClick={handleResultClick}
+  //               className="btn btn-primary">
+  //               Generate Results
+  //             </button>
+  //           )}
+  //         </>
+  //       )}
+  //     </div>
+  //   </Container>
+  // );
 };
 
 export default Event;
