@@ -30,7 +30,7 @@ const User = ({ user, users, setUsers, currentUser, setCurrentUser }) => {
 
   return (
     <Card
-      className="my-3 px-4 py-3 shadow-sm"
+      className=" profile me-5 my-3 px-4 py-3 shadow-sm"
       style={{
         backgroundColor: '#fff',
         borderRadius: '8px',

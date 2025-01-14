@@ -41,7 +41,9 @@ const LandingPage = ({
   };
 
   return (
-    <Container fluid>
+    <Container
+      fluid
+      className="full-page-bg">
       <Row>
         <Col xs={9}></Col>
         <Col
@@ -78,8 +80,11 @@ const LandingPage = ({
       <Row>
         <Row className="my-4">
           <Col xs={isLoggedIn ? 6 : 12}>
-            <h2 className="text-center">Events</h2>
+            <h2 className=" events-label">Events</h2>
           </Col>
+        </Row>
+        <Row>
+          <Col>Hi</Col>
         </Row>
         <Col xs={isLoggedIn ? 8 : 12}>
           {events.map((event) => (
@@ -96,7 +101,7 @@ const LandingPage = ({
         </Col>
         <Col
           xs={isLoggedIn ? 4 : 0}
-          className="align-buttons">
+          className="align-buttons ">
           {isLoggedIn ? (
             <div className="">
               <User

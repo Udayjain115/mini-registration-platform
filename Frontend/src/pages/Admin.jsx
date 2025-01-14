@@ -104,15 +104,14 @@ const admin = ({
         <Row className="d-flex justify-content-center">
           {buttonData.map((button) => (
             <Col
-              style={{ backgroundColor: 'white' }}
               key={button.title}
-              className="border border-secondary"
+              className=""
               lg={3}
               md={3}
               sm={3}>
               <button
                 onClick={button.onClick}
-                className="h-100 fw-bold text-start w-100 btn btn-lg">
+                className="h-100 fw-bold text-start w-100 btn btn-ignore btn-lg">
                 {button.title}
                 <p className="text-muted fs-6">{button.description}</p>
               </button>
@@ -124,6 +123,7 @@ const admin = ({
           <Col lg={6}>
             {' '}
             <div className=" ">
+              <h2 className="events-label my-5">Events</h2>
               {events.map((event) => (
                 <Event
                   users={users}
@@ -137,6 +137,7 @@ const admin = ({
           </Col>
           <Col lg={6}>
             <div className="">
+              <h2 className=" events-label my-5">Competitions</h2>
               {competitions.map((competition) => (
                 <Competition
                   isAdmin={true}

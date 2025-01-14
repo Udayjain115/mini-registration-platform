@@ -1,33 +1,72 @@
 input {
   margin-bottom: 10px; /* Add some space between inputs */
 }
+
+body {
+  background: linear-gradient(
+    135deg,
+    #f5f5f5,
+    #e8e8e8
+  ); /* Soft eggshell grey */
+  min-height: 100vh; /* Ensures the background covers the entire viewport */
+  margin: 0;
+  font-family: 'Arial', sans-serif; /* Optional: Maintain consistency */
+}
+
+.btn {
+  color: white; /* Ensures good contrast */
+  background-color: #6a5af9; /* Matches your theme */
+  border: none;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2); /* Adds depth */
+  transition: transform 0.2s, box-shadow 0.2s; /* Smooth hover effect */
+}
+
+.btn-ignore {
+  background-color: #ffffff;
+  color: #6a5af9;
+}
+
+.btn:hover {
+  transform: scale(1.05); /* Slight zoom on hover */
+  box-shadow: 0px 6px 8px rgba(0, 0, 0, 0.3); /* Enhances hover effect */
+}
+
+.btn-light,
+.btn-outline-light {
+  color: #6a5af9;
+  background-color: white;
+  border: 1px solid #6a5af9;
+}
+
+.btn-light:hover,
+.btn-outline-light:hover {
+  background-color: #e0d7fc;
+}
+
 .timer {
   font-size: 2rem;
   font-weight: bold;
-  color: #ff0000; /* Red color for urgency */
-  background-color: #f6f7fb; /* Light background color */
+  color: #ff0000;
+  background-color: #f6f7fb;
   padding: 10px 20px;
   border-radius: 5px;
   display: inline-block;
   margin-bottom: 20px;
   text-align: center;
-  font-family: 'Courier New', Courier, monospace; /* Monospace font for clock-like appearance */
+  font-family: 'Courier New', Courier, monospace;
 }
-.full-page-bg {
-  background-color: #f6f7fb;
-  height: 100vh;
-}
+
 .text-btn {
   color: #6d5fef;
 }
 .btn:hover {
   background-color: #5e55e6;
-  color: white; /* Ensure text color remains white on hover */
+  color: white;
 }
 
 .btn-lg:hover {
-  background-color: inherit; /* Inherit the default background color */
-  color: inherit; /* Inherit the default text color */
+  background-color: inherit;
+  color: inherit;
 }
 .btn-primary {
   background-color: #6f66fd;
@@ -109,6 +148,41 @@ input {
   color: white;
   border: none;
   border-radius: 10px;
+}
+.events-label {
+  position: relative; /* For positioning the line */
+  font-size: 2rem;
+  font-weight: bold;
+  color: #4a4a4a;
+  text-align: center;
+  margin: 1rem 0;
+}
+.event-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.event-date,
+.event-description {
+  font-size: 1rem;
+  margin-bottom: 0.3rem;
+}
+
+.event-card {
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+.events-label::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100px; /* Line width */
+  height: 3px; /* Line thickness */
+  background-color: #6a5af9; /* Accent color */
+  border-radius: 2px; /* Slight rounding for a smooth look */
 }
 
 .align-buttons {

@@ -160,7 +160,7 @@ const Event = ({
   return (
     <>
       <div
-        className="card my-3 px-4 py-3"
+        className="event-card card my-3 px-4 py-3"
         style={{
           backgroundColor: '#fff',
           borderRadius: '8px',
@@ -169,22 +169,24 @@ const Event = ({
         }}>
         <Row className="align-items-start g-0">
           <Col xs={8}>
-            <h2 className="text-start mb-2">{eventName}</h2>
-            <p className="mb-1 text-start">Date: {eventDate}</p>
-            <p className="mb-2 text-start">Description: {eventDescription}</p>
+            <h2 className="event-title text-start mb-2">{eventName}</h2>
+            <p className="event-date mb-1 text-start">Date: {eventDate}</p>
+            <p className="event-description mb-2 text-start">
+              Description: {eventDescription}
+            </p>
           </Col>
           {isLoggedIn && (
             <Col
               xs={4}
-              className="d-flex flex-column align-items-end justify-content-start align-buttons"
+              className="event-actions d-flex flex-column align-items-end justify-content-start align-buttons"
               style={{ height: '100%' }}>
               <button
-                className="btn btn-primary mb-2 mt-1"
+                className="joined-btn btn btn-primary mb-2 mt-1"
                 onClick={handleButtonClick}>
                 {isJoined ? 'Joined!' : 'Join'}
               </button>
               <button
-                className="btn btn-primary"
+                className="show-more-btn btn btn-primary"
                 onClick={() => setShowDetails(!showDetails)}
                 disabled={!competitionID}>
                 {showDetails ? 'Show Less ▲' : 'Show More ▼'}
