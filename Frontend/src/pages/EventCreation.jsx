@@ -80,6 +80,14 @@ const EventCreation = () => {
               Create an Event For Students
             </span>
           </h1>
+          <p className="ms-5 fw-bold fs-5">
+            Dont Want To Create An Event?{' '}
+            <Link
+              to="/admin"
+              className="text-decoration-none text-btn">
+              <span className="lead fw-bold ">Go Back</span>
+            </Link>
+          </p>
         </Col>
       </Row>
       <Row>
@@ -95,16 +103,7 @@ const EventCreation = () => {
         </Col>
       </Row>
       <Row>
-        <div className=" ms-5 py-4">
-          <p fs-5>
-            Dont Want To Create An Event?{' '}
-            <Link
-              to="/admin"
-              className="text-decoration-none text-btn">
-              <span className="lead fw-bold ">Go Back</span>
-            </Link>
-          </p>
-        </div>
+        <div className=" ms-5 py-4"></div>
       </Row>
     </Container>
   );

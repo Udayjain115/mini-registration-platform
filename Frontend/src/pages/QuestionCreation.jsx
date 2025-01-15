@@ -219,8 +219,8 @@ const EventCreation = ({
           </h1>
 
           <div className=" ms-5">
-            <p className="fs-5">
-              Dont Want To Create A Question?{' '}
+            <p className="fs-5 fw-bold">
+              Dont Want To Create Any More Questions?{' '}
               <Link
                 to="/admin"
                 className="text-decoration-none text-btn">

@@ -100,6 +100,16 @@ const EventCreation = () => {
               Create a Competition for an Event
             </span>
           </h1>
+          <div className=" ms-5">
+            <p className="fs-5 fw-bold">
+              Dont Want To Create Any More Competitions?{' '}
+              <Link
+                to="/admin"
+                className="text-decoration-none text-btn">
+                <span className="lead fw-bold ">Go Back</span>
+              </Link>
+            </p>
+          </div>
         </Col>
       </Row>
       <Row>
@@ -115,18 +125,7 @@ const EventCreation = () => {
           />
         </Col>
       </Row>
-      <Row>
-        <div className=" ms-5 py-4">
-          <p fs-5>
-            Dont Want To Create A Competition?{' '}
-            <Link
-              to="/admin"
-              className="text-decoration-none text-btn">
-              <span className="lead fw-bold ">Go Back</span>
-            </Link>
-          </p>
-        </div>
-      </Row>
+      <Row></Row>
     </Container>
   );
 };
