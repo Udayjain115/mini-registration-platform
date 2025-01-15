@@ -3,15 +3,31 @@ import Form from '../components/Form';
 import { useState } from 'react';
 import competitionService from '../services/competitionService';
 import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
-const EventCreation = () => {
+const EventCreation = ({ currentUser }) => {
   const [competition, setCompetition] = useState('');
   const [competitionNotification, setCompetitionNotification] = useState('');
   const [startTime, setStartTime] = useState('');
   const [endTime, setEndTime] = useState('');
+  const adminUserName = import.meta.env.VITE_ADMIN_USERNAME;
+  const adminPassword = import.meta.env.VITE_ADMIN_PASSWORD;
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (
+      currentUser &&
+      currentUser.email !== adminUserName &&
+      currentUser.password !== adminPassword
+    ) {
+      navigate('/');
+    }
+    if (!currentUser) {
+      navigate('/');
+    }
+  }, [currentUser, navigate]);
 
   const handleCompeititionChange = (e) => {
     const { name, value } = e.target;

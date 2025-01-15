@@ -69,21 +69,23 @@ const App = () => {
               setCompetitions={setCompetitions}
               questions={questions}
               setQuestions={setQuestions}
+              currentUser={currentUser}
             />
           }
         />
         <Route
           path="/eventCreation"
-          element={<EventCreation />}
+          element={<EventCreation currentUser={currentUser} />}
         />
         <Route
           path="/competitionCreation"
-          element={<CompetitionCreation />}
+          element={<CompetitionCreation currentUser={currentUser} />}
         />
         <Route
           path="/questionCreation"
           element={
             <QuestionCreation
+              currentUser={currentUser}
               competitions={competitions}
               setCompetitions={setCompetitions}
               questions={questions}

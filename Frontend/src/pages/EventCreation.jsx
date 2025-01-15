@@ -5,13 +5,30 @@ import eventService from '../services/eventService';
 import { useNavigate } from 'react-router-dom';
 import { Container, Row, Col } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import { useEffect } from 'react';
 
-const EventCreation = () => {
+const EventCreation = ({ currentUser }) => {
   const [description, setDescription] = useState('');
   const [date, setDate] = useState('');
   const [notification, setNotification] = useState('');
   const [event, setEvent] = useState('');
+  const adminUserName = import.meta.env.VITE_ADMIN_USERNAME;
+  const adminPassword = import.meta.env.VITE_ADMIN_PASSWORD;
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (
+      currentUser &&
+      currentUser.email !== adminUserName &&
+      currentUser.password !== adminPassword
+    ) {
+      navigate('/');
+    }
+    if (!currentUser) {
+      navigate('/');
+    }
+  }, [currentUser, navigate]);
+
   const handleEventChange = (e) => {
     const { name, value } = e.target;
     if (name === 'event') {

@@ -10,12 +10,15 @@ import competitionService from '../services/competitionService';
 import Notification from '../components/Notification';
 import Question from '../components/Question';
 
-const EventCreation = ({
+const QuestionCreation = ({
   competitions,
   setCompetitions,
   questions,
   setQuestions,
+  currentUser,
 }) => {
+  const navigate = useNavigate();
+
   const [question, setQuestion] = useState('');
   const [answer, setAnswer] = useState('');
   const [option1, setOption1] = useState('');
@@ -31,6 +34,21 @@ const EventCreation = ({
   const [difficultyFilter, setDifficultyFilter] = useState('');
   const [topicFilter, setTopicFilter] = useState('');
   const [filteredQuestions, setFilteredQuestions] = useState([]);
+  const adminUserName = import.meta.env.VITE_ADMIN_USERNAME;
+  const adminPassword = import.meta.env.VITE_ADMIN_PASSWORD;
+
+  useEffect(() => {
+    if (
+      currentUser &&
+      currentUser.email !== adminUserName &&
+      currentUser.password !== adminPassword
+    ) {
+      navigate('/');
+    }
+    if (!currentUser) {
+      navigate('/');
+    }
+  }, [currentUser, navigate]);
 
   const handleFilterChange = (e) => {
     const { id, value } = e.target;
@@ -70,8 +88,6 @@ const EventCreation = ({
     );
     console.log(questions);
   }, [topicFilter, difficultyFilter, questions]);
-
-  const navigate = useNavigate();
 
   const handleQuestionChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -311,35 +327,11 @@ const EventCreation = ({
                 );
               })}
             </>
-            {/* 
-
-            <label>Select A Question</label>
-            <DropDown
-              options={filteredQuestions}
-              selectedValue={selectedQuestion}
-              handleChange={(e) => {
-                console.log('change ' + e.target.value);
-                setSelectedQuestion(e.target.value);
-              }}
-              selectedQuestion={selectedCompetition}
-              setSelectedQuestion={setSelectedCompetition}
-              labelText={'Select A Question'}
-            />
-            <Button
-              onClick={handleLinkQuestion}
-              className="mt-4 btn-qb">
-              Add Question To Competition
-            </Button>
-            <Notification
-              className="alert alert-danger notification w-50 mx-auto"
-              message={notification}
-            /> */}
           </>
-          <Row></Row>
         </Col>
       </Row>
     </Container>
   );
 };
 
-export default EventCreation;
+export default QuestionCreation;

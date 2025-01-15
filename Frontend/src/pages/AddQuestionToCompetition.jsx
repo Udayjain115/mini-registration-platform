@@ -14,6 +14,7 @@ const AddQuestionToCompetition = ({
   competitions,
   questions,
   setCompetitions,
+  currentUser,
 }) => {
   const [selectionMode, setSelectionMode] = useState('single');
   const [selectedQuestion, setSelectedQuestion] = useState('');
@@ -24,6 +25,22 @@ const AddQuestionToCompetition = ({
   const [difficultyFilter, setDifficultyFilter] = useState('');
   const [topicFilter, setTopicFilter] = useState('');
   const [filteredQuestions, setFilteredQuestions] = useState([]);
+  const adminUserName = import.meta.env.VITE_ADMIN_USERNAME;
+  const adminPassword = import.meta.env.VITE_ADMIN_PASSWORD;
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (
+      currentUser &&
+      currentUser.email !== adminUserName &&
+      currentUser.password !== adminPassword
+    ) {
+      navigate('/');
+    }
+    if (!currentUser) {
+      navigate('/');
+    }
+  }, [currentUser, navigate]);
 
   useEffect(() => {
     console.log('questions', questions);
