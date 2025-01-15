@@ -2,6 +2,7 @@ import React from 'react';
 import { Form } from 'react-bootstrap';
 import { useState } from 'react';
 import eventService from '../services/eventService';
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Container, Row, Col } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
@@ -20,10 +21,51 @@ const AddQuestionToCompetition = ({
   const [selectedCompetition, setSelectedCompetition] = useState('');
   const [allQuestions, setAllQuestions] = useState([]);
   const [notification, setNotification] = useState('');
+  const [difficultyFilter, setDifficultyFilter] = useState('');
+  const [topicFilter, setTopicFilter] = useState('');
+  const [filteredQuestions, setFilteredQuestions] = useState([]);
+
+  useEffect(() => {
+    console.log('questions', questions);
+    setFilteredQuestions(
+      questions.filter((question) => {
+        if (
+          (difficultyFilter === 'all' || difficultyFilter === '') &&
+          (topicFilter === 'all' || topicFilter === '')
+        ) {
+          return question;
+        } else if (difficultyFilter === 'all' || difficultyFilter === '') {
+          console.log('topic filter', topicFilter);
+
+          return question.topics.includes(topicFilter);
+        } else if (topicFilter === 'all' || topicFilter === '') {
+          console.log('difficulty filter', difficultyFilter);
+          return question.difficulty === difficultyFilter.toUpperCase();
+        } else
+          return (
+            question.difficulty === difficultyFilter.toUpperCase() &&
+            question.topics.includes(topicFilter)
+          );
+      })
+    );
+    console.log(questions);
+  }, [topicFilter, difficultyFilter, questions]);
   const handleModeChange = (e) => {
     setSelectionMode(e.target.value);
     setSelectedQuestion('');
     setSelectedQuestions([]);
+  };
+
+  const handleFilterChange = (e) => {
+    const { id, value } = e.target;
+
+    if (id === 'difficultySelect') {
+      setDifficultyFilter(value);
+    }
+
+    if (id === 'topicsSelect') {
+      setTopicFilter(value);
+    }
   };
 
   const handleSingleSelect = (e) => {
@@ -180,6 +222,52 @@ const AddQuestionToCompetition = ({
             />
           </div>
 
+          <div className="my-3">Filter Questions By: </div>
+          <div className="difficulty-filter">
+            <label
+              htmlFor="difficultySelect"
+              className="difficulty-label">
+              Difficulty:
+            </label>
+            <select
+              id="difficultySelect"
+              className="w-25 form-select difficulty-select"
+              value={difficultyFilter}
+              onChange={handleFilterChange}>
+              <option
+                disabled
+                default
+                value="">
+                Select Difficulty
+              </option>
+              <option value="easy">Easy</option>
+              <option value="medium">Medium</option>
+              <option value="hard">Hard</option>
+              <option value="all">All</option>
+            </select>
+            <label
+              htmlFor="topicsSelect"
+              className="topic-label">
+              Topics:
+            </label>
+            <select
+              id="topicsSelect"
+              className="w-25 form-select difficulty-select"
+              value={topicFilter}
+              onChange={handleFilterChange}>
+              <option
+                disabled
+                value="">
+                Select Topic
+              </option>
+              <option value="Mechanics">Mechanics</option>
+              <option value="Waves">Waves</option>
+              <option value="Algebra">Algebra</option>
+              <option value="Geometry">Geometry</option>
+              <option value="all">All</option>
+            </select>
+          </div>
+
           {/* Single select mode */}
           {selectionMode === 'single' && (
             <Form.Group
@@ -194,7 +282,7 @@ const AddQuestionToCompetition = ({
                   disabled>
                   -- Select One --
                 </option>
-                {questions.map((q) => (
+                {filteredQuestions.map((q) => (
                   <option
                     key={q.id}
                     value={q.id}>
@@ -209,7 +297,7 @@ const AddQuestionToCompetition = ({
           {selectionMode === 'multiple' && (
             <div className="my-3">
               <Form.Label>Select Multiple Questions</Form.Label>
-              {questions.map((q) => (
+              {filteredQuestions.map((q) => (
                 <Form.Check
                   key={q.title}
                   type="checkbox"
