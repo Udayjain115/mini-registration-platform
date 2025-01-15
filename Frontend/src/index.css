@@ -169,6 +169,10 @@ body {
   margin-bottom: 0.3rem;
 }
 
+.admin-event {
+  margin-bottom: 2px;
+}
+
 .event-card {
   padding: 1rem;
   margin-bottom: 1rem;

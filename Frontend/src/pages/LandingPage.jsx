@@ -4,8 +4,10 @@ import { useNavigate } from 'react-router-dom';
 import Event from '../components/event';
 import userService from '../services/userService';
 import Notification from '../components/Notification';
+import competitionService from '../services/competitionService';
 import User from '../components/User';
-import { Row, Col, Container } from 'react-bootstrap';
+import { Row, Col, Container, Form } from 'react-bootstrap';
+import { filterOngoing } from '../utils/filterOngoing';
 const LandingPage = ({
   events,
   isLoggedIn,
@@ -16,6 +18,22 @@ const LandingPage = ({
   setUsers,
 }) => {
   const navigate = useNavigate();
+  const [isChecked, setIsChecked] = useState(false);
+  const [filteredEvents, setFilteredEvents] = useState(events);
+
+  console.log(filteredEvents);
+
+  const onCheckChange = () => {
+    setIsChecked(!isChecked);
+
+    if (isChecked) {
+      setFilteredEvents(events);
+    }
+
+    if (!isChecked) {
+      filterOngoing(events, setFilteredEvents);
+    }
+  };
 
   useEffect(() => {
     if (currentUser && currentUser.email === 'admin') {
@@ -84,10 +102,24 @@ const LandingPage = ({
           </Col>
         </Row>
         <Row>
-          <Col>Hi</Col>
+          {isLoggedIn ? (
+            <Col>
+              <div className="d-flex align-items-center">
+                <h3 className="me-3 mb-2">Filter By:</h3>
+                <Form.Check
+                  type="checkbox"
+                  checked={isChecked}
+                  onChange={onCheckChange}
+                  id="filter-ongoing"
+                  label="Ongoing"
+                  className="mb-0"
+                />
+              </div>
+            </Col>
+          ) : null}
         </Row>
         <Col xs={isLoggedIn ? 8 : 12}>
-          {events.map((event) => (
+          {filteredEvents.map((event) => (
             <Event
               currentUser={currentUser}
               users={users}

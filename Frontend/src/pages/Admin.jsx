@@ -1,12 +1,19 @@
 import React from 'react';
 import Event from '../components/event';
 import { useNavigate } from 'react-router-dom';
-import { Container, Row, Col, OverlayTrigger, Tooltip } from 'react-bootstrap';
+import {
+  Container,
+  Row,
+  Col,
+  OverlayTrigger,
+  Tooltip,
+  Form,
+} from 'react-bootstrap';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import eventService from '../services/eventService';
 import Notification from '../components/Notification';
-import Form from '../components/Form';
+import Form2 from '../components/Form';
 import competitionService from '../services/competitionService';
 import User from '../components/User';
 import Competition from '../components/Competition';
@@ -25,6 +32,28 @@ const admin = ({
 }) => {
   const navigate = useNavigate();
   const [notAllowed, setNotAllowed] = useState(true);
+  const [isChecked, setIsChecked] = useState(false);
+  const [filteredCompetitions, setFilteredCompetitions] =
+    useState(competitions);
+
+  console.log('COMPETITIONS', competitions);
+  const onCheckChange = () => {
+    setIsChecked(!isChecked);
+
+    if (isChecked) {
+      setFilteredCompetitions(competitions);
+    } else {
+      const ongoingCompetitions = competitions.filter((competition) => {
+        const currentTime = new Date();
+        const start = new Date(competition.startDate);
+        const end = new Date(competition.endDate);
+        return currentTime > start && currentTime < end;
+      });
+
+      console.log(ongoingCompetitions, 'ongoing');
+      setFilteredCompetitions(ongoingCompetitions);
+    }
+  };
 
   console.log(currentUser);
   useEffect(() => {
@@ -38,6 +67,12 @@ const admin = ({
       setCompetitions(initialCompetitions);
     });
   }, [questions]);
+
+  useEffect(() => {
+    competitionService.getAll().then((initialCompetitions) => {
+      setFilteredCompetitions(initialCompetitions);
+    });
+  }, []);
 
   useEffect(() => {
     console.log(competitions);
@@ -123,22 +158,37 @@ const admin = ({
           <Col lg={6}>
             {' '}
             <div className=" ">
-              <h2 className="events-label my-5">Events</h2>
-              {events.map((event) => (
-                <Event
-                  users={users}
-                  key={event.id}
-                  event={event}
-                  isLoggedIn={false}
-                  currentUser={currentUser}
-                />
-              ))}
+              <h2 className="events-label my-5 admin-event">Events</h2>
+              <div className="my-3">
+                {events.map((event) => (
+                  <Event
+                    users={users}
+                    key={event.id}
+                    event={event}
+                    isLoggedIn={false}
+                    currentUser={currentUser}
+                  />
+                ))}
+              </div>
             </div>
           </Col>
           <Col lg={6}>
             <div className="">
               <h2 className=" events-label my-5">Competitions</h2>
-              {competitions.map((competition) => (
+              <Col>
+                <div className="d-flex align-items-center">
+                  <h3 className="me-3 mb-2">Filter By:</h3>
+                  <Form.Check
+                    type="checkbox"
+                    checked={isChecked}
+                    onChange={onCheckChange}
+                    id="filter-ongoing"
+                    label="Ongoing"
+                    className="mb-0"
+                  />
+                </div>
+              </Col>
+              {filteredCompetitions.map((competition) => (
                 <Competition
                   isAdmin={true}
                   events={events}
