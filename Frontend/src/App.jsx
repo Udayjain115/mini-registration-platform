@@ -16,6 +16,7 @@ import CompetitionCreation from './pages/CompetitionCreation';
 import QuestionCreation from './pages/QuestionCreation';
 import questionService from './services/questionService';
 import Results from './pages/Results';
+import AddQuestionToCompetition from './pages/AddQuestionToCompetition';
 
 const App = () => {
   const [events, setEvents] = useState([]);
@@ -62,7 +63,14 @@ const App = () => {
         />
         <Route
           path="/addQuestionsToCompetition"
-          element={<EventCreation />}
+          element={
+            <AddQuestionToCompetition
+              competitions={competitions}
+              setCompetitions={setCompetitions}
+              questions={questions}
+              setQuestions={setQuestions}
+            />
+          }
         />
         <Route
           path="/eventCreation"

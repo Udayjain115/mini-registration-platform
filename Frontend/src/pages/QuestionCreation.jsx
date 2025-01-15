@@ -25,7 +25,7 @@ const EventCreation = ({
   const [questionNotification, setQuestionNotification] = useState('');
   const [notification, setNotification] = useState('');
   const [selectedCompetition, setSelectedCompetition] = useState('');
-  const [selectedQuestion, setSelectedQuestion] = useState('');
+
   const [difficulty, setDifficulty] = useState('');
   const [topics, setTopics] = useState(new Set());
   const [difficultyFilter, setDifficultyFilter] = useState('');
@@ -73,56 +73,6 @@ const EventCreation = ({
 
   const navigate = useNavigate();
 
-  const handleSelectedCompetitionChange = (e) => {
-    console.log('change ' + e.target.value);
-    setSelectedCompetition(e.target.value);
-  };
-
-  const handleSelectedQuestionChange = (e) => {
-    console.log('change ' + e.target.value);
-    setSelectedQuestion(e.target.value);
-  };
-
-  const handleLinkQuestion = () => {
-    console.log('selectedCompetition', selectedCompetition);
-    console.log('selectedQuestion', selectedQuestion);
-    if (selectedCompetition === '' || selectedQuestion === '') {
-      setNotification('Please select a competition and a question');
-      setTimeout(() => {
-        setNotification('');
-      }, 5000);
-      return;
-    }
-
-    competitionService.getOne(selectedCompetition).then((competition) => {
-      competition.questionIds.push(selectedQuestion);
-      competitionService
-        .update(selectedCompetition, competition)
-        .then((updatedCompetition) => {
-          competitionService.getAll().then((fetchedCompetitions) => {
-            setCompetitions(fetchedCompetitions);
-            console.log(fetchedCompetitions);
-
-            setSelectedCompetition('');
-            setSelectedQuestion('');
-          });
-        })
-        .catch((error) => {
-          if (error.response && error.response.status === 400) {
-            console.log(error.response.data.errors[0].defaultMessage);
-            setNotification('Question Already Exists In The Competition');
-            setTimeout(() => {
-              setNotification('');
-            }, 5000);
-          }
-          console.log(error.response.data);
-          console.log(error.response.status);
-        });
-
-      setSelectedCompetition('');
-      setSelectedQuestion('');
-    });
-  };
   const handleQuestionChange = (e) => {
     const { name, value, type, checked } = e.target;
     if (name === 'question') {
@@ -361,18 +311,7 @@ const EventCreation = ({
                 );
               })}
             </>
-            {/* <label>Select A Competition</label>
-            <DropDown
-              options={competitions}
-              selectedValue={selectedCompetition}
-              handleChange={(e) => {
-                console.log('change' + selectedCompetition);
-                setSelectedCompetition(e.target.value);
-              }}
-              selectedCompetition={selectedCompetition}
-              setSelectedCompetition={setSelectedCompetition}
-              labelText={'Select A Competition'}
-            />
+            {/* 
 
             <label>Select A Question</label>
             <DropDown
