@@ -8,6 +8,7 @@ import questionService from '../services/questionService';
 import DropDown from '../components/DropDown';
 import competitionService from '../services/competitionService';
 import Notification from '../components/Notification';
+import Question from '../components/Question';
 
 const EventCreation = ({
   competitions,
@@ -266,15 +267,24 @@ const EventCreation = ({
               Add A Question To The Question Bank
             </span>
           </h1>
+
+          <div className=" ms-5">
+            <p className="fs-5">
+              Dont Want To Create A Question?{' '}
+              <Link
+                to="/admin"
+                className="text-decoration-none text-btn">
+                <span className="lead fw-bold ">Go Back</span>
+              </Link>
+            </p>
+          </div>
         </Col>
         <Col lg={1}></Col>
 
         <Col lg={5}>
           <h1 className=" mt-5 text-start">
             Question Bank <br />
-            <span className="fs-5 text-muted ">
-              Add A Question To A Competition
-            </span>
+            <span className="fs-5 text-muted ">View All Created Questions</span>
           </h1>
         </Col>
       </Row>
@@ -342,7 +352,16 @@ const EventCreation = ({
                 </select>
               </div>
             </h5>
-            <label>Select A Competition</label>
+            <>
+              {filteredQuestions.map((question) => {
+                return (
+                  <div key={question.id}>
+                    <Question question={question} />
+                  </div>
+                );
+              })}
+            </>
+            {/* <label>Select A Competition</label>
             <DropDown
               options={competitions}
               selectedValue={selectedCompetition}
@@ -375,20 +394,9 @@ const EventCreation = ({
             <Notification
               className="alert alert-danger notification w-50 mx-auto"
               message={notification}
-            />
+            /> */}
           </>
-          <Row>
-            <div className=" ms-5 py-4">
-              <p className="fs-5">
-                Dont Want To Create A Question?{' '}
-                <Link
-                  to="/admin"
-                  className="text-decoration-none text-btn">
-                  <span className="lead fw-bold ">Go Back</span>
-                </Link>
-              </p>
-            </div>
-          </Row>
+          <Row></Row>
         </Col>
       </Row>
     </Container>

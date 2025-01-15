@@ -112,9 +112,16 @@ const admin = ({
     },
     {
       title: 'Create A Question',
-      description: 'Create A Question for a Competition',
+      description: 'Add A Question to the Question Bank',
       onClick: () => {
         navigate('/questionCreation');
+      },
+    },
+    {
+      title: 'Add Questions to Competition',
+      description: 'Add Questions From The Question Bank to Competition',
+      onClick: () => {
+        navigate('/addQuestionsToCompetition');
       },
     },
   ];

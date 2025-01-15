@@ -61,6 +61,10 @@ const App = () => {
           element={<Results currentUser={currentUser} />}
         />
         <Route
+          path="/addQuestionsToCompetition"
+          element={<EventCreation />}
+        />
+        <Route
           path="/eventCreation"
           element={<EventCreation />}
         />
