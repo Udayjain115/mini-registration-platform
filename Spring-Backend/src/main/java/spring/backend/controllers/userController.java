@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,6 +22,12 @@ import spring.backend.services.UserService;
 @RequestMapping("/api/users")
 public class UserController {
   @Autowired UserService userService;
+  private final PasswordEncoder passwordEncoder;
+
+  @Autowired
+  public UserController(PasswordEncoder passwordEncoder) {
+    this.passwordEncoder = passwordEncoder;
+  }
 
   @GetMapping
   public ResponseEntity<List<User>> getUsers() {
@@ -30,9 +37,37 @@ public class UserController {
 
   @PostMapping
   public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
+    user.setPassword(passwordEncoder.encode(user.getPassword()));
     user.setEventsJoined(List.of());
     User createdUser = userService.createUser(user);
     return ResponseEntity.ok(createdUser);
+  }
+
+  @PostMapping("/login")
+  public ResponseEntity<?> loginUser(@RequestBody User loginRequest) {
+    Optional<User> userOptional = userService.findByEmail(loginRequest.getEmail());
+
+    if (userOptional.isEmpty()) {
+      return ResponseEntity.status(401).body("Invalid email or password");
+    }
+
+    User user = userOptional.get();
+
+    System.out.println("User: " + user.toString());
+
+    // Verify password
+    if (!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
+      return ResponseEntity.status(401).body("Invalid email or password");
+    }
+
+    if (passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
+      return ResponseEntity.status(200).body("Correct email and password");
+    }
+
+    // Optionally, remove the password before sending the user object
+    user.setPassword(null);
+
+    return ResponseEntity.ok(user);
   }
 
   @GetMapping("/{id}")

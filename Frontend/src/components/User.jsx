@@ -40,7 +40,9 @@ const User = ({ user, users, setUsers, currentUser, setCurrentUser }) => {
       <Card.Body>
         <Card.Title>{user.name}</Card.Title>
         <Card.Text>Email: {user.email}</Card.Text>
-        <Card.Text>Events Joined: {user.eventsJoined.join(', ')}</Card.Text>
+        {user && user.eventsJoined && (
+          <Card.Text>Events Joined: {user.eventsJoined.join(', ')}</Card.Text>
+        )}
 
         {isEdit && (
           <Form className="mt-3">

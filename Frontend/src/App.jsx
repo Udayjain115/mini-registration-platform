@@ -37,7 +37,6 @@ const App = () => {
 
     questionService.getAll().then((initialQuestions) => {
       setQuestions(initialQuestions);
-      console.log(initialQuestions);
     });
   }, []);
 

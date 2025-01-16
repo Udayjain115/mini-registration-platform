@@ -7,6 +7,7 @@ import userService from '../services/userService';
 import { Link } from 'react-router-dom';
 import admin from './admin';
 import { Container, Row, Col } from 'react-bootstrap';
+import axios from 'axios';
 const LogIn = ({
   isLoggedIn,
   setIsLoggedIn,
@@ -22,13 +23,7 @@ const LogIn = ({
   const adminUserName = import.meta.env.VITE_ADMIN_USERNAME;
   const adminPassword = import.meta.env.VITE_ADMIN_PASSWORD;
 
-  useEffect(() => {
-    userService.getAll().then((initialUsers) => {
-      setUsers(initialUsers);
-    });
-  }, []);
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (
@@ -43,17 +38,27 @@ const LogIn = ({
       });
       setIsLoggedIn(true);
     } else {
-      const user = users.find(
-        (user) => user.email === email && user.password === password
-      );
-      if (!user) {
+      try {
+        const response = await axios.post(
+          'http://localhost:8080/api/users/login',
+          {
+            email,
+            password,
+          }
+        );
+
+        if (response.status === 200) {
+          userService.getOne(email).then((user) => {
+            setCurrentUser(user);
+            setIsLoggedIn(true);
+            navigate('/');
+          });
+        }
+      } catch (error) {
+        console.error('Login error:', error);
         setMessage('Invalid email or password');
         setIsLoggedIn(false);
-        return;
       }
-      const userCopy = { ...user };
-      setCurrentUser(userCopy);
-      setIsLoggedIn(true);
     }
   };
 

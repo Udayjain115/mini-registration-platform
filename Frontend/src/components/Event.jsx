@@ -217,7 +217,9 @@ const Event = ({
                 }
                 disabled={
                   !checkIfOngoing() ||
-                  !currentUser.eventsJoined.includes(event.name) ||
+                  (event.name &&
+                    currentUser.eventsJoined &&
+                    !currentUser.eventsJoined.includes(event.name)) ||
                   (currentUser.competitionsJoined &&
                     currentUser.competitionsJoined.includes(competitionID))
                 }>

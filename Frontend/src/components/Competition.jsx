@@ -9,7 +9,6 @@ import Form from 'react-bootstrap/Form';
 
 const Competition = ({ competition, events, isAdmin, setEvents }) => {
   const [selectedEvent, setSelectedEvent] = useState('');
-  console.log('Competition', competition);
 
   const handleLink = (e) => {
     setSelectedEvent(e.target.value);

@@ -98,7 +98,6 @@ app.get('/api/users/:email', (request, response) => {
 
 app.post('/api/users', (request, response, next) => {
   const body = request.body;
-  console.log(body);
 
   if (!body.name || !body.email || !body.password) {
     return response.status(400).json({
@@ -155,6 +154,4 @@ app.put('/api/users/:email', (request, response) => {
   // }
   app.use(errorHandler);
 });
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
-});
+app.listen(port, () => {});
