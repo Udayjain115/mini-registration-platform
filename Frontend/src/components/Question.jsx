@@ -27,7 +27,7 @@ const Question = ({ question }) => {
                   <p
                     key={index}
                     className="me-4 mb-1">
-                    {`Option ${index}: ${option}`}
+                    {`Option ${index + 1}: ${option}`}
                   </p>
                 ))}
               </div>
