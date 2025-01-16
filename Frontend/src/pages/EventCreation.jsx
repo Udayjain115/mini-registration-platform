@@ -42,9 +42,9 @@ const EventCreation = ({ currentUser }) => {
     e.preventDefault();
 
     const newEvent = {
-      name: event.trimEnd(),
-      description: description.trimEnd(),
-      date: date.trimEnd(),
+      name: event.trim(),
+      description: description.trim(),
+      date: date.trim(),
     };
 
     eventService

@@ -22,6 +22,8 @@ const LandingPage = ({
   const [isChecked, setIsChecked] = useState(false);
   const [filteredEvents, setFilteredEvents] = useState(events);
 
+  console.log('Logged IN', isLoggedIn);
+
   console.log('Current User', currentUser);
 
   console.log(filteredEvents);
