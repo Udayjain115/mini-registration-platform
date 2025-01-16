@@ -1,12 +1,17 @@
 package spring.backend.models;
 
+import jakarta.validation.constraints.NotNull;
 import java.util.HashMap;
 import java.util.Map;
 
 public class Attempt {
 
+  @NotNull(message = "Student email is required")
   private String studentEmail;
+
+  @NotNull(message = "Competition ID is required")
   private String competitionId;
+
   private Map<String, Integer> attempts = new HashMap<>();
 
   public String getStudentEmail() {

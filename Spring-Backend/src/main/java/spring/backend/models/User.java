@@ -1,5 +1,6 @@
 package spring.backend.models;
 
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import java.util.List;
 import org.springframework.data.annotation.Id;
@@ -9,9 +10,12 @@ public class User {
   @Id
   private String email;
 
+  @NotNull(message = "Password is required")
   private String password;
 
+  @NotNull(message = "Name is required")
   private String name;
+
   private List<String> eventsJoined;
   private List<String> competitionsJoined;
 
