@@ -167,6 +167,12 @@ const admin = ({
             <div className=" ">
               <h2 className="events-label my-5 admin-event">Events</h2>
               <div className="my-3">
+                {events.length === 0 && (
+                  <Notification
+                    message="No Events Available"
+                    className={'alert alert-info text-center'}
+                  />
+                )}
                 {events.map((event) => (
                   <Event
                     users={users}
@@ -195,6 +201,12 @@ const admin = ({
                   />
                 </div>
               </Col>
+              {filteredCompetitions.length === 0 && (
+                <Notification
+                  message="No Competitions Available"
+                  className={'alert alert-info text-center'}
+                />
+              )}
               {filteredCompetitions.map((competition) => (
                 <Competition
                   isAdmin={true}

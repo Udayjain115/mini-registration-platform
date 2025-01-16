@@ -169,6 +169,13 @@ body {
   margin-bottom: 0.3rem;
 }
 
+.alert-info {
+  background-color: white;
+  border: #000000;
+  color: black;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+}
+
 .admin-event {
   margin-bottom: 2px;
 }

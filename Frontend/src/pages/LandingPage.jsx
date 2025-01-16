@@ -125,6 +125,12 @@ const LandingPage = ({
           ) : null}
         </Row>
         <Col xs={isLoggedIn ? 8 : 12}>
+          {filteredEvents.length === 0 && (
+            <Notification
+              message="No Events Available"
+              className={'alert alert-info text-center'}
+            />
+          )}
           {filteredEvents.map((event) => (
             <Event
               currentUser={currentUser}
