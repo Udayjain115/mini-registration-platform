@@ -136,14 +136,9 @@ const QuestionCreation = ({
     }
 
     const newQuestion = {
-      title: question.trimEnd(),
+      title: question.trim(),
       correctChoiceIndex: answer,
-      options: [
-        option1.trimEnd(),
-        option2.trimEnd(),
-        option3.trimEnd(),
-        option4.trimEnd(),
-      ],
+      options: [option1.trim(), option2.trim(), option3.trim(), option4.trim()],
       difficulty: difficulty,
       topics: Array.from(topics),
     };
@@ -170,6 +165,10 @@ const QuestionCreation = ({
         console.log(error.response.data.message);
 
         if (error.response && error.response.status === 400) {
+          console.log('hi');
+          if (answer !== 1 || answer !== 2 || answer !== 3 || answer !== 4) {
+            setQuestionNotification('Please Enter A Valid Answer Index');
+          }
           setQuestionNotification(error.response.data.errors[0].defaultMessage);
         } else if (error.response && error.response.status === 500) {
           console.log(error.response.data.message, 'error');
