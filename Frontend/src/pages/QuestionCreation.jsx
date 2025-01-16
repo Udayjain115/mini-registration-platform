@@ -136,9 +136,14 @@ const QuestionCreation = ({
     }
 
     const newQuestion = {
-      title: question,
+      title: question.trimEnd(),
       correctChoiceIndex: answer,
-      options: [option1, option2, option3, option4],
+      options: [
+        option1.trimEnd(),
+        option2.trimEnd(),
+        option3.trimEnd(),
+        option4.trimEnd(),
+      ],
       difficulty: difficulty,
       topics: Array.from(topics),
     };
