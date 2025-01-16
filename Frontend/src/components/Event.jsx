@@ -175,28 +175,29 @@ const Event = ({
               Description: {eventDescription}
             </p>
           </Col>
-          {isLoggedIn ||
-            (currentUser && currentUser.email === adminUserName && (
-              <Col
-                xs={4}
-                className="event-actions d-flex flex-column align-items-end justify-content-start align-buttons"
-                style={{ height: '100%' }}>
-                {!currentUser.email === adminUserName && (
-                  <button
-                    className="joined-btn btn btn-primary mb-2 mt-1"
-                    onClick={handleButtonClick}>
-                    {isJoined ? 'Joined!' : 'Join'}
-                  </button>
-                )}
+          {currentUser && (
+            <Col
+              xs={4}
+              className="event-actions d-flex flex-column align-items-end justify-content-start align-buttons"
+              style={{ height: '100%' }}>
+              {currentUser.email !== adminUserName && (
+                <button
+                  className="joined-btn btn btn-primary mb-2 mt-1"
+                  onClick={handleButtonClick}>
+                  {isJoined ? 'Joined!' : 'Join'}
+                </button>
+              )}
 
+              {
                 <button
                   className="show-more-btn btn btn-primary"
                   onClick={() => setShowDetails(!showDetails)}
                   disabled={!competitionID}>
                   {showDetails ? 'Show Less ▲' : 'Show More ▼'}
                 </button>
-              </Col>
-            ))}
+              }
+            </Col>
+          )}
         </Row>
         {showDetails && competitionID && (
           <>
@@ -207,7 +208,7 @@ const Event = ({
 
             <p className="text-break">{`Competition End Time: ${endTime}`}</p>
 
-            {competitionID && !currentUser.email === adminUserName && (
+            {competitionID && currentUser.email !== adminUserName && (
               <button
                 className="btn join-button mx-2"
                 id={`${eventName}-enter-button`}
