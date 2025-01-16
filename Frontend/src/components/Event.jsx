@@ -175,24 +175,28 @@ const Event = ({
               Description: {eventDescription}
             </p>
           </Col>
-          {isLoggedIn && (
-            <Col
-              xs={4}
-              className="event-actions d-flex flex-column align-items-end justify-content-start align-buttons"
-              style={{ height: '100%' }}>
-              <button
-                className="joined-btn btn btn-primary mb-2 mt-1"
-                onClick={handleButtonClick}>
-                {isJoined ? 'Joined!' : 'Join'}
-              </button>
-              <button
-                className="show-more-btn btn btn-primary"
-                onClick={() => setShowDetails(!showDetails)}
-                disabled={!competitionID}>
-                {showDetails ? 'Show Less ▲' : 'Show More ▼'}
-              </button>
-            </Col>
-          )}
+          {isLoggedIn ||
+            (currentUser && currentUser.email === adminUserName && (
+              <Col
+                xs={4}
+                className="event-actions d-flex flex-column align-items-end justify-content-start align-buttons"
+                style={{ height: '100%' }}>
+                {!currentUser.email === adminUserName && (
+                  <button
+                    className="joined-btn btn btn-primary mb-2 mt-1"
+                    onClick={handleButtonClick}>
+                    {isJoined ? 'Joined!' : 'Join'}
+                  </button>
+                )}
+
+                <button
+                  className="show-more-btn btn btn-primary"
+                  onClick={() => setShowDetails(!showDetails)}
+                  disabled={!competitionID}>
+                  {showDetails ? 'Show Less ▲' : 'Show More ▼'}
+                </button>
+              </Col>
+            ))}
         </Row>
         {showDetails && competitionID && (
           <>
@@ -203,7 +207,7 @@ const Event = ({
 
             <p className="text-break">{`Competition End Time: ${endTime}`}</p>
 
-            {competitionID && (
+            {competitionID && !currentUser.email === adminUserName && (
               <button
                 className="btn join-button mx-2"
                 id={`${eventName}-enter-button`}
@@ -235,57 +239,6 @@ const Event = ({
       </div>
     </>
   );
-
-  // return (
-  //   <Container>
-  //     <div className={isLoggedIn ? 'event-box' : 'alert alert-info event-name'}>
-  //       {isLoggedIn ? (
-  //         <div className="event-content alert-info alert">
-  //           <div className="">
-  //             <Row className="align-items-start">
-  //               <Col xs={6}>
-  //                 <p className="text-break text-start fw-bold fs-3">
-  //                   {eventName}
-  //                 </p>
-  //                 <p className="text-break text-start">
-  //                   Description: {eventDescription}
-  //                 </p>
-  //               </Col>
-
-  //               <Col
-  //                 className="d-flex align-items-start justify-content-start"
-  //                 xs={4}>
-  //                 <button
-  //                   className="btn text-btn btn-lg mt-0"
-  //                   onClick={() => setShowDetails(!showDetails)}>
-  //                   {showDetails ? 'Show Less ▲' : 'Show More ▼'}
-  //                 </button>
-  //               </Col>
-  //             </Row>
-
-  //             <p className="text-break">Date: {eventDate}</p>
-
-  //           </div>
-  //         </div>
-  //       ) : (
-  //         <>
-  //           <p className="text-break">Event: {eventName}</p>
-  //           <p className="text-break">Date: {eventDate}</p>
-  //           <p className="text-break">Description: {eventDescription}</p>
-  //           <p className="text-break">Competition: {competitionID}</p>
-
-  //           {currentUser && adminUserName === currentUser.email && (
-  //             <button
-  //               onClick={handleResultClick}
-  //               className="btn btn-primary">
-  //               Generate Results
-  //             </button>
-  //           )}
-  //         </>
-  //       )}
-  //     </div>
-  //   </Container>
-  // );
 };
 
 export default Event;

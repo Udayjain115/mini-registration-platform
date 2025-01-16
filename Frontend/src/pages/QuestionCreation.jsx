@@ -319,6 +319,12 @@ const QuestionCreation = ({
               </div>
             </h5>
             <>
+              {filteredQuestions.length === 0 && (
+                <Notification
+                  message="No Questions Available"
+                  className={'alert alert-info text-center'}
+                />
+              )}
               {filteredQuestions.map((question) => {
                 return (
                   <div key={question.id}>
