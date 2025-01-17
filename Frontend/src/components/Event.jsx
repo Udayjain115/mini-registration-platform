@@ -8,6 +8,8 @@ import questionService from '../services/questionService';
 import competitionService from '../services/competitionService';
 import { formatTime } from '../utils/timeUtils';
 import { Container, Row, Col } from 'react-bootstrap';
+import { Tooltip } from 'react-bootstrap';
+import { OverlayTrigger } from 'react-bootstrap';
 
 const Event = ({
   event,
@@ -34,6 +36,14 @@ const Event = ({
   console.log(currentUser);
   console.log(event);
   console.log(startIsoTime, endIsoTime);
+
+  const renderTooltip = (props) => (
+    <Tooltip
+      id="button-tooltip"
+      {...props}>
+      No competition associated with event
+    </Tooltip>
+  );
 
   const checkIfOngoing = () => {
     const currentTime = new Date();
@@ -189,12 +199,19 @@ const Event = ({
               )}
 
               {
-                <button
-                  className="show-more-btn btn btn-primary"
-                  onClick={() => setShowDetails(!showDetails)}
-                  disabled={!competitionID}>
-                  {showDetails ? 'Show Less ▲' : 'Show More ▼'}
-                </button>
+                <OverlayTrigger
+                  placement="top"
+                  overlay={!competitionID ? renderTooltip : <></>}>
+                  <span className="d-inline-block">
+                    <button
+                      className="show-more-btn btn btn-primary"
+                      onClick={() => setShowDetails(!showDetails)}
+                      disabled={!competitionID}
+                      style={!competitionID ? { pointerEvents: 'none' } : {}}>
+                      {showDetails ? 'Show Less ▲' : 'Show More ▼'}
+                    </button>
+                  </span>
+                </OverlayTrigger>
               }
             </Col>
           )}
