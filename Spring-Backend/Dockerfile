@@ -1,14 +1,15 @@
-# Use an official OpenJDK runtime as a parent image
+# Stage 1: Build the application using the Gradle image
+FROM gradle:7.6.0-jdk17-alpine AS build
+WORKDIR /home/gradle/project
+# Copy the source code to the container
+COPY --chown=gradle:gradle . .
+# Build the application (this will produce a jar under build/libs)
+RUN gradle bootJar --no-daemon
+
+# Stage 2: Create the final image with the built jar
 FROM openjdk:17-jdk-alpine
-
-# Optional: set a working directory
 WORKDIR /app
-
-# Copy the executable jar file from the build output (assumes you build with Gradle bootJar)
-COPY build/libs/*.jar app.jar
-
-# Expose the port your app listens on (default Spring Boot port 8080)
+# Copy the jar file from the build stage to the runtime image
+COPY --from=build /home/gradle/project/build/libs/*.jar app.jar
 EXPOSE 8080
-
-# Run the jar file
 ENTRYPOINT ["java", "-jar", "/app/app.jar"]
