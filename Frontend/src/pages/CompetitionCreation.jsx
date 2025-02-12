@@ -50,9 +50,9 @@ const EventCreation = ({ currentUser }) => {
     e.preventDefault();
 
     const newCompetition = {
-      title: competition.trimEnd(),
-      startDate: startTime.trimEnd(),
-      endDate: endTime.trimEnd(),
+      title: competition.trim(),
+      startDate: startTime.trim(),
+      endDate: endTime.trim(),
     };
 
     competitionService
